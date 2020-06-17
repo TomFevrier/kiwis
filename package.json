@@ -1,0 +1,16 @@
+{
+  "name": "kiwis",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "demo": "node demo.js"
+  },
+  "author": "Tom Février",
+  "license": "MIT",
+  "dependencies": {
+    "d3-array": "^2.4.0",
+    "d3-dsv": "^1.2.0"
+  }
+}
