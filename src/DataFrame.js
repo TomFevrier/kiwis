@@ -4,6 +4,7 @@ import d3 from 'd3-array';
 import Kiwis from './Kiwis.js';
 import Series from './Series.js';
 
+
 /**
 * @class
 * @property {number} length The number of rows in the DataFrame
@@ -21,6 +22,7 @@ export default class DataFrame {
 
 	/**
 	* @constructor
+	* @hideconstructor
 	* @param {(Object[]|DataFrame)} data An array of objects or a DataFrame
 	*/
 	constructor(data) {
@@ -108,6 +110,15 @@ export default class DataFrame {
 	*/
 	clone() {
 		return new DataFrame(this);
+	}
+
+	/**
+	* Returns any row of the DataFrame
+	* @param {number} index
+	* @returns {DataFrame}
+	*/
+	get(index) {
+		return this._data[index];
 	}
 
 	/**
@@ -215,7 +226,7 @@ export default class DataFrame {
 	* Appends new rows to a DataFrame
 	* @param {Object|Object[]} rows Row or array of rows to append to the DataFrame
 	* @param {Object} [options]
-	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not exist
+	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not already exist
 	* @returns {DataFrame}
 	*/
 	append(rows, options = {}) {
@@ -247,7 +258,7 @@ export default class DataFrame {
 	* @param {Object|Object[]} rows Row or array of rows to insert into the DataFrame
 	* @param {number} [index=0] Index to insert the rows at
 	* @param {Object} [options]
-	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not exist
+	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not already exist
 	* @returns {DataFrame}
 	*/
 	insert(rows, index = 0, options = {}) {
@@ -276,6 +287,18 @@ export default class DataFrame {
 	}
 
 	/**
+	* Concats another DataFrame to the DataFrame
+	* @param {DataFrame} other
+	* @param {Object} [options]
+	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not already exist
+	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
+	* @returns {DataFrame}
+	*/
+	concat(other, options = {}) {
+		return this.append(other.toArray(), options);
+	}
+
+	/**
 	* Drops N/A values from the DataFrame
 	* @param {Object} [options]
 	* @param {('rows'|'columns')} [options.axis='rows'] Determines whether rows or columns should be dropped
@@ -296,7 +319,7 @@ export default class DataFrame {
 		}
 		else {
 			return this.filter(
-				column => this._data.map(row => row[column]).every(e => Boolean(e) || keep.includes(e)),
+				column => this[column].all(e => Boolean(e) || keep.includes(e)),
 				options
 			);
 		}
@@ -304,12 +327,13 @@ export default class DataFrame {
 
 	/**
 	* Drops duplicate rows from the DataFrame
-	* @param {string[]} [columns=DataFrame.columns] Array of columns to consider for comparison
 	* @param {Object} [options]
+	* @param {string[]} [options.columns=DataFrame.columns] Array of columns to consider for comparison
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	*/
-	dropDuplicates(columns = this.columns, options = {}) {
+	dropDuplicates(options = {}) {
+		const columns = options.columns || this.columns;
 		const inPlace = options.inPlace || false;
 
 		const rowsToDrop = [];
@@ -347,14 +371,12 @@ export default class DataFrame {
 	* @param {string} name Name of the new column
 	* @param {(*|*[]|Series)} column Content of the new column as an array, a Series or any value (to be set on every rows)
 	* @param {Object} [options]
-	* @param {('auto'|'extend'|'trim')} [options.fit='auto'] If the new column is not the same length as the DataFrame: drop the extra rows (`'auto'`, length stays the same), extends the DataFrame (`'extend'`, length is that of the new column), trim the DataFrame (`'trim'`, length is that of the new column)
+	* @param {boolean} [options.extend=false] If the new column is not the same length as the DataFrame, extends the DataFrame
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	*/
 	addColumn(name, column, options = {}) {
-		if (options.fit && !['auto', 'extend', 'trim'].includes(options.fit))
-			throw new Error(`Invalid value '${options.fit}' for the 'fit' option`);
-		const fit = options.fit || 'auto';
+		const extend = options.extend || false;
 		const inPlace = options.inPlace || false;
 		const data = column instanceof Series
 			? column.toArray()
@@ -365,9 +387,7 @@ export default class DataFrame {
 				[name]: index < data.length ? data[index].toString() : null
 			};
 		});
-		if (fit === 'trim')
-			newData = newData.slice(0, data.length);
-		else if (fit === 'extend') {
+		if (extend) {
 			data.slice(this.length).forEach(e => {
 				newData.push({
 					...Object.fromEntries(this._columns.map(column => ({ [column]: null }))),
@@ -543,13 +563,12 @@ export default class DataFrame {
 	}
 
 	/**
-	* Displays the DataFrame
-	* @returns {DataFrame}
+	* Format the DataFrame for display
+	* @returns {string}
 	*/
-	show() {
+	toString() {
 		if (this.empty) {
-			console.log('Empty DataFrame\n');
-			return this;
+			return 'Empty DataFrame';
 		}
 
 		const MAX_WIDTH = 42;
@@ -597,9 +616,15 @@ export default class DataFrame {
 		lines.push('');
 		lines.push(`[${this.length} rows × ${this._columns.length} columns]`);
 		lines.push(`Columns: ${this._columns.join(', ')}`);
-		lines.push('');
-		console.log(lines.join('\n'));
-		return this;
+		return lines.join('\n');
+	}
+
+	/**
+	* Displays the DataFrame
+	*/
+	show() {
+		console.log(this.toString());
+		console.log();
 	}
 
 	/**

@@ -1,4 +1,4 @@
-import kw from './src/Kiwis.js';
+const kw = require('kiwis');
 
 // Create a DataFrame from an array of objects
 const h2g2Characters = kw.DataFrame([
@@ -27,7 +27,7 @@ h2g2Characters.show();
 data.show(); // Large cells and DataFrames get truncated
 
 // Access rows
-console.log(h2g2Characters[0], h2g2Characters[2]);
+console.log(h2g2Characters.first(), h2g2Characters.get(1));
 console.log();
 
 // Show columns as Series

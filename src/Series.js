@@ -3,6 +3,7 @@ import d3 from 'd3-array';
 
 import Kiwis from './Kiwis.js';
 
+
 /**
 * @class
 * @property {number} length The number of values in the Series
@@ -19,6 +20,7 @@ export default class Series {
 
 	/**
 	* @constructor
+	* @hideconstructor
 	* @param {(*[]|Series)} data An array of values or a Series
 	*/
 	constructor(data) {
@@ -189,6 +191,17 @@ export default class Series {
 	}
 
 	/**
+	* Concats another Series to the Series
+	* @param {Series} other
+	* @param {Object} [options]
+	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
+	* @returns {Series}
+	*/
+	concat(other, options = {}) {
+		return this.append(other.toArray(), options);
+	}
+
+	/**
 	* Drops N/A values from the Series
 	* @param {Object} [options]
 	* @param {*[]} [options.keep=[0, false]] Array of falsy values to keep in the Series
@@ -215,6 +228,24 @@ export default class Series {
 		const s = this.clone();
 		s._data = [...new Set(s._data)];
 		return s;
+	}
+
+	/**
+	* Returns true if any value of the series satisfies the given condition
+	* @param {callback} [condition=!Kiwis.isNA]
+	* @returns {boolean}
+	*/
+	any(condition = e => !Kiwis.isNA(e)) {
+		return this._data.some(condition);
+	}
+
+	/**
+	* Returns true if all values of the series satisfy the given condition
+	* @param {callback} [condition=!Kiwis.isNA]
+	* @returns {boolean}
+	*/
+	all(condition = e => !Kiwis.isNA(e)) {
+		return this._data.every(condition);
 	}
 
 	/**
@@ -290,6 +321,8 @@ export default class Series {
 	* @returns {Series}
 	*/
 	round(digits = 0, options = {}) {
+		if (this.any(value => Number.isNaN(+value)))
+			throw new Error('Cannot round non-number values');
 		const inPlace = options.inPlace || false;
 		if (inPlace) {
 			this._data = this._data.map(value => (+value).toFixed(digits));
@@ -304,6 +337,8 @@ export default class Series {
 	* @returns {number}
 	*/
 	sum() {
+		if (this.any(value => Number.isNaN(+value)))
+			throw new Error('Cannot sum non-number values');
 		return d3.sum(this._data, d => +d);
 	}
 
@@ -312,6 +347,8 @@ export default class Series {
 	* @returns {number}
 	*/
 	min() {
+		if (this.any(value => Number.isNaN(+value)))
+			throw new Error('Cannot compute non-number values');
 		return d3.min(this._data, d => +d);
 	}
 
@@ -320,7 +357,19 @@ export default class Series {
 	* @returns {number}
 	*/
 	max() {
+		if (this.any(value => Number.isNaN(+value)))
+			throw new Error('Cannot compute non-number values');
 		return d3.max(this._data, d => +d);
+	}
+
+	/**
+	* Returns the extent of the Series
+	* @returns {[number, number]}
+	*/
+	extent() {
+		if (this.any(value => Number.isNaN(+value)))
+			throw new Error('Cannot compute non-number values');
+		return d3.extent(this._data, d => +d);
 	}
 
 	/**
@@ -328,6 +377,8 @@ export default class Series {
 	* @returns {number}
 	*/
 	mean() {
+		if (this.any(value => Number.isNaN(+value)))
+			throw new Error('Cannot average non-number values');
 		return d3.mean(this._data, d => +d);
 	}
 
@@ -336,6 +387,8 @@ export default class Series {
 	* @returns {number}
 	*/
 	median() {
+		if (this.any(value => Number.isNaN(+value)))
+			throw new Error('Cannot compute non-number values');
 		return d3.median(this._data, d => +d);
 	}
 
@@ -344,17 +397,18 @@ export default class Series {
 	* @returns {number}
 	*/
 	std() {
+		if (this.any(value => Number.isNaN(+value)))
+			throw new Error('Cannot compute non-number values');
 		return d3.deviation(this._data, d => +d);
 	}
 
 	/**
-	* Displays the Series
-	* @returns {Series}
+	* Format the Series for display
+	* @returns {string}
 	*/
-	show() {
+	toString() {
 		if (this.empty) {
-			console.log('Empty Series\n');
-			return this;
+			return 'Empty Series';
 		}
 
 		const MAX_WIDTH = 42;
@@ -362,7 +416,7 @@ export default class Series {
 
 		const widths = [
 			Math.min(MAX_LENGTH.toString().length, this.length.toString().length),
-			d3.max(this._data, d => d && d.toString().length)
+			Math.min(MAX_WIDTH, d3.max(this._data, d => d && d.toString().length))
 		];
 
 		const lines = [];
@@ -381,9 +435,15 @@ export default class Series {
 		if (this.length > MAX_LENGTH) lines.push('...');
 		lines.push('');
 		lines.push(`Length: ${this.length}`);
-		lines.push('');
-		console.log(lines.join('\n'));
-		return this;
+		return lines.join('\n');
+	}
+
+	/**
+	* Displays the Series
+	*/
+	show() {
+		console.log(this.toString());
+		console.log();
 	}
 
 	/**

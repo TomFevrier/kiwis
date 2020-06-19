@@ -5,7 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "demo": "node demo.js"
+    "demo": "node demo.js",
+    "doc-update": "documentation readme src/*.js --section=Documentation"
   },
   "author": "Tom Février",
   "license": "MIT",
