@@ -1,12 +1,19 @@
 # Kiwis 🥝
 ## A Pandas-inspired data wrangling toolkit in JavaScript
 
-### How to test the library
+### How to test the library 🧪
 - You need to have [Node.js](https://nodejs.org) installed
 - `git clone https://github.com/TomFevrier/kiwis && cd kiwis`
 - `npm install`
 - `npm run demo` or `node demo.js` to run the demo code
-- Happy testing 🚀
+- Happy coding!
+
+### Roadmap 🚧
+- Error handling 🟡
+- Nesting / pivot tables
+- Concatenate / merge DataFrames/Series
+- Indexes
+- Replace values
 
 ---
 
@@ -16,155 +23,145 @@
 
 ### Table of Contents
 
--   [Kiwis][1]
-    -   [DataFrame][2]
-        -   [Parameters][3]
-    -   [Series][4]
-        -   [Parameters][5]
-    -   [loadCSV][6]
-        -   [Parameters][7]
--   [DataFrame][8]
-    -   [Parameters][9]
-    -   [Properties][10]
-    -   [toArray][11]
-    -   [clone][12]
-    -   [first][13]
-    -   [last][14]
-    -   [head][15]
-        -   [Parameters][16]
-    -   [tail][17]
-        -   [Parameters][18]
-    -   [slice][19]
-        -   [Parameters][20]
-    -   [rows][21]
-    -   [items][22]
-    -   [forEach][23]
-        -   [Parameters][24]
-    -   [map][25]
-        -   [Parameters][26]
-    -   [filter][27]
-        -   [Parameters][28]
-    -   [dropNA][29]
-        -   [Parameters][30]
-    -   [addColumn][31]
-        -   [Parameters][32]
-    -   [sort][33]
-        -   [Parameters][34]
-    -   [show][35]
-    -   [saveCSV][36]
+-   [DataFrame][1]
+    -   [Parameters][2]
+    -   [Properties][3]
+    -   [toArray][4]
+    -   [clone][5]
+    -   [first][6]
+    -   [last][7]
+    -   [head][8]
+        -   [Parameters][9]
+    -   [tail][10]
+        -   [Parameters][11]
+    -   [slice][12]
+        -   [Parameters][13]
+    -   [rows][14]
+    -   [items][15]
+    -   [forEach][16]
+        -   [Parameters][17]
+    -   [map][18]
+        -   [Parameters][19]
+    -   [append][20]
+        -   [Parameters][21]
+    -   [insert][22]
+        -   [Parameters][23]
+    -   [dropNA][24]
+        -   [Parameters][25]
+    -   [dropDuplicates][26]
+        -   [Parameters][27]
+    -   [addColumn][28]
+        -   [Parameters][29]
+    -   [rename][30]
+        -   [Parameters][31]
+    -   [reorder][32]
+        -   [Parameters][33]
+    -   [filter][34]
+        -   [Parameters][35]
+    -   [drop][36]
         -   [Parameters][37]
-    -   [saveJSON][38]
+    -   [sort][38]
         -   [Parameters][39]
--   [Series][40]
-    -   [Parameters][41]
-    -   [Properties][42]
-    -   [toArray][43]
-    -   [clone][44]
-    -   [first][45]
-    -   [last][46]
-    -   [head][47]
-        -   [Parameters][48]
-    -   [tail][49]
-        -   [Parameters][50]
-    -   [slice][51]
-        -   [Parameters][52]
-    -   [values][53]
-    -   [items][54]
-    -   [forEach][55]
-        -   [Parameters][56]
-    -   [map][57]
-        -   [Parameters][58]
-    -   [sort][59]
-        -   [Parameters][60]
-    -   [filter][61]
-        -   [Parameters][62]
-    -   [dropNA][63]
+    -   [shuffle][40]
+        -   [Parameters][41]
+    -   [show][42]
+    -   [saveCSV][43]
+        -   [Parameters][44]
+    -   [saveJSON][45]
+        -   [Parameters][46]
+-   [Kiwis][47]
+    -   [DataFrame][48]
+        -   [Parameters][49]
+    -   [Series][50]
+        -   [Parameters][51]
+    -   [loadCSV][52]
+        -   [Parameters][53]
+    -   [isNA][54]
+        -   [Parameters][55]
+-   [Series][56]
+    -   [Parameters][57]
+    -   [Properties][58]
+    -   [toArray][59]
+    -   [clone][60]
+    -   [first][61]
+    -   [last][62]
+    -   [head][63]
         -   [Parameters][64]
-    -   [round][65]
+    -   [tail][65]
         -   [Parameters][66]
-    -   [sum][67]
-    -   [min][68]
-    -   [max][69]
-    -   [mean][70]
-    -   [median][71]
-    -   [std][72]
-    -   [show][73]
-    -   [saveCSV][74]
-        -   [Parameters][75]
-    -   [saveJSON][76]
-        -   [Parameters][77]
-
-## Kiwis
-
-### DataFrame
-
-Returns a new DataFrame from the given data
-
-#### Parameters
-
--   `data` **[Array][78]&lt;[Object][79]>** An array of objects
-
-Returns **[DataFrame][80]**
-
-### Series
-
-Returns a new Series from the given data
-
-#### Parameters
-
--   `data` **[Array][78]&lt;any>** An array of values
-
-Returns **[Series][81]**
-
-### loadCSV
-
-Loads a CSV file into a DataFrame
-
-#### Parameters
-
--   `path` **[string][82]** Path of the file to load
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.delimiter` **[string][82]** Delimiter of the file (optional, default `','`)
-    -   `options.encoding` **[string][82]** Encoding of the file (optional, default `'utf8'`)
-    -   `options.prettify` **(`"camelCase"` \| `"snake_case"`)** Prettify column names (optional, default `null`)
-
-Returns **[DataFrame][80]**
+    -   [slice][67]
+        -   [Parameters][68]
+    -   [values][69]
+    -   [items][70]
+    -   [forEach][71]
+        -   [Parameters][72]
+    -   [map][73]
+        -   [Parameters][74]
+    -   [append][75]
+        -   [Parameters][76]
+    -   [insert][77]
+        -   [Parameters][78]
+    -   [dropNA][79]
+        -   [Parameters][80]
+    -   [dropDuplicates][81]
+        -   [Parameters][82]
+    -   [filter][83]
+        -   [Parameters][84]
+    -   [drop][85]
+        -   [Parameters][86]
+    -   [sort][87]
+        -   [Parameters][88]
+    -   [shuffle][89]
+        -   [Parameters][90]
+    -   [round][91]
+        -   [Parameters][92]
+    -   [sum][93]
+    -   [min][94]
+    -   [max][95]
+    -   [mean][96]
+    -   [median][97]
+    -   [std][98]
+    -   [show][99]
+    -   [saveCSV][100]
+        -   [Parameters][101]
+    -   [saveJSON][102]
+        -   [Parameters][103]
 
 ## DataFrame
 
 ### Parameters
 
--   `data` **([Array][78]&lt;[Object][79]> | [DataFrame][80])** An array of objects or a DataFrame
+-   `data` **([Array][104]&lt;[Object][105]> | [DataFrame][106])** An array of objects or a DataFrame
 
 ### Properties
 
--   `length` **[number][83]** The number of rows in the DataFrame
--   `columns` **[Array][78]&lt;[string][82]>** The columns of the DataFrame
--   `empty` **[boolean][84]** Whether the DataFrame contains any row or not
+-   `length` **[number][107]** The number of rows in the DataFrame
+-   `columns` **[Array][104]&lt;[string][108]>** The columns of the DataFrame
+-   `empty` **[boolean][109]** Whether the DataFrame contains any row or not
 
 ### toArray
 
 Returns the DataFrame as an array
 
-Returns **[Array][78]&lt;[Object][79]>**
+Returns **[Array][104]&lt;[Object][105]>**
 
 ### clone
 
 Clones the DataFrame
 
-Returns **[DataFrame][80]**
+Returns **[DataFrame][106]**
 
 ### first
 
 Returns the first row of the DataFrame
 
-Returns **[Object][79]**
+Returns **[Object][105]**
 
 ### last
 
 Returns the last row of the DataFrame
 
-Returns **[Object][79]**
+Returns **[Object][105]**
 
 ### head
 
@@ -172,9 +169,9 @@ Returns a new DataFrame containing the first N rows of the DataFrame
 
 #### Parameters
 
--   `n` **[number][83]** Number of rows to select (optional, default `5`)
+-   `n` **[number][107]** Number of rows to select (optional, default `5`)
 
-Returns **[DataFrame][80]**
+Returns **[DataFrame][106]**
 
 ### tail
 
@@ -182,9 +179,9 @@ Returns a new DataFrame containing the last N rows of the DataFrame
 
 #### Parameters
 
--   `n` **[number][83]** Number of rows to select (optional, default `5`)
+-   `n` **[number][107]** Number of rows to select (optional, default `5`)
 
-Returns **[DataFrame][80]**
+Returns **[DataFrame][106]**
 
 ### slice
 
@@ -192,22 +189,22 @@ Returns a new DataFrame with a slice of the original rows
 
 #### Parameters
 
--   `start` **[number][83]** Zero-based index at which to start extraction
--   `end` **[number][83]** Zero-based index before which to end extraction (optional, default `DataFrame.length`)
+-   `start` **[number][107]** Zero-based index at which to start extraction
+-   `end` **[number][107]** Zero-based index before which to end extraction (optional, default `DataFrame.length`)
 
-Returns **[DataFrame][80]**
+Returns **[DataFrame][106]**
 
 ### rows
 
 Returns the rows of the DataFrame as an iterable
 
-Returns **Iterable&lt;[Object][79]>**
+Returns **Iterable&lt;[Object][105]>**
 
 ### items
 
 Returns an array of index/row pairs as an iterable
 
-Returns **Iterable&lt;[Array][78]&lt;[number][83], [Object][79]>>**
+Returns **Iterable&lt;[Array][104]&lt;[number][107], [Object][105]>>**
 
 ### forEach
 
@@ -225,33 +222,57 @@ Returns a new Series populated with the results of a callback function applied o
 
 -   `callback` **callback**
 
-Returns **[Series][81]**
+Returns **[Series][110]**
 
-### filter
+### append
 
-Filters columns or rows of the DataFrame
+Appends new rows to a DataFrame
 
 #### Parameters
 
--   `filter` **(callback | [Array][78]&lt;[string][82]>)** Can be a callback (applied to rows or columns) or an array of column names to keep
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.axis` **(`"rows"` \| `"columns"`)** Determines whether the callback should apply to rows or columns (optional, default `'rows'`)
-    -   `options.inPlace` **[boolean][84]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+-   `rows` **([Object][105] \| [Array][104]&lt;[Object][105]>)** Row or array of rows to append to the DataFrame
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.extend` **[boolean][109]** Add new columns to the DataFrame if they do not exist (optional, default `false`)
 
-Returns **[DataFrame][80]**
+Returns **[DataFrame][106]**
+
+### insert
+
+Inserts new rows into a DataFrame
+
+#### Parameters
+
+-   `rows` **([Object][105] \| [Array][104]&lt;[Object][105]>)** Row or array of rows to insert into the DataFrame
+-   `index` **[number][107]** Index to insert the rows at (optional, default `0`)
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.extend` **[boolean][109]** Add new columns to the DataFrame if they do not exist (optional, default `false`)
+
+Returns **[DataFrame][106]**
 
 ### dropNA
 
-Drops NA values from the DataFrame
+Drops N/A values from the DataFrame
 
 #### Parameters
 
--   `options` **[Object][79]?** Options (optional, default `{}`)
+-   `options` **[Object][105]?**  (optional, default `{}`)
     -   `options.axis` **(`"rows"` \| `"columns"`)** Determines whether rows or columns should be dropped (optional, default `'rows'`)
-    -   `options.keep` **[Array][78]&lt;any>** Array of falsy values to keep in the DataFrame (optional, default `[0]`)
-    -   `options.inPlace` **[boolean][84]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+    -   `options.keep` **[Array][104]&lt;any>** Array of falsy values to keep in the DataFrame (optional, default `[0,false]`)
+    -   `options.inPlace` **[boolean][109]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
 
-Returns **[DataFrame][80]**
+Returns **[DataFrame][106]**
+
+### dropDuplicates
+
+Drops duplicate rows from the DataFrame
+
+#### Parameters
+
+-   `columns` **[Array][104]&lt;[string][108]>** Array of columns to consider for comparison (optional, default `DataFrame.columns`)
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean][109]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+
+Returns **[DataFrame][106]**
 
 ### addColumn
 
@@ -259,13 +280,63 @@ Add a new column to the DataFrame
 
 #### Parameters
 
--   `name` **[string][82]** Name of the new column
--   `column` **([Array][78]&lt;any> | [Series][81])** Content of the new column
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.fit` **(`"extend"` \| `"trim"` \| `"auto"`)** If the new column is not the same length as the DataFrame: drop the extra rows (`'auto'`, length stays the same), extends the DataFrame (`'extend'`, length is that of the new column), trim the DataFrame (`'trim'`, length is that of the new column) (optional, default `'auto'`)
-    -   `options.inPlace` **[boolean][84]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+-   `name` **[string][108]** Name of the new column
+-   `column` **(any | [Array][104]&lt;any> | [Series][110])** Content of the new column as an array, a Series or any value (to be set on every rows)
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.fit` **(`"auto"` \| `"extend"` \| `"trim"`)** If the new column is not the same length as the DataFrame: drop the extra rows (`'auto'`, length stays the same), extends the DataFrame (`'extend'`, length is that of the new column), trim the DataFrame (`'trim'`, length is that of the new column) (optional, default `'auto'`)
+    -   `options.inPlace` **[boolean][109]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
 
-Returns **[DataFrame][80]**
+Returns **[DataFrame][106]**
+
+### rename
+
+Rename columns of the DataFrame
+
+#### Parameters
+
+-   `map` **[Object][105]&lt;key, [string][108]>** Map of the columns to rename to their new names
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean][109]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+
+Returns **[DataFrame][106]**
+
+### reorder
+
+Reorder the columns of the DataFrame
+
+#### Parameters
+
+-   `names` **[Array][104]&lt;[string][108]>** Array containing the new order of the columns
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean][109]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+
+Returns **[DataFrame][106]**
+
+### filter
+
+Filters columns or rows of the DataFrame
+
+#### Parameters
+
+-   `filter` **(callback | [Array][104]&lt;[string][108]>)** Can be a callback (applied to rows or columns) or an array of column names to keep
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.axis` **(`"rows"` \| `"columns"`)** Determines whether the callback should apply to rows or columns (optional, default `'rows'`)
+    -   `options.inPlace` **[boolean][109]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+
+Returns **[DataFrame][106]**
+
+### drop
+
+Drops columns or rows from the DataFrame
+
+#### Parameters
+
+-   `filter` **(callback | [Array][104]&lt;[string][108]>)** Can be a callback (applied to rows or columns) or an array of column names to drop
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.axis` **(`"rows"` \| `"columns"`)** Determines whether the callback should apply to rows or columns (optional, default `'rows'`)
+    -   `options.inPlace` **[boolean][109]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+
+Returns **[DataFrame][106]**
 
 ### sort
 
@@ -273,16 +344,30 @@ Sorts the DataFrame
 
 #### Parameters
 
--   `by` **([string][82] \| [Array][78]&lt;[string][82]>)** Key or array of keys to sort the DataFrame by
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.reverse` **[boolean][84]** Sorts the DataFrame in descending order (optional, default `false`)
-    -   `options.inPlace` **[boolean][84]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+-   `by` **([string][108] \| [Array][104]&lt;[string][108]>)** Key or array of keys to sort the DataFrame by
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.reverse` **[boolean][109]** Sorts the DataFrame in descending order (optional, default `false`)
+    -   `options.inPlace` **[boolean][109]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
 
-Returns **[DataFrame][80]**
+Returns **[DataFrame][106]**
+
+### shuffle
+
+Shuffles the rows or columns of a DataFrame
+
+#### Parameters
+
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean][109]** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+    -   `options.axis` **(`"rows"` \| `"columns"`)** Determines whether rows or columns should be shuffled (optional, default `'rows'`)
+
+Returns **[DataFrame][106]**
 
 ### show
 
 Displays the DataFrame
+
+Returns **[DataFrame][106]**
 
 ### saveCSV
 
@@ -290,9 +375,9 @@ Saves the DataFrame as a CSV file
 
 #### Parameters
 
--   `path` **[string][82]** Path of the file to save
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.delimiter` **[string][82]** Delimiter to use (optional, default `','`)
+-   `path` **[string][108]** Path of the file to save
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.delimiter` **[string][108]** Delimiter to use (optional, default `','`)
 
 ### saveJSON
 
@@ -300,32 +385,80 @@ Saves the DataFrame as a JSON file
 
 #### Parameters
 
--   `path` **[string][82]** Path of the file to save
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.prettify` **[boolean][84]** Prettify JSON output (optional, default `true`)
+-   `path` **[string][108]** Path of the file to save
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.prettify` **[boolean][109]** Prettify JSON output (optional, default `true`)
+
+## Kiwis
+
+### DataFrame
+
+Returns a new DataFrame from the given data
+
+#### Parameters
+
+-   `data` **[Array][104]&lt;[Object][105]>** An array of objects
+
+Returns **[DataFrame][106]**
+
+### Series
+
+Returns a new Series from the given data
+
+#### Parameters
+
+-   `data` **[Array][104]&lt;any>** An array of values
+
+Returns **[Series][110]**
+
+### loadCSV
+
+Loads a CSV file into a DataFrame
+
+#### Parameters
+
+-   `path` **[string][108]** Path of the file to load
+-   `options` **[Object][105]?** Options (optional, default `{}`)
+    -   `options.delimiter` **[string][108]** Delimiter of the file (optional, default `','`)
+    -   `options.encoding` **[string][108]** Encoding of the file (optional, default `'utf8'`)
+    -   `options.prettify` **(`"none"` \| `"camelCase"` \| `"snake_case"`)** Prettify column names (optional, default `'none'`)
+
+Returns **[DataFrame][106]**
+
+### isNA
+
+Determines whether a value is N/A or not
+
+#### Parameters
+
+-   `value` **any**
+-   `options` **[Object][105]?** Options (optional, default `{}`)
+    -   `options.keep` **[Array][104]&lt;any>** Array of falsy values not considered N/A (optional, default `[0,false]`)
+
+Returns **[boolean][109]**
 
 ## Series
 
 ### Parameters
 
--   `data` **([Array][78]&lt;any> | [Series][81])** An array of values or a Series
+-   `data` **([Array][104]&lt;any> | [Series][110])** An array of values or a Series
 
 ### Properties
 
--   `length` **[number][83]** The number of values in the Series
--   `empty` **[boolean][84]** Whether the Series contains any value or not
+-   `length` **[number][107]** The number of values in the Series
+-   `empty` **[boolean][109]** Whether the Series contains any value or not
 
 ### toArray
 
 Returns the Series as an array
 
-Returns **[Array][78]&lt;any>**
+Returns **[Array][104]&lt;any>**
 
 ### clone
 
 Clones the Series
 
-Returns **[Series][81]**
+Returns **[Series][110]**
 
 ### first
 
@@ -345,9 +478,9 @@ Returns a new Series containing the first N values of the Series
 
 #### Parameters
 
--   `n` **[number][83]** Number of values to select (optional, default `5`)
+-   `n` **[number][107]** Number of values to select (optional, default `5`)
 
-Returns **[Series][81]**
+Returns **[Series][110]**
 
 ### tail
 
@@ -355,9 +488,9 @@ Returns a new Series containing the last N values of the Series
 
 #### Parameters
 
--   `n` **[number][83]** Number of rows to select (optional, default `5`)
+-   `n` **[number][107]** Number of rows to select (optional, default `5`)
 
-Returns **[Series][81]**
+Returns **[Series][110]**
 
 ### slice
 
@@ -365,10 +498,10 @@ Returns a new Series with a slice of the original values
 
 #### Parameters
 
--   `start` **[number][83]** Zero-based index at which to start extraction
--   `end` **[number][83]** Zero-based index before which to end extraction (optional, default `Series.length`)
+-   `start` **[number][107]** Zero-based index at which to start extraction
+-   `end` **[number][107]** Zero-based index before which to end extraction (optional, default `Series.length`)
 
-Returns **[Series][81]**
+Returns **[Series][110]**
 
 ### values
 
@@ -380,7 +513,7 @@ Returns **Iterable&lt;any>**
 
 Returns an array of index/value pairs as an iterable
 
-Returns **Iterable&lt;[Array][78]&lt;[number][83], any>>**
+Returns **Iterable&lt;[Array][104]&lt;[number][107], any>>**
 
 ### forEach
 
@@ -398,19 +531,51 @@ Returns a new Series populated with the results of a callback function applied o
 
 -   `callback` **callback**
 
-Returns **[Series][81]**
+Returns **[Series][110]**
 
-### sort
+### append
 
-Sorts the Series
+Appends new values to a Series
 
 #### Parameters
 
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.reverse` **[boolean][84]** Sorts the Series in descending order (optional, default `false`)
-    -   `options.inPlace` **[boolean][84]** Changes the current Series instead of returning a new one (optional, default `false`)
+-   `values` **([Object][105] \| [Array][104]&lt;[Object][105]>)** Value or array of values to append to the Series
 
-Returns **[Series][81]**
+Returns **[Series][110]**
+
+### insert
+
+Inserts new values into a Series
+
+#### Parameters
+
+-   `values` **([Object][105] \| [Array][104]&lt;[Object][105]>)** Value or array of values to insert into the Series
+-   `index` **[number][107]** Index to insert the values at (optional, default `0`)
+
+Returns **[Series][110]**
+
+### dropNA
+
+Drops N/A values from the Series
+
+#### Parameters
+
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.keep` **[Array][104]&lt;any>** Array of falsy values to keep in the Series (optional, default `[0,false]`)
+    -   `options.inPlace` **[boolean][109]** Changes the current Series instead of returning a new one (optional, default `false`)
+
+Returns **[Series][110]**
+
+### dropDuplicates
+
+Drops duplicate values from the Series
+
+#### Parameters
+
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean][109]** Changes the current Series instead of returning a new one (optional, default `false`)
+
+Returns **[Series][110]**
 
 ### filter
 
@@ -419,22 +584,45 @@ Filters values of the Series
 #### Parameters
 
 -   `filter` **callback** Callback to apply
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.inPlace` **[boolean][84]** Changes the current Series instead of returning a new one (optional, default `false`)
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean][109]** Changes the current Series instead of returning a new one (optional, default `false`)
 
-Returns **[Series][81]**
+Returns **[Series][110]**
 
-### dropNA
+### drop
 
-Drops NA values from the Series
+Drops values from the Series
 
 #### Parameters
 
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.keep` **[Array][78]&lt;any>** Array of falsy values to keep in the Series (optional, default `[0]`)
-    -   `options.inPlace` **[boolean][84]** Changes the current Series instead of returning a new one (optional, default `false`)
+-   `filter` **callback** Callback to apply
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean][109]** Changes the current Series instead of returning a new one (optional, default `false`)
 
-Returns **[Series][81]**
+Returns **[Series][110]**
+
+### sort
+
+Sorts the Series
+
+#### Parameters
+
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.reverse` **[boolean][109]** Sorts the Series in descending order (optional, default `false`)
+    -   `options.inPlace` **[boolean][109]** Changes the current Series instead of returning a new one (optional, default `false`)
+
+Returns **[Series][110]**
+
+### shuffle
+
+Shuffles the values of a Series
+
+#### Parameters
+
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean][109]** Changes the current Series instead of returning a new one (optional, default `false`)
+
+Returns **[Series][110]**
 
 ### round
 
@@ -442,51 +630,53 @@ Round the values in the Series
 
 #### Parameters
 
--   `digits` **[number][83]** Number of digits for rounding (optional, default `0`)
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.inPlace` **[boolean][84]** Changes the current Series instead of returning a new one (optional, default `false`)
+-   `digits` **[number][107]** Number of digits for rounding (optional, default `0`)
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean][109]** Changes the current Series instead of returning a new one (optional, default `false`)
 
-Returns **[Series][81]**
+Returns **[Series][110]**
 
 ### sum
 
 Returns the sum of the values in the Series
 
-Returns **[number][83]**
+Returns **[number][107]**
 
 ### min
 
 Returns the minimum value in the Series
 
-Returns **[number][83]**
+Returns **[number][107]**
 
 ### max
 
 Returns the maximum value in the Series
 
-Returns **[number][83]**
+Returns **[number][107]**
 
 ### mean
 
 Returns the mean of the values in the Series
 
-Returns **[number][83]**
+Returns **[number][107]**
 
 ### median
 
 Returns the median of the values in the Series
 
-Returns **[number][83]**
+Returns **[number][107]**
 
 ### std
 
 Returns the standard deviation of the values in the Series
 
-Returns **[number][83]**
+Returns **[number][107]**
 
 ### show
 
 Displays the Series
+
+Returns **[Series][110]**
 
 ### saveCSV
 
@@ -494,9 +684,9 @@ Saves the Series as a CSV file
 
 #### Parameters
 
--   `path` **[string][82]** Path of the file to save
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.name` **[string][82]** Column name to use (optional, default `'series'`)
+-   `path` **[string][108]** Path of the file to save
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.name` **[string][108]** Column name to use (optional, default `'series'`)
 
 ### saveJSON
 
@@ -504,175 +694,227 @@ Saves the Series as a JSON file
 
 #### Parameters
 
--   `path` **[string][82]** Path of the file to save
--   `options` **[Object][79]?** Options (optional, default `{}`)
-    -   `options.name` **[string][82]** Column name to use (optional, default `'series'`)
-    -   `options.prettify` **[boolean][84]** Prettify JSON output (optional, default `true`)
+-   `path` **[string][108]** Path of the file to save
+-   `options` **[Object][105]?**  (optional, default `{}`)
+    -   `options.name` **[string][108]** Column name to use (optional, default `'series'`)
+    -   `options.prettify` **[boolean][109]** Prettify JSON output (optional, default `true`)
 
-[1]: #kiwis
+[1]: #dataframe
 
-[2]: #dataframe
+[2]: #parameters
 
-[3]: #parameters
+[3]: #properties
 
-[4]: #series
+[4]: #toarray
 
-[5]: #parameters-1
+[5]: #clone
 
-[6]: #loadcsv
+[6]: #first
 
-[7]: #parameters-2
+[7]: #last
 
-[8]: #dataframe-1
+[8]: #head
 
-[9]: #parameters-3
+[9]: #parameters-1
 
-[10]: #properties
+[10]: #tail
 
-[11]: #toarray
+[11]: #parameters-2
 
-[12]: #clone
+[12]: #slice
 
-[13]: #first
+[13]: #parameters-3
 
-[14]: #last
+[14]: #rows
 
-[15]: #head
+[15]: #items
 
-[16]: #parameters-4
+[16]: #foreach
 
-[17]: #tail
+[17]: #parameters-4
 
-[18]: #parameters-5
+[18]: #map
 
-[19]: #slice
+[19]: #parameters-5
 
-[20]: #parameters-6
+[20]: #append
 
-[21]: #rows
+[21]: #parameters-6
 
-[22]: #items
+[22]: #insert
 
-[23]: #foreach
+[23]: #parameters-7
 
-[24]: #parameters-7
+[24]: #dropna
 
-[25]: #map
+[25]: #parameters-8
 
-[26]: #parameters-8
+[26]: #dropduplicates
 
-[27]: #filter
+[27]: #parameters-9
 
-[28]: #parameters-9
+[28]: #addcolumn
 
-[29]: #dropna
+[29]: #parameters-10
 
-[30]: #parameters-10
+[30]: #rename
 
-[31]: #addcolumn
+[31]: #parameters-11
 
-[32]: #parameters-11
+[32]: #reorder
 
-[33]: #sort
+[33]: #parameters-12
 
-[34]: #parameters-12
+[34]: #filter
 
-[35]: #show
+[35]: #parameters-13
 
-[36]: #savecsv
+[36]: #drop
 
-[37]: #parameters-13
+[37]: #parameters-14
 
-[38]: #savejson
+[38]: #sort
 
-[39]: #parameters-14
+[39]: #parameters-15
 
-[40]: #series-1
+[40]: #shuffle
 
-[41]: #parameters-15
+[41]: #parameters-16
 
-[42]: #properties-1
+[42]: #show
 
-[43]: #toarray-1
+[43]: #savecsv
 
-[44]: #clone-1
+[44]: #parameters-17
 
-[45]: #first-1
+[45]: #savejson
 
-[46]: #last-1
+[46]: #parameters-18
 
-[47]: #head-1
+[47]: #kiwis
 
-[48]: #parameters-16
+[48]: #dataframe-1
 
-[49]: #tail-1
+[49]: #parameters-19
 
-[50]: #parameters-17
+[50]: #series
 
-[51]: #slice-1
+[51]: #parameters-20
 
-[52]: #parameters-18
+[52]: #loadcsv
 
-[53]: #values
+[53]: #parameters-21
 
-[54]: #items-1
+[54]: #isna
 
-[55]: #foreach-1
+[55]: #parameters-22
 
-[56]: #parameters-19
+[56]: #series-1
 
-[57]: #map-1
+[57]: #parameters-23
 
-[58]: #parameters-20
+[58]: #properties-1
 
-[59]: #sort-1
+[59]: #toarray-1
 
-[60]: #parameters-21
+[60]: #clone-1
 
-[61]: #filter-1
+[61]: #first-1
 
-[62]: #parameters-22
+[62]: #last-1
 
-[63]: #dropna-1
+[63]: #head-1
 
-[64]: #parameters-23
+[64]: #parameters-24
 
-[65]: #round
+[65]: #tail-1
 
-[66]: #parameters-24
+[66]: #parameters-25
 
-[67]: #sum
+[67]: #slice-1
 
-[68]: #min
+[68]: #parameters-26
 
-[69]: #max
+[69]: #values
 
-[70]: #mean
+[70]: #items-1
 
-[71]: #median
+[71]: #foreach-1
 
-[72]: #std
+[72]: #parameters-27
 
-[73]: #show-1
+[73]: #map-1
 
-[74]: #savecsv-1
+[74]: #parameters-28
 
-[75]: #parameters-25
+[75]: #append-1
 
-[76]: #savejson-1
+[76]: #parameters-29
 
-[77]: #parameters-26
+[77]: #insert-1
 
-[78]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[78]: #parameters-30
 
-[79]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[79]: #dropna-1
 
-[80]: #dataframe
+[80]: #parameters-31
 
-[81]: #series
+[81]: #dropduplicates-1
 
-[82]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[82]: #parameters-32
 
-[83]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+[83]: #filter-1
 
-[84]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+[84]: #parameters-33
+
+[85]: #drop-1
+
+[86]: #parameters-34
+
+[87]: #sort-1
+
+[88]: #parameters-35
+
+[89]: #shuffle-1
+
+[90]: #parameters-36
+
+[91]: #round
+
+[92]: #parameters-37
+
+[93]: #sum
+
+[94]: #min
+
+[95]: #max
+
+[96]: #mean
+
+[97]: #median
+
+[98]: #std
+
+[99]: #show-1
+
+[100]: #savecsv-1
+
+[101]: #parameters-38
+
+[102]: #savejson-1
+
+[103]: #parameters-39
+
+[104]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[105]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[106]: #dataframe
+
+[107]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number
+
+[108]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[109]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+
+[110]: #series

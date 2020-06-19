@@ -60,6 +60,18 @@ class Kiwis {
 		}
 		return df;
 	}
+
+	/**
+	* Determines whether a value is N/A or not
+	* @param {*} value
+	* @param {Object} [options] Options
+	* @param {*[]} [options.keep=[0, false]] Array of falsy values not considered N/A
+	* @returns {boolean}
+	*/
+	static isNA(value, options = {}) {
+		const keep = options.keep || [0, false];
+		return !value && !keep.includes(value);
+	}
 }
 
-export { Kiwis as default };
+export default Kiwis;

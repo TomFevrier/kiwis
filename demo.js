@@ -51,7 +51,36 @@ for (let [index, row] of h2g2Characters.items()) {
 
 // Drop N/A values
 h2g2Characters.dropNA().show();
-h2g2Characters.dropNA({ keep: [''] }).show();
+h2g2Characters.dropNA({ keep: [''], axis: 'columns' }).show();
+
+// Append new rows to a DataFrame
+h2g2Characters.append([
+	{
+		name: 'Ford',
+		surname: 'Prefect',
+		occupation: 'Writer for the Hitchhiker\'s Guide to the Galaxy'
+	},
+	{
+		name: 'Trillian',
+		surname: '',
+		species: 'human'
+	}
+], { extend: true, inPlace: true }).show();
+
+// Insert a new row to a DataFrame
+h2g2Characters.insert({
+	name: 'Slartibartfast',
+	surname: '',
+	occupation: 'Planet designer'
+}, 2, { extend: true, inPlace: true }).show();
+
+
+// Rename and reorder columns
+h2g2Characters
+	.rename({ surname: 'familyName', occupation: 'job' })
+	.reorder(['familyName', 'name', 'species', 'job'])
+	.show();
+
 
 // Add a new column to a DataFrame by applying a function to it, and save it as CSV
 h2g2Characters.addColumn('fullName', h2g2Characters.map(e => `${e.name} ${e.surname}`), { inPlace: true });

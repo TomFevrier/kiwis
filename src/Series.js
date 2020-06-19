@@ -1,6 +1,7 @@
-import fs from 'fs';
-
+import fs from 'fs'
 import d3 from 'd3-array';
+
+import Kiwis from './Kiwis.js';
 
 /**
 * @class
@@ -21,7 +22,10 @@ export default class Series {
 	* @param {(*[]|Series)} data An array of values or a Series
 	*/
 	constructor(data) {
-		if (data instanceof Series) {
+		if (!data) {
+			this._data = [];
+		}
+		else if (data instanceof Series) {
 			this._data = data._data;
 		}
 		else {
@@ -29,7 +33,8 @@ export default class Series {
 		}
 		this._data.forEach((value, index) => {
 			Object.defineProperty(this, index, {
-				value: value
+				value: value,
+				configurable: true
 			});
 		});
 	}
@@ -85,7 +90,7 @@ export default class Series {
 
 	/**
 	* Returns a new Series containing the last N values of the Series
-	* @param {number} [n=5] Number of rows to select
+	* @param {number} [n=5] Number of values to select
 	* @returns {Series}
 	*/
 	tail(n = 5) {
@@ -161,8 +166,88 @@ export default class Series {
 	}
 
 	/**
+	* Appends new values to a Series
+	* @param {Object|Object[]} values Value or array of values to append to the Series
+	* @returns {Series}
+	*/
+	append(values) {
+		const data = Array.isArray(values) ? values : [values];
+		this._data = [...this._data, ...data];
+		return this;
+	}
+
+	/**
+	* Inserts new values into a Series
+	* @param {Object|Object[]} values Value or array of values to insert into the Series
+	* @param {number} [index=0] Index to insert the values at
+	* @returns {Series}
+	*/
+	insert(values, index = 0) {
+		const data = Array.isArray(values) ? values : [values];
+		this._data.splice(index, 0, ...data);
+		return this;
+	}
+
+	/**
+	* Drops N/A values from the Series
+	* @param {Object} [options]
+	* @param {*[]} [options.keep=[0, false]] Array of falsy values to keep in the Series
+	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
+	* @returns {Series}
+	*/
+	dropNA(options = {}) {
+		const keep = options.keep || [0, false];
+		return this.filter(value => Boolean(value) || keep.includes(value));
+	}
+
+	/**
+	* Drops duplicate values from the Series
+	* @param {Object} [options]
+	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
+	* @returns {Series}
+	*/
+	dropDuplicates(options = {}) {
+		const inPlace = options.inPlace || false;
+		if (inPlace) {
+			this._data = [...new Set(this._data)];
+			return this;
+		}
+		const s = this.clone();
+		s._data = [...new Set(s._data)];
+		return s;
+	}
+
+	/**
+	* Filters values of the Series
+	* @param {callback} filter Callback to apply
+	* @param {Object} [options]
+	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
+	* @returns {Series}
+	*/
+	filter(filter, options = {}) {
+		const inPlace = options.inPlace || false;
+		const filteredData = this._data.filter(filter);
+		if (inPlace) {
+			this._data = filteredData;
+			return this;
+		}
+		return new Series(filteredData);
+	}
+
+	/**
+	* Drops values from the Series
+	* @param {callback} filter Callback to apply
+	* @param {Object} [options]
+	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
+	* @returns {Series}
+	*/
+	drop(filter, options = {}) {
+		return this.filter(e => !filter(e), options);
+	}
+
+	/**
 	* Sorts the Series
-	* @param {Object} [options] Options
+	* @param {Object} [options]
 	* @param {boolean} [options.reverse=false] Sorts the Series in descending order
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
@@ -181,38 +266,26 @@ export default class Series {
 	}
 
 	/**
-	* Filters values of the Series
-	* @param {callback} filter Callback to apply
-	* @param {Object} [options] Options
+	* Shuffles the values of a Series
+	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
 	*/
-	filter(filter, options = {}) {
+	shuffle(options = {}) {
 		const inPlace = options.inPlace || false;
-		const filteredData = this._data.filter(filter);
 		if (inPlace) {
-			this._data = filteredData;
+			this._data.sort(() => Math.random() - 0.5);
 			return this;
 		}
-		return new Series(filteredData);
-	}
-
-	/**
-	* Drops NA values from the Series
-	* @param {Object} [options] Options
-	* @param {*[]} [options.keep=[0]] Array of falsy values to keep in the Series
-	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
-	* @returns {Series}
-	*/
-	dropNA(options = {}) {
-		const keep = options.keep || [0];
-		return this.filter(value => Boolean(value) || keep.includes(value));
+		const s = this.clone();
+		s._data.sort(() => Math.random() - 0.5);
+		return s;
 	}
 
 	/**
 	* Round the values in the Series
 	* @param {number} digits Number of digits for rounding
-	* @param {Object} [options] Options
+	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
 	*/
@@ -276,8 +349,14 @@ export default class Series {
 
 	/**
 	* Displays the Series
+	* @returns {Series}
 	*/
 	show() {
+		if (this.empty) {
+			console.log('Empty Series\n');
+			return this;
+		}
+
 		const MAX_WIDTH = 42;
 		const MAX_LENGTH = 25;
 
@@ -289,27 +368,28 @@ export default class Series {
 		const lines = [];
 		this._data
 			.slice(0, MAX_LENGTH)
-			.map(value => value ? value.toString() : '')
+			.map(value => !Kiwis.isNA(value) ? value.toString() : 'N/A')
 			.forEach((value, index) => {
 				const line = [
 					index.toString().padEnd(widths[0]),
 					value.length > MAX_WIDTH
 						? `${value.substr(0, MAX_WIDTH - 3)}...`
-						: value.padStart(widths[index + 1])
+						: value.padStart(widths[1])
 				].join(' | ');
 				lines.push(line);
 			});
 		if (this.length > MAX_LENGTH) lines.push('...');
 		lines.push('');
-		lines.push(`Total length: ${this.length}`);
+		lines.push(`Length: ${this.length}`);
 		lines.push('');
 		console.log(lines.join('\n'));
+		return this;
 	}
 
 	/**
 	* Saves the Series as a CSV file
 	* @param {string} path Path of the file to save
-	* @param {Object} [options] Options
+	* @param {Object} [options]
 	* @param {string} [options.name='series'] Column name to use
 	*/
 	saveCSV(path, options = {}) {
@@ -322,7 +402,7 @@ export default class Series {
 	/**
 	* Saves the Series as a JSON file
 	* @param {string} path Path of the file to save
-	* @param {Object} [options] Options
+	* @param {Object} [options]
 	* @param {string} [options.name='series'] Column name to use
 	* @param {boolean} [options.prettify=true] Prettify JSON output
 	*/
