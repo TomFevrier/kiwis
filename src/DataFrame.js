@@ -1,18 +1,20 @@
-import fs from 'fs';
-import d3 from 'd3-array';
+'use strict';
 
-import Kiwis from './Kiwis.js';
-import Series from './Series.js';
+const fs = require('fs');
+const d3 = require('d3-array');
+
+const Series = require('./Series.js');
+const PivotTable = require('./PivotTable.js');
 
 
 /**
 * @class
 * @property {number} length The number of rows in the DataFrame
-* @property {string[]} columns The columns of the DataFrame
 * @property {boolean} empty Whether the DataFrame contains any row or not
+* @property {string[]} columns The columns of the DataFrame
 */
 
-export default class DataFrame {
+class DataFrame {
 
 	/**
 	* @function callback
@@ -38,8 +40,10 @@ export default class DataFrame {
 			this._data = Array.from(JSON.parse(JSON.stringify(data)));
 			this._columns = data.columns || Array.from(Object.keys(this._data[0]));
 		}
-		this._data.forEach((row, index) => this._defineRowProperty(index));
+		// this._data.forEach((row, index) => this._defineRowProperty(index));
 		this._defineColumnProperties();
+
+		this._kw = require('./Kiwis.js');
 	}
 
 	_defineColumnProperties() {
@@ -52,15 +56,19 @@ export default class DataFrame {
 		});
 	}
 
-	_defineRowProperty(index) {
-		Object.defineProperty(this, index, {
-			value: this._data[index],
-			configurable: true
-		});
-	}
+	// _defineRowProperty(index) {
+	// 	Object.defineProperty(this, index, {
+	// 		value: this._data[index],
+	// 		configurable: true
+	// 	});
+	// }
 
 	get length() {
 		return this._data.length;
+	}
+
+	get empty() {
+		return this._data.length === 0;
 	}
 
 	get columns() {
@@ -78,7 +86,7 @@ export default class DataFrame {
 				return {
 					...newRow,
 					[column]: index < this._columns.length ? row[this._columns[index]] : null
-				}
+				};
 			}, {});
 		});
 
@@ -90,10 +98,6 @@ export default class DataFrame {
 
 		// Add new properties
 		this._defineColumnProperties();
-	}
-
-	get empty() {
-		return this._data.length == 0;
 	}
 
 	/**
@@ -115,7 +119,7 @@ export default class DataFrame {
 	/**
 	* Returns any row of the DataFrame
 	* @param {number} index
-	* @returns {DataFrame}
+	* @returns {Object}
 	*/
 	get(index) {
 		return this._data[index];
@@ -182,7 +186,7 @@ export default class DataFrame {
 				};
 			},
 			[Symbol.iterator]: function () { return this; }
-		}
+		};
 	}
 
 	/**
@@ -202,11 +206,11 @@ export default class DataFrame {
 				};
 			},
 			[Symbol.iterator]: function () { return this; }
-		}
+		};
 	}
 
 	/**
-	* Applies a callback function to each value of the Series
+	* Applies a callback function to each row of the DataFrame
 	* @param {callback} callback
 	*/
 	forEach(callback) {
@@ -214,12 +218,40 @@ export default class DataFrame {
 	}
 
 	/**
-	* Returns a new Series populated with the results of a callback function applied on the DataFrame
+	* Returns a new Series populated with the results of a callback function applied on each row the DataFrame
 	* @param {callback} callback
 	* @returns {Series}
 	*/
 	map(callback) {
 		return new Series(this._data.map(callback));
+	}
+
+	/**
+	* Replaces all occurences of the given value in the DataFrame by another value
+	* @param {*} oldValue
+	* @param {*} newValue
+	* @param {Object} [options]
+	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
+	* @param {(string|string[])} [options.columns=DataFrame.columns] Columns to replace into
+	*/
+	replace(oldValue, newValue, options = {}) {
+		const inPlace = options.inPlace || false;
+		const columns = options.columns
+			? (Array.isArray(options.columns) ? options.columns : [options.columns])
+			: this._columns;
+
+
+		const df = inPlace ? this : this.clone();
+		df._data = df._data.map(row => this._columns.reduce((acc, column) => {
+			console.log(row[column])
+			const cell = columns.includes(column) && row[column] === oldValue
+				? newValue : row[column];
+			return {
+				...acc,
+				[column]: cell
+			};
+		}, {}));
+		return df;
 	}
 
 	/**
@@ -232,24 +264,23 @@ export default class DataFrame {
 	append(rows, options = {}) {
 		const data = Array.isArray(rows) ? rows : [rows];
 		const extend = options.extend || false;
+		let newColumns = [...this._columns];
 		if (extend) {
-			let newColumns = [];
 			data.forEach(row => {
 				const newKeys = Object.keys(row)
 					.filter(key => !this._columns.includes(key) && !newColumns.includes(key));
 				if (newKeys.length > 0)
 					newColumns = [...newColumns, ...newKeys];
 			});
-			this.columns = [...this._columns, ...newColumns];
-
 		}
 		data.forEach(row => {
-			this._data.push(this._columns.reduce((acc, column) => ({
+			this._data.push(newColumns.reduce((acc, column) => ({
 				...acc,
-				[column]: !Kiwis.isNA(row[column], { keep: [0, false, ''] }) ? row[column] : null
+				[column]: !this._kw.isNA(row[column], { keep: [0, false, ''] }) ? row[column] : null
 			}), {}));
-			this._defineRowProperty(this._data.length - 1);
+			// this._defineRowProperty(this._data.length - 1);
 		});
+		this.columns = newColumns;
 		return this;
 	}
 
@@ -264,25 +295,24 @@ export default class DataFrame {
 	insert(rows, index = 0, options = {}) {
 		const data = Array.isArray(rows) ? rows : [rows];
 		const extend = options.extend || false;
+		let newColumns = [...this._columns];
 		if (extend) {
-			let newColumns = [];
 			data.forEach(row => {
 				const newKeys = Object.keys(row)
 					.filter(key => !this._columns.includes(key) && !newColumns.includes(key));
 				if (newKeys.length > 0)
 					newColumns = [...newColumns, ...newKeys];
 			});
-			this.columns = [...this._columns, ...newColumns];
-
 		}
 		data.forEach(row => {
-			this._data.splice(index, 0, this._columns.reduce((acc, column) => ({
+			this._data.splice(index, 0, newColumns.reduce((acc, column) => ({
 				...acc,
-				[column]: !Kiwis.isNA(row[column], { keep: [0, false, ''] }) ? row[column] : 'truc'
+				[column]: !this._kw.isNA(row[column], { keep: [0, false, ''] }) ? row[column] : 'truc'
 			}), {}));
-			this._defineRowProperty(this._data.length - 1);
+			// this._defineRowProperty(this._data.length - 1);
 			index++;
 		});
+		this.columns = newColumns;
 		return this;
 	}
 
@@ -295,7 +325,12 @@ export default class DataFrame {
 	* @returns {DataFrame}
 	*/
 	concat(other, options = {}) {
-		return this.append(other.toArray(), options);
+		const inPlace = options.inPlace || false;
+		if (inPlace)
+			return this.append(other.toArray(), options);
+		const df = this.clone();
+		df.append(other.toArray(), options);
+		return df;
 	}
 
 	/**
@@ -357,12 +392,14 @@ export default class DataFrame {
 			rowsToDrop.sort((a, b) => b - a).forEach(index => {
 				this._data.splice(index, 1);
 			});
+			this.columns = this._columns;
 			return this;
 		}
 		const df = this.clone();
 		rowsToDrop.sort((a, b) => b - a).forEach(index => {
 			df._data.splice(index, 1);
 		});
+		df.columns = df._columns;
 		return df;
 	}
 
@@ -466,12 +503,14 @@ export default class DataFrame {
 			});
 		}
 
+		let columnsToKeep;
 		let filteredData;
-		let columnsToKeep = [];
-		if (typeof filter === 'function' && axis === 'rows')
+		if (typeof filter === 'function' && axis === 'rows') {
+			columnsToKeep = this._columns;
 			filteredData = this._data.filter(filter);
+		}
 		else {
-			let columnsToKeep = this._columns.filter(column => {
+			columnsToKeep = this._columns.filter(column => {
 				return typeof filter === 'function'
 					? filter(column)
 					: filter.includes(column);
@@ -482,7 +521,7 @@ export default class DataFrame {
 		}
 		if (inPlace) {
 			this._data = filteredData;
-			this._columns = this._columns.filter(column => columnsToKeep.includes(column));
+			this.columns = this._columns.filter(column => columnsToKeep.includes(column));
 			return this;
 		}
 		return new DataFrame(filteredData);
@@ -518,7 +557,7 @@ export default class DataFrame {
 		const inPlace = options.inPlace || false;
 		const sortedData = [...this._data].sort((a, b) => {
 			return keys.reduce((acc, key) => {
-				if (a[key] == b[key]) return 0;
+				if (a[key] === b[key]) return 0;
 				if (reverse)
 					return acc || (b[key] < a[key] ? -1 : 1);
 				return acc || (a[key] < b[key] ? -1 : 1);
@@ -527,6 +566,7 @@ export default class DataFrame {
 		});
 		if (inPlace) {
 			this._data = sortedData;
+			this.columns = this._columns;
 			return this;
 		}
 		return new DataFrame(sortedData);
@@ -547,10 +587,12 @@ export default class DataFrame {
 		if (axis === 'rows') {
 			if (inPlace) {
 				this._data.sort(() => Math.random() - 0.5);
+				this.columns = this._columns;
 				return this;
 			}
 			const df = this.clone();
 			df._data.sort(() => Math.random() - 0.5);
+			df.columns = df._columns;
 			return df;
 		}
 		if (inPlace) {
@@ -560,6 +602,19 @@ export default class DataFrame {
 		const df = this.clone();
 		df._columns.sort(() => Math.random() - 0.5);
 		return df;
+	}
+
+	/**
+	* Returns a PivotTable along the given columns
+	* @param {string[]} columns Columns to pivot along
+	* @returns {PivotTable}
+	*/
+	pivot(columns) {
+		columns.forEach(column => {
+			if (!this._columns.includes(column))
+				throw new Error(`No column named '${column}'`);
+		});
+		return new PivotTable(this, columns);
 	}
 
 	/**
@@ -580,8 +635,11 @@ export default class DataFrame {
 			...this._columns
 				.map(column => Math.max(
 					column.length,
-					d3.max(this._data, d => !Kiwis.isNA(d[column]) ? d[column].toString().length : 0))
-				)
+					d3.max(
+						this._data.slice(0, MAX_LENGTH),
+						d => !this._kw.isNA(d[column]) ? d[column].toString().length : 0
+					)
+				))
 				.map(width => width > MAX_WIDTH ? MAX_WIDTH : width)
 		];
 
@@ -604,7 +662,7 @@ export default class DataFrame {
 			const line = [
 				index.toString().padEnd(widths[0]),
 				...visibleColumns.map((column, index) => {
-					const cell = !Kiwis.isNA(row[column]) ? row[column].toString() : 'N/A';
+					const cell = !this._kw.isNA(row[column]) ? row[column].toString() : 'N/A';
 					return cell.length > MAX_WIDTH
 						? `${cell.substr(0, MAX_WIDTH - 3)}...`
 						: cell.padStart(widths[index + 1]);
@@ -628,12 +686,13 @@ export default class DataFrame {
 	}
 
 	/**
-	* Saves the DataFrame as a CSV file
-	* @param {string} path Path of the file to save
+	* Exports the DataFrame as CSV
+	* @param {string} [path=null] Path of the file to save
 	* @param {Object} [options]
 	* @param {string} [options.delimiter=','] Delimiter to use
+	* @returns {string|undefined} A CSV string if `path` is not set
 	*/
-	saveCSV(path, options = {}) {
+	toCSV(path = null, options = {}) {
 		const delimiter = options.delimiter || ',';
 		let content = this._columns
 			.map(column => column.includes(delimiter) ? JSON.stringify(column) : column)
@@ -641,25 +700,31 @@ export default class DataFrame {
 		content += '\n';
 		this._data.forEach(row => {
 			content += this._columns
-				.map(column => !Kiwis.isNA(row[column]) && row[column].toString().includes(delimiter)
+				.map(column => !this._kw.isNA(row[column]) && row[column].toString().includes(delimiter)
 					? JSON.stringify(row[column])
 					: row[column]
 				)
 				.join(delimiter);
 			content += '\n';
 		});
+		if (!path) return content;
 		fs.writeFileSync(path, content);
 	}
 
 	/**
-	* Saves the DataFrame as a JSON file
-	* @param {string} path Path of the file to save
+	* Exports the DataFrame as JSON
+	* @param {string} [path=null] Path of the file to save
 	* @param {Object} [options]
 	* @param {boolean} [options.prettify=true] Prettify JSON output
+	* @returns {string|undefined} A JSON string if `path` is not set
 	*/
-	saveJSON(path, options = {}) {
-		const prettify = options.prettify;
-		fs.writeFileSync(path, JSON.stringify(this._data, null, prettify ? '\t' : null));
+	toJSON(path, options = {}) {
+		const prettify = options.prettify !== undefined ? options.prettify : true;
+		const content = JSON.stringify(this._data, null, prettify ? '\t' : null);
+		if (!path) return content;
+		fs.writeFileSync(path, content);
 	}
 
 }
+
+module.exports = DataFrame;

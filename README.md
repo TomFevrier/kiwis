@@ -2,23 +2,66 @@
 
 ## A Pandas-inspired data wrangling toolkit in JavaScript
 
-### How to test the library 🧪
+### Installation
 
--   You need to have [Node.js](https://nodejs.org) installed
--   `git clone https://github.com/TomFevrier/kiwis && cd kiwis`
--   `npm install`
--   `npm run demo` or `node demo.js` to run the demo code
--   Happy coding!
+`npm install kiwis`
 
-### Roadmap 🚧
+### Getting started
 
--   Error handling 🟡
--   Nesting / pivot tables
--   Merge/join DataFrames/Series
--   Indexes
--   Replace values
+```js
+const kw = require('kiwis');
 
-* * *
+const h2g2Characters = kw.DataFrame([
+	{
+		name: 'Marvin',
+		surname: '',
+		occupation: 'Paranoid Android'
+	},
+	{
+		name: 'Zaphod',
+		surname: 'Beeblebrox',
+		occupation: 'President of the Galaxy'
+	},
+	{
+		name: 'Arthur',
+		surname: 'Dent',
+		occupation: null
+	}
+]);
+
+h2g2Characters.show();
+
+/*
+|   name |    surname |              occupation
+=================================================
+0 | Marvin |        N/A |        Paranoid Android
+1 | Zaphod | Beeblebrox | President of the Galaxy
+2 | Arthur |       Dent |                     N/A
+
+[3 rows × 3 columns]
+Columns: name, surname, occupation
+*/
+
+console.log(h2g2Characters.get(1));
+
+/*
+{
+	name: 'Zaphod',
+	surname: 'Beeblebrox',
+	occupation: 'President of the Galaxy'
+}
+*/
+
+h2g2Characters.name.show();
+
+/*
+0 | Marvin
+1 | Zaphod
+2 | Arthur
+
+Length: 3
+*/
+```
 
 ## Documentation
 
@@ -46,108 +89,140 @@
         -   [Parameters](#parameters-4)
     -   [map](#map)
         -   [Parameters](#parameters-5)
-    -   [append](#append)
+    -   [replace](#replace)
         -   [Parameters](#parameters-6)
-    -   [insert](#insert)
+    -   [append](#append)
         -   [Parameters](#parameters-7)
-    -   [concat](#concat)
+    -   [insert](#insert)
         -   [Parameters](#parameters-8)
-    -   [dropNA](#dropna)
+    -   [concat](#concat)
         -   [Parameters](#parameters-9)
-    -   [dropDuplicates](#dropduplicates)
+    -   [dropNA](#dropna)
         -   [Parameters](#parameters-10)
-    -   [addColumn](#addcolumn)
+    -   [dropDuplicates](#dropduplicates)
         -   [Parameters](#parameters-11)
-    -   [rename](#rename)
+    -   [addColumn](#addcolumn)
         -   [Parameters](#parameters-12)
-    -   [reorder](#reorder)
+    -   [rename](#rename)
         -   [Parameters](#parameters-13)
-    -   [filter](#filter)
+    -   [reorder](#reorder)
         -   [Parameters](#parameters-14)
-    -   [drop](#drop)
+    -   [filter](#filter)
         -   [Parameters](#parameters-15)
-    -   [sort](#sort)
+    -   [drop](#drop)
         -   [Parameters](#parameters-16)
-    -   [shuffle](#shuffle)
+    -   [sort](#sort)
         -   [Parameters](#parameters-17)
+    -   [shuffle](#shuffle)
+        -   [Parameters](#parameters-18)
+    -   [pivot](#pivot)
+        -   [Parameters](#parameters-19)
     -   [toString](#tostring)
     -   [show](#show)
-    -   [saveCSV](#savecsv)
-        -   [Parameters](#parameters-18)
-    -   [saveJSON](#savejson)
-        -   [Parameters](#parameters-19)
+    -   [toCSV](#tocsv)
+        -   [Parameters](#parameters-20)
+    -   [toJSON](#tojson)
+        -   [Parameters](#parameters-21)
 -   [Kiwis](#kiwis)
     -   [DataFrame](#dataframe-1)
-        -   [Parameters](#parameters-20)
-    -   [Series](#series)
-        -   [Parameters](#parameters-21)
-    -   [loadCSV](#loadcsv)
         -   [Parameters](#parameters-22)
-    -   [isNA](#isna)
+    -   [Series](#series)
         -   [Parameters](#parameters-23)
--   [Series](#series-1)
+    -   [loadCSV](#loadcsv)
+        -   [Parameters](#parameters-24)
+    -   [isNA](#isna)
+        -   [Parameters](#parameters-25)
+-   [PivotTable](#pivottable)
     -   [Properties](#properties-1)
+    -   [rollup](#rollup)
+        -   [Parameters](#parameters-26)
+    -   [count](#count)
+    -   [sum](#sum)
+        -   [Parameters](#parameters-27)
+    -   [min](#min)
+        -   [Parameters](#parameters-28)
+    -   [max](#max)
+        -   [Parameters](#parameters-29)
+    -   [mean](#mean)
+        -   [Parameters](#parameters-30)
+    -   [median](#median)
+        -   [Parameters](#parameters-31)
+    -   [std](#std)
+        -   [Parameters](#parameters-32)
+    -   [toString](#tostring-1)
+    -   [show](#show-1)
+    -   [toJSON](#tojson-1)
+        -   [Parameters](#parameters-33)
+-   [Series](#series-1)
+    -   [Properties](#properties-2)
     -   [toArray](#toarray-1)
     -   [clone](#clone-1)
+    -   [get](#get-1)
+        -   [Parameters](#parameters-34)
     -   [first](#first-1)
     -   [last](#last-1)
     -   [head](#head-1)
-        -   [Parameters](#parameters-24)
+        -   [Parameters](#parameters-35)
     -   [tail](#tail-1)
-        -   [Parameters](#parameters-25)
+        -   [Parameters](#parameters-36)
     -   [slice](#slice-1)
-        -   [Parameters](#parameters-26)
+        -   [Parameters](#parameters-37)
     -   [values](#values)
     -   [items](#items-1)
     -   [forEach](#foreach-1)
-        -   [Parameters](#parameters-27)
-    -   [map](#map-1)
-        -   [Parameters](#parameters-28)
-    -   [append](#append-1)
-        -   [Parameters](#parameters-29)
-    -   [insert](#insert-1)
-        -   [Parameters](#parameters-30)
-    -   [concat](#concat-1)
-        -   [Parameters](#parameters-31)
-    -   [dropNA](#dropna-1)
-        -   [Parameters](#parameters-32)
-    -   [dropDuplicates](#dropduplicates-1)
-        -   [Parameters](#parameters-33)
-    -   [any](#any)
-        -   [Parameters](#parameters-34)
-    -   [all](#all)
-        -   [Parameters](#parameters-35)
-    -   [filter](#filter-1)
-        -   [Parameters](#parameters-36)
-    -   [drop](#drop-1)
-        -   [Parameters](#parameters-37)
-    -   [sort](#sort-1)
         -   [Parameters](#parameters-38)
-    -   [shuffle](#shuffle-1)
+    -   [map](#map-1)
         -   [Parameters](#parameters-39)
-    -   [round](#round)
+    -   [append](#append-1)
         -   [Parameters](#parameters-40)
-    -   [sum](#sum)
-    -   [min](#min)
-    -   [max](#max)
-    -   [extent](#extent)
-    -   [mean](#mean)
-    -   [median](#median)
-    -   [std](#std)
-    -   [toString](#tostring-1)
-    -   [show](#show-1)
-    -   [saveCSV](#savecsv-1)
+    -   [insert](#insert-1)
         -   [Parameters](#parameters-41)
-    -   [saveJSON](#savejson-1)
+    -   [concat](#concat-1)
         -   [Parameters](#parameters-42)
+    -   [dropNA](#dropna-1)
+        -   [Parameters](#parameters-43)
+    -   [dropDuplicates](#dropduplicates-1)
+        -   [Parameters](#parameters-44)
+    -   [any](#any)
+        -   [Parameters](#parameters-45)
+    -   [all](#all)
+        -   [Parameters](#parameters-46)
+    -   [filter](#filter-1)
+        -   [Parameters](#parameters-47)
+    -   [drop](#drop-1)
+        -   [Parameters](#parameters-48)
+    -   [sort](#sort-1)
+        -   [Parameters](#parameters-49)
+    -   [shuffle](#shuffle-1)
+        -   [Parameters](#parameters-50)
+    -   [unique](#unique)
+    -   [counts](#counts)
+        -   [Parameters](#parameters-51)
+    -   [frequencies](#frequencies)
+        -   [Parameters](#parameters-52)
+    -   [round](#round)
+        -   [Parameters](#parameters-53)
+    -   [sum](#sum-1)
+    -   [min](#min-1)
+    -   [max](#max-1)
+    -   [extent](#extent)
+    -   [mean](#mean-1)
+    -   [median](#median-1)
+    -   [std](#std-1)
+    -   [toString](#tostring-2)
+    -   [show](#show-2)
+    -   [toCSV](#tocsv-1)
+        -   [Parameters](#parameters-54)
+    -   [toJSON](#tojson-2)
+        -   [Parameters](#parameters-55)
 
 ### DataFrame
 
 #### Properties
 
 -   `length` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** The number of rows in the DataFrame
--   `columns` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** The columns of the DataFrame
 -   `empty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Whether the DataFrame contains any row or not
+-   `columns` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** The columns of the DataFrame
 
 #### toArray
 
@@ -169,7 +244,7 @@ Returns any row of the DataFrame
 
 -   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
 #### first
 
@@ -228,7 +303,7 @@ Returns **Iterable&lt;[Array](https://developer.mozilla.org/docs/Web/JavaScript/
 
 #### forEach
 
-Applies a callback function to each value of the Series
+Applies a callback function to each row of the DataFrame
 
 ##### Parameters
 
@@ -236,13 +311,25 @@ Applies a callback function to each value of the Series
 
 #### map
 
-Returns a new Series populated with the results of a callback function applied on the DataFrame
+Returns a new Series populated with the results of a callback function applied on each row the DataFrame
 
 ##### Parameters
 
 -   `callback` **callback** 
 
 Returns **[Series](#series)** 
+
+#### replace
+
+Replaces all occurences of the given value in the DataFrame by another value
+
+##### Parameters
+
+-   `oldValue` **any** 
+-   `newValue` **any** 
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+    -   `options.columns` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)** Columns to replace into (optional, default `DataFrame.columns`)
 
 #### append
 
@@ -316,7 +403,7 @@ Add a new column to the DataFrame
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Name of the new column
 -   `column` **(any | [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any> | [Series](#series))** Content of the new column as an array, a Series or any value (to be set on every rows)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
-    -   `options.extend` **extend** If the new column is not the same length as the DataFrame, extends the DataFrame (optional, default `false`)
+    -   `options.extend` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** If the new column is not the same length as the DataFrame, extends the DataFrame (optional, default `false`)
     -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
 
 Returns **[DataFrame](#dataframe)** 
@@ -396,6 +483,16 @@ Shuffles the rows or columns of a DataFrame
 
 Returns **[DataFrame](#dataframe)** 
 
+#### pivot
+
+Returns a PivotTable along the given columns
+
+##### Parameters
+
+-   `columns` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** Columns to pivot along
+
+Returns **[PivotTable](#pivottable)** 
+
 #### toString
 
 Format the DataFrame for display
@@ -406,25 +503,29 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Displays the DataFrame
 
-#### saveCSV
+#### toCSV
 
-Saves the DataFrame as a CSV file
+Exports the DataFrame as CSV
 
 ##### Parameters
 
--   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Path of the file to save
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Path of the file to save (optional, default `null`)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.delimiter` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Delimiter to use (optional, default `','`)
 
-#### saveJSON
+Returns **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** A CSV string if `path` is not set
 
-Saves the DataFrame as a JSON file
+#### toJSON
+
+Exports the DataFrame as JSON
 
 ##### Parameters
 
--   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Path of the file to save
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Path of the file to save (optional, default `null`)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.prettify` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Prettify JSON output (optional, default `true`)
+
+Returns **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** A JSON string if `path` is not set
 
 ### Kiwis
 
@@ -474,6 +575,114 @@ Determines whether a value is N/A or not
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
+### PivotTable
+
+#### Properties
+
+-   `length` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** The number of rows in the PivotTable
+-   `empty` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Whether the PivotTable contains any row or not
+-   `columns` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** The columns of the PivotTable, starting with the pivots
+
+#### rollup
+
+Applies the given callback function on the leaves of the PivotTable, returning a DataFrame
+
+##### Parameters
+
+-   `callback` **callback** 
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
+    -   `options.name` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Name to use for the column in the output DataFrame (optional, default `'data'`)
+
+Returns **[DataFrame](#dataframe)** 
+
+#### count
+
+Counts the number of leaves for each branch of the PivotTable
+
+Returns **[DataFrame](#dataframe)** 
+
+#### sum
+
+Computes the sum of a given column of the PivotTable
+
+##### Parameters
+
+-   `column`  
+
+Returns **[DataFrame](#dataframe)** 
+
+#### min
+
+Computes the minimum value of a given column of the PivotTable
+
+##### Parameters
+
+-   `column`  
+
+Returns **[DataFrame](#dataframe)** 
+
+#### max
+
+Computes the maximum value of a given column of the PivotTable
+
+##### Parameters
+
+-   `column`  
+
+Returns **[DataFrame](#dataframe)** 
+
+#### mean
+
+Computes the mean of a given column of the PivotTable
+
+##### Parameters
+
+-   `column`  
+
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+
+#### median
+
+Computes the mean of a given column of the PivotTable
+
+##### Parameters
+
+-   `column`  
+
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+
+#### std
+
+Computes the standard deviation of a given column of the PivotTable
+
+##### Parameters
+
+-   `column`  
+
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+
+#### toString
+
+Format the PivotTable for display
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+#### show
+
+Displays the DataFrame
+
+#### toJSON
+
+Exports the PivotTable as JSON
+
+##### Parameters
+
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Path of the file to save (optional, default `null`)
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
+    -   `options.prettify` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Prettify JSON output (optional, default `true`)
+
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
 ### Series
 
 #### Properties
@@ -492,6 +701,16 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 Clones the Series
 
 Returns **[Series](#series)** 
+
+#### get
+
+Returns any row of the Series
+
+##### Parameters
+
+-   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+
+Returns **any** 
 
 #### first
 
@@ -689,6 +908,36 @@ Shuffles the values of a Series
 
 Returns **[Series](#series)** 
 
+#### unique
+
+Returns the unique values in the Series as an array
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+
+#### counts
+
+Returns the number of occurences for each value in the Series
+
+##### Parameters
+
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
+    -   `options.sort` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Sorts the counts (optional, default `true`)
+    -   `options.reverse` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Sorts the counts in descending order (optional, default `true`)
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Counts as an object of value/count pairs
+
+#### frequencies
+
+Returns the frequency for each value in the Series
+
+##### Parameters
+
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
+    -   `options.sort` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Sorts the frequencies (optional, default `true`)
+    -   `options.reverse` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Sorts the frequencies in descending order (optional, default `true`)
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Counts as an object of value/frequencies pairs
+
 #### round
 
 Round the values in the Series
@@ -753,26 +1002,30 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 Displays the Series
 
-#### saveCSV
+#### toCSV
 
-Saves the Series as a CSV file
+Exports the Series as CSV
 
 ##### Parameters
 
--   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Path of the file to save
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Path of the file to save (optional, default `null`)
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Column name to use (optional, default `'series'`)
 
-#### saveJSON
+Returns **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** A JSON string if `path` is not set
 
-Saves the Series as a JSON file
+#### toJSON
+
+Exports the Series as a JSON file
 
 ##### Parameters
 
--   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Path of the file to save
+-   `path` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)?** Path of the file to save
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Column name to use (optional, default `'series'`)
     -   `options.prettify` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Prettify JSON output (optional, default `true`)
+
+Returns **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [undefined](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined))** A JSON string if `path` is not set
 
 ## DataFrame
 

@@ -1,7 +1,7 @@
-import fs from 'fs'
-import d3 from 'd3-array';
+'use strict';
 
-import Kiwis from './Kiwis.js';
+const fs = require('fs');
+const d3 = require('d3-array');
 
 
 /**
@@ -10,7 +10,7 @@ import Kiwis from './Kiwis.js';
 * @property {boolean} empty Whether the Series contains any value or not
 */
 
-export default class Series {
+class Series {
 
 	/**
 	* @function callback
@@ -39,6 +39,8 @@ export default class Series {
 				configurable: true
 			});
 		});
+
+		this._kw = require('./Kiwis.js');
 	}
 
 	get length() {
@@ -46,7 +48,7 @@ export default class Series {
 	}
 
 	get empty() {
-		return this._data.length == 0;
+		return this._data.length === 0;
 	}
 
 	/**
@@ -63,6 +65,15 @@ export default class Series {
 	*/
 	clone() {
 		return new Series(this);
+	}
+
+	/**
+	* Returns any row of the Series
+	* @param {number} index
+	* @returns {*}
+	*/
+	get(index) {
+		return this._data[index];
 	}
 
 	/**
@@ -126,7 +137,7 @@ export default class Series {
 				};
 			},
 			[Symbol.iterator]: function () { return this; }
-		}
+		};
 	}
 
 	/**
@@ -147,7 +158,7 @@ export default class Series {
 
 			},
 			[Symbol.iterator]: function () { return this; }
-		}
+		};
 	}
 
 	/**
@@ -235,7 +246,7 @@ export default class Series {
 	* @param {callback} [condition=!Kiwis.isNA]
 	* @returns {boolean}
 	*/
-	any(condition = e => !Kiwis.isNA(e)) {
+	any(condition = e => !this._kw.isNA(e)) {
 		return this._data.some(condition);
 	}
 
@@ -244,7 +255,7 @@ export default class Series {
 	* @param {callback} [condition=!Kiwis.isNA]
 	* @returns {boolean}
 	*/
-	all(condition = e => !Kiwis.isNA(e)) {
+	all(condition = e => !this._kw.isNA(e)) {
 		return this._data.every(condition);
 	}
 
@@ -311,6 +322,60 @@ export default class Series {
 		const s = this.clone();
 		s._data.sort(() => Math.random() - 0.5);
 		return s;
+	}
+
+	/**
+	* Returns the unique values in the Series as an array
+	* @returns {*[]}
+	*/
+	unique() {
+		return [...new Set(this._data)];
+	}
+
+	/**
+	* Returns the number of occurences for each value in the Series
+	* @param {Object} [options]
+	* @param {boolean} [options.sort=true] Sorts the counts
+	* @param {boolean} [options.reverse=true] Sorts the counts in descending order
+	* @returns {Object} Counts as an object of value/count pairs
+	*/
+	counts(options = {}) {
+		const sort = options.sort !== undefined ? options.sort : true;
+		const reverse = options.reverse !== undefined ? options.reverse : true;
+		const counts = this._data.reduce((acc, value) => {
+			if (value in acc) {
+				acc[value]++;
+				return acc;
+			}
+			return {
+				...acc,
+				[value]: 1
+			};
+		}, {});
+		if (sort) {
+			return Object.entries(counts)
+				.sort((a, b) => reverse ? b[1] - a[1] : a[1] - b[1])
+				.reduce((acc, [value, count]) => ({
+					...acc,
+					[value]: count
+				}), {});
+		}
+		return counts;
+	}
+
+	/**
+	* Returns the frequency for each value in the Series
+	* @param {Object} [options]
+	* @param {boolean} [options.sort=true] Sorts the frequencies
+	* @param {boolean} [options.reverse=true] Sorts the frequencies in descending order
+	* @returns {Object} Counts as an object of value/frequencies pairs
+	*/
+	frequencies(options = {}) {
+		const counts = this.counts(options);
+		return Object.entries(counts).reduce((acc, [value, count]) => ({
+			...acc,
+			[value]: count / this.length
+		}), {});
 	}
 
 	/**
@@ -422,7 +487,7 @@ export default class Series {
 		const lines = [];
 		this._data
 			.slice(0, MAX_LENGTH)
-			.map(value => !Kiwis.isNA(value) ? value.toString() : 'N/A')
+			.map(value => !this._kw.isNA(value) ? value.toString() : 'N/A')
 			.forEach((value, index) => {
 				const line = [
 					index.toString().padEnd(widths[0]),
@@ -447,29 +512,36 @@ export default class Series {
 	}
 
 	/**
-	* Saves the Series as a CSV file
-	* @param {string} path Path of the file to save
+	* Exports the Series as CSV
+	* @param {string} [path=null] Path of the file to save
 	* @param {Object} [options]
 	* @param {string} [options.name='series'] Column name to use
+	* @returns {string|undefined} A JSON string if `path` is not set
 	*/
-	saveCSV(path, options = {}) {
+	toCSV(path, options = {}) {
 		const delimiter = options.delimiter || ',';
 		const name = options.name || 'series';
 		let content = [name, ...this._data].join('\n');
+		if (!path) return content;
 		fs.writeFileSync(path, content);
 	}
 
 	/**
-	* Saves the Series as a JSON file
-	* @param {string} path Path of the file to save
+	* Exports the Series as a JSON file
+	* @param {string} [path] Path of the file to save
 	* @param {Object} [options]
 	* @param {string} [options.name='series'] Column name to use
 	* @param {boolean} [options.prettify=true] Prettify JSON output
+	* @returns {string|undefined} A JSON string if `path` is not set
 	*/
-	saveJSON(path, options = {}) {
-		const prettify = options.prettify;
+	toJSON(path, options = {}) {
+		const prettify = options.prettify !== undefined ? options.prettify : true;
 		const name = options.name || 'series';
-		fs.writeFileSync(path, JSON.stringify({ [name]: this._data }, null, prettify ? '\t' : null));
+		const content = JSON.stringify({ [name]: this._data }, null, prettify ? '\t' : null);
+		if (!path) return content;
+		fs.writeFileSync(path, content);
 	}
 
 }
+
+module.exports = Series;

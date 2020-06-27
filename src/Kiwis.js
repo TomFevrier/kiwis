@@ -1,8 +1,10 @@
-import fs from 'fs';
-import d3 from 'd3-dsv';
+'use strict';
 
-import DataFrame from './DataFrame.js';
-import Series from './Series.js';
+const fs = require('fs');
+const d3 = require('d3-dsv');
+
+const DataFrame = require('./DataFrame.js');
+const Series = require('./Series.js');
 
 
 /**
@@ -73,6 +75,14 @@ class Kiwis {
 		const keep = options.keep || [0, false];
 		return !value && !keep.includes(value);
 	}
+
+	static isEquivalent(obj1, obj2) {
+		if (obj1 == obj2) return true;
+		if (!obj1 || !obj2) return false;
+		return Object.entries(obj1).reduce((acc, [key, value]) => {
+			return acc && key in obj2 && value === obj2[key];
+		}, true);
+	}
 }
 
-export default Kiwis;
+module.exports = Kiwis;
