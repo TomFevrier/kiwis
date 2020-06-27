@@ -164,6 +164,11 @@ class DataFrame {
 	* @param {number} start Zero-based index at which to start extraction
 	* @param {number} [end=DataFrame.length] Zero-based index before which to end extraction
 	* @returns {DataFrame}
+	* @example
+	* // Returns a new DataFrame with rows starting at index 10
+	* df.slice(10)
+	* // Returns a new DataFrame with rows between index 24 (included) and 42 (excluded)
+	* df.slice(24, 42)
 	*/
 	slice(start, end) {
 		return new DataFrame(this._data.slice(start, end));
@@ -233,6 +238,7 @@ class DataFrame {
 	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @param {(string|string[])} [options.columns=DataFrame.columns] Columns to replace into
+	* @returns {DataFrame}
 	*/
 	replace(oldValue, newValue, options = {}) {
 		const inPlace = options.inPlace || false;
@@ -489,6 +495,13 @@ class DataFrame {
 	* @param {('rows'|'columns')} [options.axis='rows'] Determines whether the callback should apply to rows or columns
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Only keep the 'date' and 'url' columns
+	* df.filter(['date', 'url'])
+	* // Only keep rows whose date is 4/20/20
+	* df.filter(row => row.date === '2020-04-20')
+	* // Only keep columns whose name contains 'data'
+	* df.filter(column => column.includes('data'), { axis: 'columns' })
 	*/
 	filter(filter, options = {}) {
 		if (options.axis && !['rows', 'columns'].includes(options.axis))
@@ -534,6 +547,13 @@ class DataFrame {
 	* @param {('rows'|'columns')} [options.axis='rows'] Determines whether the callback should apply to rows or columns
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Remove the 'date' and 'url' columns
+	* df.drop(['date', 'url'])
+	* // Remove all rows whose date is 4/20/20
+	* df.drop(row => row.date === '2020-04-20')
+	* // Remove columns whose name contains 'data'
+	* df.drop(column => column.includes('data'), { axis: 'columns' })
 	*/
 	drop(filter, options = {}) {
 		if (options.axis && !['rows', 'columns'].includes(options.axis))

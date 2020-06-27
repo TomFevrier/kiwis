@@ -151,7 +151,7 @@ class PivotTable {
 
 	/**
 	* Computes the mean of a given column of the PivotTable
-	* @returns {number}
+	* @returns {DataFrame}
 	*/
 	mean(column) {
 		if (!this._columns.includes(column))
@@ -162,7 +162,7 @@ class PivotTable {
 
 	/**
 	* Computes the mean of a given column of the PivotTable
-	* @returns {number}
+	* @returns {DataFrame}
 	*/
 	median(column) {
 		if (!this._columns.includes(column))
@@ -173,7 +173,7 @@ class PivotTable {
 
 	/**
 	* Computes the standard deviation of a given column of the PivotTable
-	* @returns {number}
+	* @returns {DataFrame}
 	*/
 	std(column) {
 		if (!this._columns.includes(column))
