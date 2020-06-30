@@ -32,7 +32,7 @@ const h2g2Characters = kw.DataFrame([
 h2g2Characters.show();
 
 /*
-|   name |    surname |              occupation
+  |   name |    surname |              occupation
 =================================================
 0 | Marvin |        N/A |        Paranoid Android
 1 | Zaphod | Beeblebrox | President of the Galaxy
