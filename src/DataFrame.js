@@ -6,6 +6,8 @@ const d3 = require('d3-array');
 const Series = require('./Series.js');
 const PivotTable = require('./PivotTable.js');
 
+const Validator = require('./Validator.js');
+
 
 /**
 * @class
@@ -122,6 +124,7 @@ class DataFrame {
 	* @returns {Object}
 	*/
 	get(index) {
+		Validator.int('DataFrame.get()', 'index', index, { range: [0, this.length - 1] });
 		return this._data[index];
 	}
 
@@ -147,6 +150,7 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	head(n = 5) {
+		Validator.int('DataFrame.head()', 'n', n);
 		return this.slice(0, n);
 	}
 
@@ -156,6 +160,7 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	tail(n = 5) {
+		Validator.int('DataFrame.tail()', 'n', n);
 		return this.slice(-n);
 	}
 
@@ -171,6 +176,8 @@ class DataFrame {
 	* df.slice(24, 42)
 	*/
 	slice(start, end) {
+		Validator.int('DataFrame.slice()', 'start', start);
+		Validator.int('DataFrame.slice()', 'end', end);
 		return new DataFrame(this._data.slice(start, end));
 	}
 
@@ -228,6 +235,7 @@ class DataFrame {
 	* @returns {Series}
 	*/
 	map(callback) {
+		Validator.function('DataFrame.map()', 'callback', callback);
 		return new Series(this._data.map(callback));
 	}
 
@@ -241,11 +249,12 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	replace(oldValue, newValue, options = {}) {
+		Validator.options('DataFrame.replace()', options, [ { key: 'inPlace', type: 'boolean' }, { key: 'columns', type: ['string', 'string[]'] } ])
+
 		const inPlace = options.inPlace || false;
 		const columns = options.columns
 			? (Array.isArray(options.columns) ? options.columns : [options.columns])
 			: this._columns;
-
 
 		const df = inPlace ? this : this.clone();
 		df._data = df._data.map(row => this._columns.reduce((acc, column) => {
