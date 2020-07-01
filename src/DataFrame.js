@@ -368,19 +368,17 @@ class DataFrame {
 	}
 
 	/**
-	* Performs a join of two DataFrames based on one or multiple columns
+	* Performs a join of two DataFrames on a given column
 	* @param {DataFrame} other
-	* @param {string|string[]} columns Column or array of columns to join the DataFrames on
+	* @param {string} column Column to join the DataFrames on
 	* @param {Object} [options]
 	* @param {('inner'|'outer'|'left'|'right')} [options.how='inner'] How the DataFrames should be joined: `'inner'` only keeps the intersection of the rows, `'outer'` keeps the union of the rows, `'left'` only keeps rows from the current DataFrame, and `'right'` only keeps rows from the `other` DataFrame
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	*/
-	join(other, columns, options = {}) {
+	join(other, column, options = {}) {
 		Validator.instanceOf('DataFrame.join()', 'other', other, 'DataFrame', DataFrame);
-		const keys = Array.isArray(columns) ? columns : [columns];
-		Validator.array('DataFrame.join()', 'columns', keys, {
-			type: 'string',
+		Validator.string('DataFrame.join()', 'column', column, {
 			enum: this._columns.filter(column => other._columns.includes(column))
 		});
 		Validator.options('DataFrame.join()', options, [
@@ -393,7 +391,7 @@ class DataFrame {
 
 		const getNewData = (data, otherData) => {
 			return data.reduce((acc, row) => {
-				const otherRow = otherData.find(otherRow => row[keys[0]] === otherRow[keys[0]]);
+				const otherRow = otherData.find(otherRow => row[column] === otherRow[column]);
 				if (otherRow !== undefined) {
 					return [
 						...acc,
@@ -426,7 +424,7 @@ class DataFrame {
 
 		if (!inPlace)
 			return new DataFrame(newData).dropDuplicates();
-			
+
 		this._data = newData;
 		this._columns = Array.from(new Set([...this._columns, ...other._columns]));
 		this._defineColumnProperties();

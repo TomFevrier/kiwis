@@ -8,9 +8,9 @@ class Validator {
 		else if (typeof argument !== 'string')
 			throw new Error(`Invalid argument in ${method}: '${name}' must be a string`);
 		else if (options && options.enum && !options.enum.includes(argument))
-			throw new Error(`Invalid value '${argument}' for ${name} in ${method}`);
+			throw new Error(`Invalid value '${argument}' in ${method}: possible values for '${name}' are ${options.enum.slice(0, -1).map(e => `'${e}'`).join(', ')} or '${options.enum[options.enum.length - 1]}'`);
 		else if (options && options.not && options.not.includes(argument))
-			throw new Error(`Invalid value '${argument}' for ${name} in ${method}: already used`);
+			throw new Error(`Invalid value for '${name}' in ${method}: '${argument}' is already used`);
 	}
 
 	static integer(method, name, argument, options) {
@@ -19,7 +19,7 @@ class Validator {
 		else if (typeof argument !== 'number' || argument % 1 !== 0)
 			throw new Error(`Invalid argument in ${method}: '${name}' must be an integer`);
 		else if (options && options.range && (argument < options.range[0] || argument > options.range[1]))
-			throw new Error(`Value [${argument}] out of range for '${name}' in ${method}`);
+			throw new Error(`Value [${argument}] out of range for '${name}' in ${method}: must be between ${options.range[0]} and ${options.range[1]}`);
 	}
 
 	static function(method, name, argument, options) {
@@ -39,7 +39,7 @@ class Validator {
 		else if (options.enum) {
 			const invalidValue = argument.find(e => !options.enum.includes(e));
 			if (invalidValue !== undefined)
-				throw new Error(`Invalid value '${invalidValue}' in argument '${name}' of ${method}`);
+				throw new Error(`Invalid value '${invalidValue}' in ${method}: possible values for '${name}' are ${options.enum.slice(0, -1).map(e => `'${e}'`).join(', ')} or '${options.enum[options.enum.length - 1]}'`);
 		}
 	}
 
