@@ -1,6 +1,6 @@
 {
 	"name": "kiwis",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "A Pandas-inspired data wrangling toolkit in JavaScript",
 	"main": "index.js",
 	"author": "Tom Février (https://tomfevrier.io)",
