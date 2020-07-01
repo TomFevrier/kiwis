@@ -3,6 +3,8 @@
 const fs = require('fs');
 const d3 = require('d3-array');
 
+const Validator = require('./Validator.js');
+
 
 /**
 * @class
@@ -73,6 +75,7 @@ class Series {
 	* @returns {*}
 	*/
 	get(index) {
+		Validator.integer('Series.get()', 'index', index, { range: [0, this.length - 1] });
 		return this._data[index];
 	}
 
@@ -98,6 +101,7 @@ class Series {
 	* @returns {Series}
 	*/
 	head(n = 5) {
+		Validator.integer('Series.head()', 'n', n);
 		return this.slice(0, n);
 	}
 
@@ -107,6 +111,7 @@ class Series {
 	* @returns {Series}
 	*/
 	tail(n = 5) {
+		Validator.integer('Series.tail()', 'n', n);
 		return this.slice(-n);
 	}
 
@@ -116,7 +121,9 @@ class Series {
 	* @param {number} [end=Series.length] Zero-based index before which to end extraction
 	* @returns {Series}
 	*/
-	slice(start, end) {
+	slice(start, end = this.length) {
+		Validator.integer('Series.slice()', 'start', start);
+		Validator.integer('Series.slice()', 'end', end);
 		return new Series(this._data.slice(start, end));
 	}
 
@@ -166,6 +173,7 @@ class Series {
 	* @param {callback} callback
 	*/
 	forEach(callback) {
+		Validator.function('Series.forEach()', 'callback', callback);
 		this._data.forEach(callback);
 	}
 
@@ -175,6 +183,7 @@ class Series {
 	* @returns {Series}
 	*/
 	map(callback) {
+		Validator.function('Series.map()', 'callback', callback);
 		return new Series(this._data.map(callback));
 	}
 
@@ -191,11 +200,13 @@ class Series {
 
 	/**
 	* Inserts new values into a Series
-	* @param {Object|Object[]} values Value or array of values to insert into the Series
+	* @param {*|*[]} values Value or array of values to insert into the Series
 	* @param {number} [index=0] Index to insert the values at
 	* @returns {Series}
 	*/
 	insert(values, index = 0) {
+		Validator.integer('Series.insert()', 'index', index, { range: [0, this.length - 1] });
+
 		const data = Array.isArray(values) ? values : [values];
 		this._data.splice(index, 0, ...data);
 		return this;
@@ -209,6 +220,11 @@ class Series {
 	* @returns {Series}
 	*/
 	concat(other, options = {}) {
+		Validator.instanceOf('Series.concat()', 'other', other, 'Series', Series);
+		Validator.options('Series.concat()', options, [
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		return this.append(other.toArray(), options);
 	}
 
@@ -220,7 +236,13 @@ class Series {
 	* @returns {Series}
 	*/
 	dropNA(options = {}) {
+		Validator.options('Series.dropNA()', options, [
+			{ key: 'keep', type: '*[]' },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const keep = options.keep || [0, false];
+
 		return this.filter(value => Boolean(value) || keep.includes(value));
 	}
 
@@ -231,7 +253,12 @@ class Series {
 	* @returns {Series}
 	*/
 	dropDuplicates(options = {}) {
+		Validator.options('Series.dropDuplicates()', options, [
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const inPlace = options.inPlace || false;
+
 		if (inPlace) {
 			this._data = [...new Set(this._data)];
 			return this;
@@ -247,6 +274,7 @@ class Series {
 	* @returns {boolean}
 	*/
 	any(condition = e => !this._kw.isNA(e)) {
+		Validator.function('Series.any()', 'condition', condition);
 		return this._data.some(condition);
 	}
 
@@ -256,6 +284,7 @@ class Series {
 	* @returns {boolean}
 	*/
 	all(condition = e => !this._kw.isNA(e)) {
+		Validator.function('Series.all()', 'condition', condition);
 		return this._data.every(condition);
 	}
 
@@ -267,7 +296,13 @@ class Series {
 	* @returns {Series}
 	*/
 	filter(filter, options = {}) {
+		Validator.function('Series.filter()', 'filter', filter);
+		Validator.options('Series.filter()', options, [
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const inPlace = options.inPlace || false;
+
 		const filteredData = this._data.filter(filter);
 		if (inPlace) {
 			this._data = filteredData;
@@ -284,6 +319,11 @@ class Series {
 	* @returns {Series}
 	*/
 	drop(filter, options = {}) {
+		Validator.function('Series.drop()', 'filter', filter);
+		Validator.options('Series.drop()', options, [
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		return this.filter(e => !filter(e), options);
 	}
 
@@ -295,8 +335,14 @@ class Series {
 	* @returns {Series}
 	*/
 	sort(options = {}) {
+		Validator.options('Series.sort()', options, [
+			{ key: 'reverse', type: 'boolean' },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const reverse = options.reverse || false;
 		const inPlace = options.inPlace || false;
+
 		const sortedData = [...this._data].sort((a, b) => {
 			return reverse ? b - a : a - b;
 		});
@@ -314,7 +360,12 @@ class Series {
 	* @returns {Series}
 	*/
 	shuffle(options = {}) {
+		Validator.options('Series.shuffle()', options, [
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const inPlace = options.inPlace || false;
+
 		if (inPlace) {
 			this._data.sort(() => Math.random() - 0.5);
 			return this;
@@ -340,8 +391,14 @@ class Series {
 	* @returns {Object} Counts as an object of value/count pairs
 	*/
 	counts(options = {}) {
+		Validator.options('Series.counts()', options, [
+			{ key: 'sort', type: 'boolean' },
+			{ key: 'reverse', type: 'boolean' }
+		]);
+
 		const sort = options.sort !== undefined ? options.sort : true;
 		const reverse = options.reverse !== undefined ? options.reverse : true;
+
 		const counts = this._data.reduce((acc, value) => {
 			if (value in acc) {
 				acc[value]++;
@@ -371,6 +428,11 @@ class Series {
 	* @returns {Object} Counts as an object of value/frequencies pairs
 	*/
 	frequencies(options = {}) {
+		Validator.options('Series.frequencies()', options, [
+			{ key: 'sort', type: 'boolean' },
+			{ key: 'reverse', type: 'boolean' }
+		]);
+
 		const counts = this.counts(options);
 		return Object.entries(counts).reduce((acc, [value, count]) => ({
 			...acc,
@@ -386,6 +448,11 @@ class Series {
 	* @returns {Series}
 	*/
 	round(digits = 0, options = {}) {
+		Validator.integer('Series.round()', 'digits', digits);
+		Validator.options('Series.round()', options, [
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		if (this.any(value => Number.isNaN(+value)))
 			throw new Error('Cannot round non-number values');
 		const inPlace = options.inPlace || false;
@@ -519,8 +586,12 @@ class Series {
 	* @returns {string|undefined} A JSON string if `path` is not set
 	*/
 	toCSV(path, options = {}) {
-		const delimiter = options.delimiter || ',';
+		Validator.options('Series.toCSV()', options, [
+			{ key: 'name', type: 'string' }
+		]);
+
 		const name = options.name || 'series';
+
 		let content = [name, ...this._data].join('\n');
 		if (!path) return content;
 		fs.writeFileSync(path, content);
@@ -528,15 +599,21 @@ class Series {
 
 	/**
 	* Exports the Series as a JSON file
-	* @param {string} [path] Path of the file to save
+	* @param {string} [path=null] Path of the file to save
 	* @param {Object} [options]
 	* @param {string} [options.name='series'] Column name to use
 	* @param {boolean} [options.prettify=true] Prettify JSON output
 	* @returns {string|undefined} A JSON string if `path` is not set
 	*/
 	toJSON(path, options = {}) {
+		Validator.options('Series.toJSON()', options, [
+			{ key: 'name', type: 'string' },
+			{ key: 'prettify', type: 'boolean' }
+		]);
+
 		const prettify = options.prettify !== undefined ? options.prettify : true;
 		const name = options.name || 'series';
+
 		const content = JSON.stringify({ [name]: this._data }, null, prettify ? '\t' : null);
 		if (!path) return content;
 		fs.writeFileSync(path, content);

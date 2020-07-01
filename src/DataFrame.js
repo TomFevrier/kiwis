@@ -124,7 +124,7 @@ class DataFrame {
 	* @returns {Object}
 	*/
 	get(index) {
-		Validator.int('DataFrame.get()', 'index', index, { range: [0, this.length - 1] });
+		Validator.integer('DataFrame.get()', 'index', index, { range: [0, this.length - 1] });
 		return this._data[index];
 	}
 
@@ -150,7 +150,7 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	head(n = 5) {
-		Validator.int('DataFrame.head()', 'n', n);
+		Validator.integer('DataFrame.head()', 'n', n);
 		return this.slice(0, n);
 	}
 
@@ -160,7 +160,7 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	tail(n = 5) {
-		Validator.int('DataFrame.tail()', 'n', n);
+		Validator.integer('DataFrame.tail()', 'n', n);
 		return this.slice(-n);
 	}
 
@@ -175,9 +175,9 @@ class DataFrame {
 	* // Returns a new DataFrame with rows between index 24 (included) and 42 (excluded)
 	* df.slice(24, 42)
 	*/
-	slice(start, end) {
-		Validator.int('DataFrame.slice()', 'start', start);
-		Validator.int('DataFrame.slice()', 'end', end);
+	slice(start, end = this.length) {
+		Validator.integer('DataFrame.slice()', 'start', start);
+		Validator.integer('DataFrame.slice()', 'end', end);
 		return new DataFrame(this._data.slice(start, end));
 	}
 
@@ -226,6 +226,7 @@ class DataFrame {
 	* @param {callback} callback
 	*/
 	forEach(callback) {
+		Validator.function('DataFrame.forEach()', 'callback', callback);
 		this._data.forEach(callback);
 	}
 
@@ -249,7 +250,10 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	replace(oldValue, newValue, options = {}) {
-		Validator.options('DataFrame.replace()', options, [ { key: 'inPlace', type: 'boolean' }, { key: 'columns', type: ['string', 'string[]'] } ])
+		Validator.options('DataFrame.replace()', options, [
+			{ key: 'inPlace', type: 'boolean' },
+			{ key: 'columns', type: 'string|string[]', enum: this._columns }
+		]);
 
 		const inPlace = options.inPlace || false;
 		const columns = options.columns
@@ -258,7 +262,6 @@ class DataFrame {
 
 		const df = inPlace ? this : this.clone();
 		df._data = df._data.map(row => this._columns.reduce((acc, column) => {
-			console.log(row[column])
 			const cell = columns.includes(column) && row[column] === oldValue
 				? newValue : row[column];
 			return {
@@ -277,8 +280,13 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	append(rows, options = {}) {
+		Validator.options('DataFrame.append()', options, [
+			{ key: 'extend', type: 'boolean' }
+		]);
+
 		const data = Array.isArray(rows) ? rows : [rows];
 		const extend = options.extend || false;
+
 		let newColumns = [...this._columns];
 		if (extend) {
 			data.forEach(row => {
@@ -308,8 +316,14 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	insert(rows, index = 0, options = {}) {
+		Validator.integer('DataFrame.insert()', 'index', index, { range: [0, this.length - 1] });
+		Validator.options('DataFrame.insert()', options, [
+			{ key: 'extend', type: 'boolean' }
+		]);
+
 		const data = Array.isArray(rows) ? rows : [rows];
 		const extend = options.extend || false;
+
 		let newColumns = [...this._columns];
 		if (extend) {
 			data.forEach(row => {
@@ -340,7 +354,14 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	concat(other, options = {}) {
+		Validator.instanceOf('DataFrame.concat()', 'other', other, 'DataFrame', DataFrame);
+		Validator.options('DataFrame.concat()', options, [
+			{ key: 'extend', type: 'boolean' },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const inPlace = options.inPlace || false;
+
 		if (inPlace)
 			return this.append(other.toArray(), options);
 		const df = this.clone();
@@ -357,20 +378,25 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	dropNA(options = {}) {
-		if (options.axis && !['rows', 'columns'].includes(options.axis))
-			throw new Error(`Invalid value '${options.axis}' for the 'axis' option`);
+		Validator.options('DataFrame.dropNA()', options, [
+			{ key: 'axis', type: 'string', enum: ['rows', 'columns'] },
+			{ key: 'keep', type: '*[]' },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const axis = options.axis || 'rows';
 		const keep = options.keep || [0, false];
+
 		if (axis === 'rows') {
 			return this.filter(
 				row => Object.values(row).every(e => Boolean(e) || keep.includes(e)),
-				options
+				{ inPlace: options.inPlace, axis: options.axis }
 			);
 		}
 		else {
 			return this.filter(
 				column => this[column].all(e => Boolean(e) || keep.includes(e)),
-				options
+				{ inPlace: options.inPlace, axis: options.axis }
 			);
 		}
 	}
@@ -378,12 +404,17 @@ class DataFrame {
 	/**
 	* Drops duplicate rows from the DataFrame
 	* @param {Object} [options]
-	* @param {string[]} [options.columns=DataFrame.columns] Array of columns to consider for comparison
+	* @param {(string|string[])} [options.columns=DataFrame.columns] Column or array of columns to consider for comparison
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	*/
 	dropDuplicates(options = {}) {
-		const columns = options.columns || this.columns;
+		Validator.options('DataFrame.dropDuplicates()', options, [
+			{ key: 'columns', type: 'string|string[]', enum: this._columns },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
+		const columns = (Array.isArray(options.columns) ? options.columns : [options.columns]) || this.columns;
 		const inPlace = options.inPlace || false;
 
 		const rowsToDrop = [];
@@ -428,11 +459,18 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	addColumn(name, column, options = {}) {
-		const extend = options.extend || false;
-		const inPlace = options.inPlace || false;
+		Validator.string('DataFrame.addColumn()', 'name', name, { not: this._columns });
+		Validator.options('DataFrame.addColumn()', options, [
+			{ key: 'extend', type: 'boolean' },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const data = column instanceof Series
 			? column.toArray()
 			: (Array.isArray(column) ? column : new Array(this.length).fill(column));
+		const extend = options.extend || false;
+		const inPlace = options.inPlace || false;
+
 		let newData = this._data.map((row, index) => {
 			return {
 				...row,
@@ -463,7 +501,12 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	rename(map, options = {}) {
+		Validator.options('DataFrame.rename()', options, [
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const inPlace = options.inPlace || false;
+
 		const newColumns = this._columns.map(column => {
 			return Object.keys(map).includes(column)
 				? map[column] : column;
@@ -485,9 +528,15 @@ class DataFrame {
 	* @returns {DataFrame}
 	*/
 	reorder(names, options = {}) {
+		Validator.array('DataFrame.reorder()', 'names', names, { type: 'string' });
+		Validator.options('DataFrame.reorder()', options, [
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+		if (names.length !== this._columns.length || names.some(e => !this._columns.includes(e)))
+			throw new Error('Invalid argument in DataFrame.reorder(): \'names\' must contain the same column names as the DataFrame');
+
 		const inPlace = options.inPlace || false;
-		if (names.length !== this._columns.length || !names.every(e => this._columns.includes(e)))
-			throw new Error('\'names\' must contain the same column names as the DataFrame');
+
 		if (inPlace) {
 			this._columns = names;
 			return this;
@@ -513,8 +562,11 @@ class DataFrame {
 	* df.filter(column => column.includes('data'), { axis: 'columns' })
 	*/
 	filter(filter, options = {}) {
-		if (options.axis && !['rows', 'columns'].includes(options.axis))
-			throw new Error(`Invalid value '${options.axis}' for the 'axis' option`);
+		Validator.options('DataFrame.filter()', options, [
+			{ key: 'axis', type: 'string', enum: ['rows', 'columns'] },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const axis = options.axis || 'rows';
 		const inPlace = options.inPlace || false;
 
@@ -565,8 +617,11 @@ class DataFrame {
 	* df.drop(column => column.includes('data'), { axis: 'columns' })
 	*/
 	drop(filter, options = {}) {
-		if (options.axis && !['rows', 'columns'].includes(options.axis))
-			throw new Error(`Invalid value '${options.axis}' for the 'axis' option`);
+		Validator.options('DataFrame.drop()', options, [
+			{ key: 'axis', type: 'string', enum: ['rows', 'columns'] },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		if (typeof filter === 'function')
 			return this.filter(e => !filter(e), options);
 		return this.filter(this._columns.filter(column => !filter.includes(column)), options);
@@ -582,8 +637,15 @@ class DataFrame {
 	*/
 	sort(by, options = {}) {
 		const keys = typeof by === 'string' ? [by] : by;
+		Validator.array('DataFrame.sort()', 'by', keys, { type: 'string', enum: this._columns });
+		Validator.options('DataFrame.sort()', options, [
+			{ key: 'reverse', type: 'boolean' },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const reverse = options.reverse || false;
 		const inPlace = options.inPlace || false;
+
 		const sortedData = [...this._data].sort((a, b) => {
 			return keys.reduce((acc, key) => {
 				if (a[key] === b[key]) return 0;
@@ -604,13 +666,16 @@ class DataFrame {
 	/**
 	* Shuffles the rows or columns of a DataFrame
 	* @param {Object} [options]
-	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @param {('rows'|'columns')} [options.axis='rows'] Determines whether rows or columns should be shuffled
+	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	*/
 	shuffle(options = {}) {
-		if (options.axis && !['rows', 'columns'].includes(options.axis))
-			throw new Error(`Invalid value '${options.axis}' for the 'axis' option`);
+		Validator.options('DataFrame.shuffle()', options, [
+			{ key: 'axis', type: 'string', enum: ['rows', 'columns'] },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
 		const inPlace = options.inPlace || false;
 		const axis = options.axis || 'rows';
 		if (axis === 'rows') {
@@ -635,15 +700,15 @@ class DataFrame {
 
 	/**
 	* Returns a PivotTable along the given columns
-	* @param {string[]} columns Columns to pivot along
+	* @param {(string|string[])} columns Column or array of columns to pivot along
 	* @returns {PivotTable}
 	*/
 	pivot(columns) {
-		columns.forEach(column => {
-			if (!this._columns.includes(column))
-				throw new Error(`No column named '${column}'`);
-		});
-		return new PivotTable(this, columns);
+		const pivots = Array.isArray(columns) ? columns : [columns];
+
+		Validator.array('DataFrame.pivot()', 'columns', pivots, { type: 'string', enum: this._columns });
+
+		return new PivotTable(this, pivots);
 	}
 
 	/**
@@ -722,7 +787,12 @@ class DataFrame {
 	* @returns {string|undefined} A CSV string if `path` is not set
 	*/
 	toCSV(path = null, options = {}) {
+		Validator.options('DataFrame.toCSV()', options, [
+			{ key: 'delimiter', type: 'string' }
+		]);
+
 		const delimiter = options.delimiter || ',';
+
 		let content = this._columns
 			.map(column => column.includes(delimiter) ? JSON.stringify(column) : column)
 			.join(delimiter);
@@ -748,7 +818,12 @@ class DataFrame {
 	* @returns {string|undefined} A JSON string if `path` is not set
 	*/
 	toJSON(path, options = {}) {
+		Validator.options('DataFrame.toJSON()', options, [
+			{ key: 'prettify', type: 'boolean' }
+		]);
+
 		const prettify = options.prettify !== undefined ? options.prettify : true;
+
 		const content = JSON.stringify(this._data, null, prettify ? '\t' : null);
 		if (!path) return content;
 		fs.writeFileSync(path, content);

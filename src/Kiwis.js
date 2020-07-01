@@ -6,6 +6,8 @@ const d3 = require('d3-dsv');
 const DataFrame = require('./DataFrame.js');
 const Series = require('./Series.js');
 
+const Validator = require('./Validator.js');
+
 
 /**
  * @namespace
@@ -18,6 +20,7 @@ class Kiwis {
 	* @returns {DataFrame}
 	*/
 	static DataFrame(data) {
+		Validator.array('Kiwis.DataFrame()', 'data', data, { type: 'object' });
 		return new DataFrame(data);
 	}
 
@@ -27,6 +30,7 @@ class Kiwis {
 	* @returns {Series}
 	*/
 	static Series(data) {
+		Validator.array('Kiwis.Series()', 'data', data);
 		return new Series(data);
 	}
 
@@ -40,6 +44,13 @@ class Kiwis {
 	* @returns {DataFrame}
 	*/
 	static loadCSV(path, options = {}) {
+		Validator.string('Kiwis.loadCSV()', 'path', path);
+		Validator.options('Kiwis.loadCSV()', options, [
+			{ key: 'delimiter', type: 'string' },
+			{ key: 'encoding', type: 'string' },
+			{ key: 'prettify', type: 'string', enum: ['none', 'camelCase', 'snake_case'] }
+		]);
+
 		const delimiter = options.delimiter || ',';
 		const encoding = options.encoding || 'utf8';
 		const prettify = options.prettify || 'none';
@@ -72,7 +83,12 @@ class Kiwis {
 	* @returns {boolean}
 	*/
 	static isNA(value, options = {}) {
+		Validator.options('Kiwis.isNA()', options, [
+			{ key: 'keep', type: '*[]' },
+		]);
+
 		const keep = options.keep || [0, false];
+
 		return !value && !keep.includes(value);
 	}
 

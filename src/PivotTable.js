@@ -7,6 +7,8 @@ const flatten = require('flat');
 
 const Series = require('./Series.js');
 
+const Validator = require('./Validator.js');
+
 /**
 * @class
 * @property {number} length The number of rows in the PivotTable
@@ -74,10 +76,15 @@ class PivotTable {
 	* Applies the given callback function on the leaves of the PivotTable, returning a DataFrame
 	* @param {callback} callback
 	* @param {Object} [options]
-	* @param {boolean} [options.name='data'] Name to use for the column in the output DataFrame
+	* @param {string} [options.name='data'] Name to use for the column in the output DataFrame
 	* @returns {DataFrame}
 	*/
 	rollup(callback, options = {}) {
+		Validator.function('PivotTable.rollup()', 'callback', callback);
+		Validator.options('PivotTable.rollup()', options, [
+			{ key: 'name', type: 'string' }
+		]);
+
 		const name = options.name || 'data';
 
 		const DataFrame = require('./DataFrame.js');
@@ -121,8 +128,8 @@ class PivotTable {
 	* @returns {DataFrame}
 	*/
 	sum(column) {
-		if (!this._columns.includes(column))
-			throw new Error(`No column named '${column}'`);
+		Validator.string('PivotTable.sum()', 'column', column, { enum: this._columns });
+
 		const name = 'sum' + column[0].toUpperCase() + column.slice(1);
 		return this.rollup(l => d3.sum(l, d => d[column]), { name: name });
 	}
@@ -132,8 +139,8 @@ class PivotTable {
 	* @returns {DataFrame}
 	*/
 	min(column) {
-		if (!this._columns.includes(column))
-			throw new Error(`No column named '${column}'`);
+		Validator.string('PivotTable.min()', 'column', column, { enum: this._columns });
+
 		const name = 'min' + column[0].toUpperCase() + column.slice(1);
 		return this.rollup(l => d3.min(l, d => +d[column]), { name: name });
 	}
@@ -143,8 +150,8 @@ class PivotTable {
 	* @returns {DataFrame}
 	*/
 	max(column) {
-		if (!this._columns.includes(column))
-			throw new Error(`No column named '${column}'`);
+		Validator.string('PivotTable.max()', 'column', column, { enum: this._columns });
+
 		const name = 'max' + column[0].toUpperCase() + column.slice(1);
 		return this.rollup(l => d3.max(l, d => +d[column]), { name: name });
 	}
@@ -154,8 +161,8 @@ class PivotTable {
 	* @returns {DataFrame}
 	*/
 	mean(column) {
-		if (!this._columns.includes(column))
-			throw new Error(`No column named '${column}'`);
+		Validator.string('PivotTable.mean()', 'column', column, { enum: this._columns });
+
 		const name = 'mean' + column[0].toUpperCase() + column.slice(1);
 		return this.rollup(l => d3.mean(l, d => +d[column]), { name: name });
 	}
@@ -165,8 +172,8 @@ class PivotTable {
 	* @returns {DataFrame}
 	*/
 	median(column) {
-		if (!this._columns.includes(column))
-			throw new Error(`No column named '${column}'`);
+		Validator.string('PivotTable.median()', 'column', column, { enum: this._columns });
+
 		const name = 'median' + column[0].toUpperCase() + column.slice(1);
 		return this.rollup(l => d3.median(l, d => +d[column]), { name: name });
 	}
@@ -176,8 +183,8 @@ class PivotTable {
 	* @returns {DataFrame}
 	*/
 	std(column) {
-		if (!this._columns.includes(column))
-			throw new Error(`No column named '${column}'`);
+		Validator.string('PivotTable.std()', 'column', column, { enum: this._columns });
+
 		const name = 'std' + column[0].toUpperCase() + column.slice(1);
 		return this.rollup(l => d3.deviation(l, d => +d[column]), { name: name });
 	}
@@ -288,6 +295,10 @@ class PivotTable {
 	* @returns {string}
 	*/
 	toJSON(path, options = {}) {
+		Validator.options('PivotTable.toJSON()', options, [
+			{ key: 'prettify', type: 'boolean' }
+		]);
+
 		const prettify = options.prettify !== undefined ? options.prettify : true;
 
 		const toArray = (acc, [key, value]) => {
