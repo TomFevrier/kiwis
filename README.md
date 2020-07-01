@@ -389,12 +389,12 @@ Returns **[DataFrame](#dataframe)**
 
 #### join
 
-Performs a join of two DataFrames based on one or multiple columns
+Performs a join of two DataFrames on a given column
 
 ##### Parameters
 
 -   `other` **[DataFrame](#dataframe)** 
--   `columns` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)** Column or array of columns to join the DataFrames on
+-   `column` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Column to join the DataFrames on
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.how` **(`"inner"` \| `"outer"` \| `"left"` \| `"right"`)** How the DataFrames should be joined: `'inner'` only keeps the intersection of the rows, `'outer'` keeps the union of the rows, `'left'` only keeps rows from the current DataFrame, and `'right'` only keeps rows from the `other` DataFrame (optional, default `'inner'`)
     -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
