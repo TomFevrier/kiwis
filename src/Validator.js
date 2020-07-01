@@ -65,7 +65,6 @@ class Validator {
 				throw new Error(`Unknown option '${key}' in ${method}`);
 			if (!option.type) continue;
 			const types = option.type.split('|');
-			console.log(value)
 			const isCorrectType = types.some(type => typeof value === type ||
 				(type.includes('[]') && Array.isArray(value)
 				&& value.every(e => typeof e === type.split('[]')[0] || type.split('[]')[0] === '*')));

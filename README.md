@@ -98,113 +98,117 @@ Length: 3
         -   [Parameters](#parameters-8)
     -   [concat](#concat)
         -   [Parameters](#parameters-9)
-    -   [dropNA](#dropna)
+    -   [join](#join)
         -   [Parameters](#parameters-10)
-    -   [dropDuplicates](#dropduplicates)
-        -   [Parameters](#parameters-11)
     -   [addColumn](#addcolumn)
-        -   [Parameters](#parameters-12)
+        -   [Parameters](#parameters-11)
     -   [rename](#rename)
-        -   [Parameters](#parameters-13)
+        -   [Parameters](#parameters-12)
     -   [reorder](#reorder)
+        -   [Parameters](#parameters-13)
+    -   [dropNA](#dropna)
         -   [Parameters](#parameters-14)
-    -   [filter](#filter)
+    -   [dropDuplicates](#dropduplicates)
         -   [Parameters](#parameters-15)
+    -   [filter](#filter)
+        -   [Parameters](#parameters-16)
         -   [Examples](#examples-1)
     -   [drop](#drop)
-        -   [Parameters](#parameters-16)
+        -   [Parameters](#parameters-17)
         -   [Examples](#examples-2)
     -   [sort](#sort)
-        -   [Parameters](#parameters-17)
-    -   [shuffle](#shuffle)
         -   [Parameters](#parameters-18)
-    -   [pivot](#pivot)
+    -   [shuffle](#shuffle)
         -   [Parameters](#parameters-19)
+    -   [pivot](#pivot)
+        -   [Parameters](#parameters-20)
     -   [toString](#tostring)
     -   [show](#show)
     -   [toCSV](#tocsv)
-        -   [Parameters](#parameters-20)
-    -   [toJSON](#tojson)
         -   [Parameters](#parameters-21)
+    -   [toJSON](#tojson)
+        -   [Parameters](#parameters-22)
 -   [Kiwis](#kiwis)
     -   [DataFrame](#dataframe-1)
-        -   [Parameters](#parameters-22)
-    -   [Series](#series)
         -   [Parameters](#parameters-23)
-    -   [loadCSV](#loadcsv)
+    -   [Series](#series)
         -   [Parameters](#parameters-24)
-    -   [isNA](#isna)
+    -   [loadCSV](#loadcsv)
         -   [Parameters](#parameters-25)
+    -   [isNA](#isna)
+        -   [Parameters](#parameters-26)
 -   [PivotTable](#pivottable)
     -   [Properties](#properties-1)
     -   [rollup](#rollup)
-        -   [Parameters](#parameters-26)
+        -   [Parameters](#parameters-27)
     -   [count](#count)
     -   [sum](#sum)
-        -   [Parameters](#parameters-27)
-    -   [min](#min)
         -   [Parameters](#parameters-28)
-    -   [max](#max)
+    -   [min](#min)
         -   [Parameters](#parameters-29)
-    -   [mean](#mean)
+    -   [max](#max)
         -   [Parameters](#parameters-30)
-    -   [median](#median)
+    -   [mean](#mean)
         -   [Parameters](#parameters-31)
-    -   [std](#std)
+    -   [median](#median)
         -   [Parameters](#parameters-32)
+    -   [std](#std)
+        -   [Parameters](#parameters-33)
     -   [toString](#tostring-1)
     -   [show](#show-1)
     -   [toJSON](#tojson-1)
-        -   [Parameters](#parameters-33)
+        -   [Parameters](#parameters-34)
 -   [Series](#series-1)
     -   [Properties](#properties-2)
     -   [toArray](#toarray-1)
     -   [clone](#clone-1)
     -   [get](#get-1)
-        -   [Parameters](#parameters-34)
+        -   [Parameters](#parameters-35)
     -   [first](#first-1)
     -   [last](#last-1)
     -   [head](#head-1)
-        -   [Parameters](#parameters-35)
-    -   [tail](#tail-1)
         -   [Parameters](#parameters-36)
-    -   [slice](#slice-1)
+    -   [tail](#tail-1)
         -   [Parameters](#parameters-37)
+    -   [slice](#slice-1)
+        -   [Parameters](#parameters-38)
     -   [values](#values)
     -   [items](#items-1)
     -   [forEach](#foreach-1)
-        -   [Parameters](#parameters-38)
-    -   [map](#map-1)
         -   [Parameters](#parameters-39)
-    -   [append](#append-1)
+    -   [map](#map-1)
         -   [Parameters](#parameters-40)
-    -   [insert](#insert-1)
+    -   [append](#append-1)
         -   [Parameters](#parameters-41)
-    -   [concat](#concat-1)
+    -   [insert](#insert-1)
         -   [Parameters](#parameters-42)
-    -   [dropNA](#dropna-1)
+    -   [concat](#concat-1)
         -   [Parameters](#parameters-43)
-    -   [dropDuplicates](#dropduplicates-1)
+    -   [dropNA](#dropna-1)
         -   [Parameters](#parameters-44)
-    -   [any](#any)
+    -   [dropDuplicates](#dropduplicates-1)
         -   [Parameters](#parameters-45)
-    -   [all](#all)
+    -   [any](#any)
         -   [Parameters](#parameters-46)
-    -   [filter](#filter-1)
+    -   [all](#all)
         -   [Parameters](#parameters-47)
-    -   [drop](#drop-1)
+    -   [filter](#filter-1)
         -   [Parameters](#parameters-48)
-    -   [sort](#sort-1)
+    -   [drop](#drop-1)
         -   [Parameters](#parameters-49)
-    -   [shuffle](#shuffle-1)
+    -   [sort](#sort-1)
         -   [Parameters](#parameters-50)
+    -   [shuffle](#shuffle-1)
+        -   [Parameters](#parameters-51)
     -   [unique](#unique)
     -   [counts](#counts)
-        -   [Parameters](#parameters-51)
-    -   [frequencies](#frequencies)
         -   [Parameters](#parameters-52)
-    -   [round](#round)
+    -   [frequencies](#frequencies)
         -   [Parameters](#parameters-53)
+    -   [round](#round)
+        -   [Parameters](#parameters-54)
+    -   [reduce](#reduce)
+        -   [Parameters](#parameters-55)
     -   [sum](#sum-1)
     -   [min](#min-1)
     -   [max](#max-1)
@@ -215,9 +219,9 @@ Length: 3
     -   [toString](#tostring-2)
     -   [show](#show-2)
     -   [toCSV](#tocsv-1)
-        -   [Parameters](#parameters-54)
+        -   [Parameters](#parameters-56)
     -   [toJSON](#tojson-2)
-        -   [Parameters](#parameters-55)
+        -   [Parameters](#parameters-57)
 
 ### DataFrame
 
@@ -383,27 +387,16 @@ Concats another DataFrame to the DataFrame
 
 Returns **[DataFrame](#dataframe)** 
 
-#### dropNA
+#### join
 
-Drops N/A values from the DataFrame
-
-##### Parameters
-
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
-    -   `options.axis` **(`"rows"` \| `"columns"`)** Determines whether rows or columns should be dropped (optional, default `'rows'`)
-    -   `options.keep` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** Array of falsy values to keep in the DataFrame (optional, default `[0,false]`)
-    -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
-
-Returns **[DataFrame](#dataframe)** 
-
-#### dropDuplicates
-
-Drops duplicate rows from the DataFrame
+Performs a join of two DataFrames based on one or multiple columns
 
 ##### Parameters
 
+-   `other` **[DataFrame](#dataframe)** 
+-   `columns` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)** Column or array of columns to join the DataFrames on
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
-    -   `options.columns` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)** Column or array of columns to consider for comparison (optional, default `DataFrame.columns`)
+    -   `options.how` **(`"inner"` \| `"outer"` \| `"left"` \| `"right"`)** How the DataFrames should be joined: `'inner'` only keeps the intersection of the rows, `'outer'` keeps the union of the rows, `'left'` only keeps rows from the current DataFrame, and `'right'` only keeps rows from the `other` DataFrame (optional, default `'inner'`)
     -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
 
 Returns **[DataFrame](#dataframe)** 
@@ -442,6 +435,31 @@ Reorder the columns of the DataFrame
 
 -   `names` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>** Array containing the new order of the columns
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
+    -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+
+Returns **[DataFrame](#dataframe)** 
+
+#### dropNA
+
+Drops N/A values from the DataFrame
+
+##### Parameters
+
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
+    -   `options.axis` **(`"rows"` \| `"columns"`)** Determines whether rows or columns should be dropped (optional, default `'rows'`)
+    -   `options.keep` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** Array of falsy values to keep in the DataFrame (optional, default `[0,false]`)
+    -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
+
+Returns **[DataFrame](#dataframe)** 
+
+#### dropDuplicates
+
+Drops duplicate rows from the DataFrame
+
+##### Parameters
+
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
+    -   `options.columns` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)** Column or array of columns to consider for comparison (optional, default `DataFrame.columns`)
     -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
 
 Returns **[DataFrame](#dataframe)** 
@@ -985,6 +1003,17 @@ Round the values in the Series
     -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current Series instead of returning a new one (optional, default `false`)
 
 Returns **[Series](#series)** 
+
+#### reduce
+
+Returns a single reduced value after applying the given callback to the values of the Series
+
+##### Parameters
+
+-   `callback` **callback** 
+-   `initial` **any** Value to use as the first argument to the first call of the callback (optional, default `Series.first()`)
+
+Returns **any** 
 
 #### sum
 

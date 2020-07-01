@@ -15,12 +15,6 @@ const Validator = require('./Validator.js');
 class Series {
 
 	/**
-	* @function callback
-	* @param {Object} currentElement
-	* @param {number} index
-	*/
-
-	/**
 	* @constructor
 	* @hideconstructor
 	* @param {(*[]|Series)} data An array of values or a Series
@@ -463,6 +457,19 @@ class Series {
 		return new Series(this._data.map(value => (+value).toFixed(digits)));
 	}
 
+	/**
+	* Returns a single reduced value after applying the given callback to the values of the Series
+	* @param {callback} callback
+	* @param {*} [initial=Series.first()] Value to use as the first argument to the first call of the callback
+	* @returns {*}
+	*/
+	reduce(callback, initial) {
+		Validator.function('Series.reduce()', 'callback', callback);
+
+		if (initial)
+			return this._data.reduce(callback, initial);
+		return this._data.reduce(callback);
+	}
 
 	/**
 	* Returns the sum of the values in the Series

@@ -19,12 +19,6 @@ const Validator = require('./Validator.js');
 class DataFrame {
 
 	/**
-	* @function callback
-	* @param {Object} currentElement
-	* @param {number} index
-	*/
-
-	/**
 	* @constructor
 	* @hideconstructor
 	* @param {(Object[]|DataFrame)} data An array of objects or a DataFrame
@@ -40,7 +34,11 @@ class DataFrame {
 		}
 		else {
 			this._data = Array.from(JSON.parse(JSON.stringify(data)));
-			this._columns = data.columns || Array.from(Object.keys(this._data[0]));
+			this._columns = Array.from(
+				new Set(this._data.reduce((acc, row) => {
+					return [...acc, ...Object.keys(row)];
+				}, []))
+			);
 		}
 		// this._data.forEach((row, index) => this._defineRowProperty(index));
 		this._defineColumnProperties();
@@ -370,83 +368,69 @@ class DataFrame {
 	}
 
 	/**
-	* Drops N/A values from the DataFrame
+	* Performs a join of two DataFrames based on one or multiple columns
+	* @param {DataFrame} other
+	* @param {string|string[]} columns Column or array of columns to join the DataFrames on
 	* @param {Object} [options]
-	* @param {('rows'|'columns')} [options.axis='rows'] Determines whether rows or columns should be dropped
-	* @param {*[]} [options.keep=[0, false]] Array of falsy values to keep in the DataFrame
+	* @param {('inner'|'outer'|'left'|'right')} [options.how='inner'] How the DataFrames should be joined: `'inner'` only keeps the intersection of the rows, `'outer'` keeps the union of the rows, `'left'` only keeps rows from the current DataFrame, and `'right'` only keeps rows from the `other` DataFrame
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	*/
-	dropNA(options = {}) {
-		Validator.options('DataFrame.dropNA()', options, [
-			{ key: 'axis', type: 'string', enum: ['rows', 'columns'] },
-			{ key: 'keep', type: '*[]' },
+	join(other, columns, options = {}) {
+		Validator.instanceOf('DataFrame.join()', 'other', other, 'DataFrame', DataFrame);
+		const keys = Array.isArray(columns) ? columns : [columns];
+		Validator.array('DataFrame.join()', 'columns', keys, {
+			type: 'string',
+			enum: this._columns.filter(column => other._columns.includes(column))
+		});
+		Validator.options('DataFrame.join()', options, [
+			{ key: 'how', type: 'string', enum: ['inner', 'outer', 'left', 'right'] },
 			{ key: 'inPlace', type: 'boolean' }
 		]);
 
-		const axis = options.axis || 'rows';
-		const keep = options.keep || [0, false];
-
-		if (axis === 'rows') {
-			return this.filter(
-				row => Object.values(row).every(e => Boolean(e) || keep.includes(e)),
-				{ inPlace: options.inPlace, axis: options.axis }
-			);
-		}
-		else {
-			return this.filter(
-				column => this[column].all(e => Boolean(e) || keep.includes(e)),
-				{ inPlace: options.inPlace, axis: options.axis }
-			);
-		}
-	}
-
-	/**
-	* Drops duplicate rows from the DataFrame
-	* @param {Object} [options]
-	* @param {(string|string[])} [options.columns=DataFrame.columns] Column or array of columns to consider for comparison
-	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
-	* @returns {DataFrame}
-	*/
-	dropDuplicates(options = {}) {
-		Validator.options('DataFrame.dropDuplicates()', options, [
-			{ key: 'columns', type: 'string|string[]', enum: this._columns },
-			{ key: 'inPlace', type: 'boolean' }
-		]);
-
-		const columns = (Array.isArray(options.columns) ? options.columns : [options.columns]) || this.columns;
+		const how = options.how || 'inner';
 		const inPlace = options.inPlace || false;
 
-		const rowsToDrop = [];
-		this._data.forEach((rowA, indexA) => {
-			const valuesA = Object.values(columns.reduce((acc, column) => ({
-				...acc,
-				[column]: rowA[column]
-			}), {}));
-			this._data.slice(indexA + 1).forEach((rowB, index) => {
-				const indexB = indexA + 1 + index;
-				if (rowsToDrop.includes(indexA) || rowsToDrop.includes(indexB)) return;
-				const valuesB = Object.values(columns.reduce((acc, column) => ({
-					...acc,
-					[column]: rowB[column]
-				}), {}));
-				if (JSON.stringify(valuesA) === JSON.stringify(valuesB))
-					rowsToDrop.push(indexB);
-			});
-		});
-		if (inPlace) {
-			rowsToDrop.sort((a, b) => b - a).forEach(index => {
-				this._data.splice(index, 1);
-			});
-			this.columns = this._columns;
-			return this;
+		const getNewData = (data, otherData) => {
+			return data.reduce((acc, row) => {
+				const otherRow = otherData.find(otherRow => row[keys[0]] === otherRow[keys[0]]);
+				if (otherRow !== undefined) {
+					return [
+						...acc,
+						Object.entries(otherRow).reduce((acc, [key, value]) => ({
+							...acc,
+							[key]: value
+						}), row)
+					];
+				}
+				if (how === 'inner') return acc;
+				return [...acc, row];
+			}, []);
 		}
-		const df = this.clone();
-		rowsToDrop.sort((a, b) => b - a).forEach(index => {
-			df._data.splice(index, 1);
-		});
-		df.columns = df._columns;
-		return df;
+
+		let newData;
+		switch(how) {
+			case 'inner':
+				newData = getNewData(this._data, other._data);
+				break;
+			case 'left':
+				newData = getNewData(this._data, other._data);
+				break;
+			case 'right':
+				newData = getNewData(other._data, this._data);
+				break;
+			case 'outer':
+				newData = [...getNewData(this._data, other._data), ...getNewData(other._data, this._data)];
+				break;
+		}
+
+		if (!inPlace)
+			return new DataFrame(newData).dropDuplicates();
+			
+		this._data = newData;
+		this._columns = Array.from(new Set([...this._columns, ...other._columns]));
+		this._defineColumnProperties();
+		return this.dropDuplicates();
 	}
 
 	/**
@@ -543,6 +527,88 @@ class DataFrame {
 		}
 		const df = this.clone();
 		df._columns = names;
+		return df;
+	}
+
+	/**
+	* Drops N/A values from the DataFrame
+	* @param {Object} [options]
+	* @param {('rows'|'columns')} [options.axis='rows'] Determines whether rows or columns should be dropped
+	* @param {*[]} [options.keep=[0, false]] Array of falsy values to keep in the DataFrame
+	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
+	* @returns {DataFrame}
+	*/
+	dropNA(options = {}) {
+		Validator.options('DataFrame.dropNA()', options, [
+			{ key: 'axis', type: 'string', enum: ['rows', 'columns'] },
+			{ key: 'keep', type: '*[]' },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
+		const axis = options.axis || 'rows';
+		const keep = options.keep || [0, false];
+
+		if (axis === 'rows') {
+			return this.filter(
+				row => Object.values(row).every(e => Boolean(e) || keep.includes(e)),
+				{ inPlace: options.inPlace, axis: options.axis }
+			);
+		}
+		else {
+			return this.filter(
+				column => this[column].all(e => Boolean(e) || keep.includes(e)),
+				{ inPlace: options.inPlace, axis: options.axis }
+			);
+		}
+	}
+
+	/**
+	* Drops duplicate rows from the DataFrame
+	* @param {Object} [options]
+	* @param {(string|string[])} [options.columns=DataFrame.columns] Column or array of columns to consider for comparison
+	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
+	* @returns {DataFrame}
+	*/
+	dropDuplicates(options = {}) {
+		Validator.options('DataFrame.dropDuplicates()', options, [
+			{ key: 'columns', type: 'string|string[]', enum: this._columns },
+			{ key: 'inPlace', type: 'boolean' }
+		]);
+
+		const columns = options.columns
+			? (Array.isArray(options.columns) ? options.columns : [options.columns])
+			: this.columns;
+		const inPlace = options.inPlace || false;
+
+		const rowsToDrop = [];
+		this._data.forEach((rowA, indexA) => {
+			const valuesA = Object.values(columns.reduce((acc, column) => ({
+				...acc,
+				[column]: rowA[column]
+			}), {}));
+			this._data.slice(indexA + 1).forEach((rowB, index) => {
+				const indexB = indexA + 1 + index;
+				if (rowsToDrop.includes(indexA) || rowsToDrop.includes(indexB)) return;
+				const valuesB = Object.values(columns.reduce((acc, column) => ({
+					...acc,
+					[column]: rowB[column]
+				}), {}));
+				if (JSON.stringify(valuesA) === JSON.stringify(valuesB))
+					rowsToDrop.push(indexB);
+			});
+		});
+		if (inPlace) {
+			rowsToDrop.sort((a, b) => b - a).forEach(index => {
+				this._data.splice(index, 1);
+			});
+			this.columns = this._columns;
+			return this;
+		}
+		const df = this.clone();
+		rowsToDrop.sort((a, b) => b - a).forEach(index => {
+			df._data.splice(index, 1);
+		});
+		df.columns = df._columns;
 		return df;
 	}
 
