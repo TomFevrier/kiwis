@@ -8,6 +8,8 @@
 	"bugs": "https://github.com/TomFevrier/kiwis/issues",
 	"keywords": [
 		"data",
+		"data wrangling",
+		"data manipulation",
 		"pandas"
 	],
 	"license": "MIT",

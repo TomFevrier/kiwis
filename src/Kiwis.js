@@ -42,6 +42,12 @@ class Kiwis {
 	* @param {string} [options.encoding='utf8'] Encoding of the file
 	* @param {('none'|'camelCase'|'snake_case')} [options.prettify='none'] Prettify column names
 	* @returns {DataFrame}
+	* @example
+	* // Loads a CSV file
+	* df = Kiwis.loadCSV('myAwesomeData.csv');
+	*
+	* // Loads a TSV file and prettify the columns in camelCase
+	* df = Kiwis.loadCSV('myAwesomeData.tsv', { delimiter: '\t', prettify; 'camelCase' }); // to TSV
 	*/
 	static loadCSV(path, options = {}) {
 		Validator.string('Kiwis.loadCSV()', 'path', path);
@@ -81,6 +87,10 @@ class Kiwis {
 	* @param {Object} [options] Options
 	* @param {*[]} [options.keep=[0, false]] Array of falsy values not considered N/A
 	* @returns {boolean}
+	* @example
+	* Kiwis.isNA('kiwi'); // false
+	* Kiwis.isNA(''); // true
+	* Kiwis.isNA('', { keep: [0, false, ''] }); // false
 	*/
 	static isNA(value, options = {}) {
 		Validator.options('Kiwis.isNA()', options, [

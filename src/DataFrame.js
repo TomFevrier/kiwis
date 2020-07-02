@@ -40,7 +40,6 @@ class DataFrame {
 				}, []))
 			);
 		}
-		// this._data.forEach((row, index) => this._defineRowProperty(index));
 		this._defineColumnProperties();
 
 		this._kw = require('./Kiwis.js');
@@ -55,13 +54,6 @@ class DataFrame {
 			});
 		});
 	}
-
-	// _defineRowProperty(index) {
-	// 	Object.defineProperty(this, index, {
-	// 		value: this._data[index],
-	// 		configurable: true
-	// 	});
-	// }
 
 	get length() {
 		return this._data.length;
@@ -169,9 +161,9 @@ class DataFrame {
 	* @returns {DataFrame}
 	* @example
 	* // Returns a new DataFrame with rows starting at index 10
-	* df.slice(10)
+	* df.slice(10);
 	* // Returns a new DataFrame with rows between index 24 (included) and 42 (excluded)
-	* df.slice(24, 42)
+	* df.slice(24, 42);
 	*/
 	slice(start, end = this.length) {
 		Validator.integer('DataFrame.slice()', 'start', start);
@@ -182,6 +174,10 @@ class DataFrame {
 	/**
 	* Returns the rows of the DataFrame as an iterable
 	* @returns {Iterable.<Object>}
+	* @example
+	* for (let row of df.rows()) {
+	*   console.log(row);
+	* }
 	*/
 	rows() {
 		let index = 0;
@@ -202,6 +198,10 @@ class DataFrame {
 	/**
 	* Returns an array of index/row pairs as an iterable
 	* @returns {Iterable.<Array.<number, Object>>}
+	* @example
+	* for (let [index, row] of df.items()) {
+	*   console.log(index, row);
+	* }
 	*/
 	items() {
 		let index = 0;
@@ -246,6 +246,9 @@ class DataFrame {
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @param {(string|string[])} [options.columns=DataFrame.columns] Columns to replace into
 	* @returns {DataFrame}
+	* @example
+	* // Replaces all occurrences of 'panda' with 'kiwi' in the column 'animal'
+	* df.replace('panda', 'kiwi', { inPlace: true, columns: 'name' });
 	*/
 	replace(oldValue, newValue, options = {}) {
 		Validator.options('DataFrame.replace()', options, [
@@ -276,6 +279,18 @@ class DataFrame {
 	* @param {Object} [options]
 	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not already exist
 	* @returns {DataFrame}
+	* @example
+	* const rows = [
+	*   {
+	*     name: 'Marvin',
+	*     occupation: 'Robot'
+	*   },
+	*   {
+	*     name: 'Zaphod Beeblebrox',
+	*     occupation: 'President of the Galaxy'
+	*   }
+	* ];
+	* df.append(rows, { extend: true });
 	*/
 	append(rows, options = {}) {
 		Validator.options('DataFrame.append()', options, [
@@ -312,6 +327,9 @@ class DataFrame {
 	* @param {Object} [options]
 	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not already exist
 	* @returns {DataFrame}
+	* @example
+	* // Inserts a new row at index 2 in the DataFrame
+	* df.insert({ name: 'Trillian', species: 'human' }, 2, { extend: true });
 	*/
 	insert(rows, index = 0, options = {}) {
 		Validator.integer('DataFrame.insert()', 'index', index, { range: [0, this.length - 1] });
@@ -344,12 +362,15 @@ class DataFrame {
 	}
 
 	/**
-	* Concats another DataFrame to the DataFrame
+	* Concatenates another DataFrame to the DataFrame
 	* @param {DataFrame} other
 	* @param {Object} [options]
 	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not already exist
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Concatenates df1 and df2, adding columns from df2 into df1 if they do not exist
+	* df1.concat(df2, { inPlace: true, extend: true });
 	*/
 	concat(other, options = {}) {
 		Validator.instanceOf('DataFrame.concat()', 'other', other, 'DataFrame', DataFrame);
@@ -375,6 +396,9 @@ class DataFrame {
 	* @param {('inner'|'outer'|'left'|'right')} [options.how='inner'] How the DataFrames should be joined: `'inner'` only keeps the intersection of the rows, `'outer'` keeps the union of the rows, `'left'` only keeps rows from the current DataFrame, and `'right'` only keeps rows from the `other` DataFrame
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Join DataFrames df1 and df2 along their column 'id', keeping only the rows from df1
+	* df1.join(df2, 'id', { inPlace: true, how: 'left' });
 	*/
 	join(other, column, options = {}) {
 		Validator.instanceOf('DataFrame.join()', 'other', other, 'DataFrame', DataFrame);
@@ -432,13 +456,23 @@ class DataFrame {
 	}
 
 	/**
-	* Add a new column to the DataFrame
+	* Adds a new column to the DataFrame
 	* @param {string} name Name of the new column
 	* @param {(*|*[]|Series)} column Content of the new column as an array, a Series or any value (to be set on every rows)
 	* @param {Object} [options]
 	* @param {boolean} [options.extend=false] If the new column is not the same length as the DataFrame, extends the DataFrame
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Adds a new column 'fullName' by applying a function on the DataFrame
+	* df.addColumn(
+	*   'fullName',
+	*   df.map(row => [row.name, row.surname].join(' ')),
+	*   { inPlace: true }
+	* );
+	*
+	* // Adds a new column 'species', with 'human' on every rows
+  	* df.addColumn('species', 'human', { inPlace: true });
 	*/
 	addColumn(name, column, options = {}) {
 		Validator.string('DataFrame.addColumn()', 'name', name, { not: this._columns });
@@ -481,6 +515,9 @@ class DataFrame {
 	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Renames column 'occupation' into 'job'
+	* df.rename({ occupation: 'job' }, { inPlace: true });
 	*/
 	rename(map, options = {}) {
 		Validator.options('DataFrame.rename()', options, [
@@ -508,6 +545,10 @@ class DataFrame {
 	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* console.log(df.columns) // ['occupation', 'species', 'name']
+	* df.reorder(['name', 'occupation', 'species'], { inPlace: true });
+	* console.log(df.columns) // ['name', 'occupation', 'species']
 	*/
 	reorder(names, options = {}) {
 		Validator.array('DataFrame.reorder()', 'names', names, { type: 'string' });
@@ -535,6 +576,11 @@ class DataFrame {
 	* @param {*[]} [options.keep=[0, false]] Array of falsy values to keep in the DataFrame
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Drops all rows containg N/A values
+	* df.dropNA({ inPlace: true });
+	* // Drops all columns containing N/A values (but keep empty strings as well as 0 and false)
+	* df.dropNA({ axis: 'columns', keep: [0, false, ''], inPlace: true });
 	*/
 	dropNA(options = {}) {
 		Validator.options('DataFrame.dropNA()', options, [
@@ -566,6 +612,9 @@ class DataFrame {
 	* @param {(string|string[])} [options.columns=DataFrame.columns] Column or array of columns to consider for comparison
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Drop duplicate rows with similar values for 'name'
+	* df.dropDuplicates({ columns: 'name', inPlace: true });
 	*/
 	dropDuplicates(options = {}) {
 		Validator.options('DataFrame.dropDuplicates()', options, [
@@ -619,11 +668,11 @@ class DataFrame {
 	* @returns {DataFrame}
 	* @example
 	* // Only keep the 'date' and 'url' columns
-	* df.filter(['date', 'url'])
+	* df.filter(['date', 'url'], { inPlace: true });
 	* // Only keep rows whose date is 4/20/20
-	* df.filter(row => row.date === '2020-04-20')
+	* df.filter(row => row.date === '2020-04-20', { inPlace: true });
 	* // Only keep columns whose name contains 'data'
-	* df.filter(column => column.includes('data'), { axis: 'columns' })
+	* df.filter(column => column.includes('data'), { axis: 'columns', inPlace: true });
 	*/
 	filter(filter, options = {}) {
 		Validator.options('DataFrame.filter()', options, [
@@ -674,11 +723,11 @@ class DataFrame {
 	* @returns {DataFrame}
 	* @example
 	* // Remove the 'date' and 'url' columns
-	* df.drop(['date', 'url'])
+	* df.drop(['date', 'url'], { inPlace: true });
 	* // Remove all rows whose date is 4/20/20
-	* df.drop(row => row.date === '2020-04-20')
+	* df.drop(row => row.date === '2020-04-20', { inPlace: true });
 	* // Remove columns whose name contains 'data'
-	* df.drop(column => column.includes('data'), { axis: 'columns' })
+	* df.drop(column => column.includes('data'), { axis: 'columns', inPlace: true });
 	*/
 	drop(filter, options = {}) {
 		Validator.options('DataFrame.drop()', options, [
@@ -698,6 +747,11 @@ class DataFrame {
 	* @param {boolean} [options.reverse=false] Sorts the DataFrame in descending order
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Sort the DataFrame alphabetically by 'name'
+	* df.sort('name', { inPlace: true });
+	* // Sort the DataFrame in descending ordr by 'age'
+	* df.sort('age', { reverse: true, inPlace: true });
 	*/
 	sort(by, options = {}) {
 		const keys = typeof by === 'string' ? [by] : by;
@@ -733,6 +787,9 @@ class DataFrame {
 	* @param {('rows'|'columns')} [options.axis='rows'] Determines whether rows or columns should be shuffled
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
+	* @example
+	* // Shuffles the columns of the DataFrame
+	* df.shuffle({ axis: 'columns', inPlace: true });
 	*/
 	shuffle(options = {}) {
 		Validator.options('DataFrame.shuffle()', options, [
@@ -766,6 +823,9 @@ class DataFrame {
 	* Returns a PivotTable along the given columns
 	* @param {(string|string[])} columns Column or array of columns to pivot along
 	* @returns {PivotTable}
+	* @example
+	* // Returns a PivotTable along columns 'sector' and 'date'
+	* df.pivot(['sector', 'date']);
 	*/
 	pivot(columns) {
 		const pivots = Array.isArray(columns) ? columns : [columns];
@@ -849,6 +909,9 @@ class DataFrame {
 	* @param {Object} [options]
 	* @param {string} [options.delimiter=','] Delimiter to use
 	* @returns {string|undefined} A CSV string if `path` is not set
+	* @example
+	* df.toCSV('myAwesomeData.csv'); // to CSV
+	* df.toCSV('myAwesomeData.tsv', { delimiter: '\t' }); // to TSV
 	*/
 	toCSV(path = null, options = {}) {
 		Validator.options('DataFrame.toCSV()', options, [
@@ -880,6 +943,8 @@ class DataFrame {
 	* @param {Object} [options]
 	* @param {boolean} [options.prettify=true] Prettify JSON output
 	* @returns {string|undefined} A JSON string if `path` is not set
+	* @example
+	* df.toJSON('myAwesomeData.json');
 	*/
 	toJSON(path, options = {}) {
 		Validator.options('DataFrame.toJSON()', options, [
