@@ -312,8 +312,6 @@ class PivotTable {
 				...acc,
 				[key]: Object.entries(value).reduce(toArray, {})
 			};
-
-
 		}
 
 		const content = JSON.stringify(
