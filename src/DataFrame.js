@@ -77,7 +77,9 @@ class DataFrame {
 			return newColumns.reduce((newRow, column, index) => {
 				return {
 					...newRow,
-					[column]: index < this._columns.length ? row[this._columns[index]] : null
+					[column]: row[column] !== undefined
+						? row[column]
+						: index < this._columns.length ? row[this._columns[index]] : null
 				};
 			}, {});
 		});
@@ -352,7 +354,7 @@ class DataFrame {
 		data.forEach(row => {
 			this._data.splice(index, 0, newColumns.reduce((acc, column) => ({
 				...acc,
-				[column]: !this._kw.isNA(row[column], { keep: [0, false, ''] }) ? row[column] : 'truc'
+				[column]: !this._kw.isNA(row[column], { keep: [0, false, ''] }) ? row[column] : null
 			}), {}));
 			// this._defineRowProperty(this._data.length - 1);
 			index++;
