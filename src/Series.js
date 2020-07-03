@@ -67,6 +67,9 @@ class Series {
 	* Returns any row of the Series
 	* @param {number} index
 	* @returns {*}
+	* @example
+	* // Returns the value at index 4
+	* series.get(4);
 	*/
 	get(index) {
 		Validator.integer('Series.get()', 'index', index, { range: [0, this.length - 1] });
@@ -93,6 +96,9 @@ class Series {
 	* Returns a new Series containing the first N values of the Series
 	* @param {number} [n=5] Number of values to select
 	* @returns {Series}
+	* @example
+	* // Returns a new Series with the first 10 values
+	* series.head(10);
 	*/
 	head(n = 5) {
 		Validator.integer('Series.head()', 'n', n);
@@ -103,6 +109,9 @@ class Series {
 	* Returns a new Series containing the last N values of the Series
 	* @param {number} [n=5] Number of values to select
 	* @returns {Series}
+	* @example
+	* // Returns a new Series with the last 5 values
+	* series.tail();
 	*/
 	tail(n = 5) {
 		Validator.integer('Series.tail()', 'n', n);
@@ -114,6 +123,11 @@ class Series {
 	* @param {number} start Zero-based index at which to start extraction
 	* @param {number} [end=Series.length] Zero-based index before which to end extraction
 	* @returns {Series}
+	* @example
+	* // Returns a new Series with values starting at index 10
+	* series.slice(10);
+	* // Returns a new Series with values between index 24 (included) and 42 (excluded)
+	* series.slice(24, 42);
 	*/
 	slice(start, end = this.length) {
 		Validator.integer('Series.slice()', 'start', start);
@@ -124,6 +138,10 @@ class Series {
 	/**
 	* Returns the values of the Series as an iterable
 	* @returns {Iterable.<*>}
+	* @example
+	* for (let value of series.values()) {
+	*   console.log(value);
+	* }
 	*/
 	values() {
 		let index = 0;
@@ -144,6 +162,9 @@ class Series {
 	/**
 	* Returns an array of index/value pairs as an iterable
 	* @returns {Iterable.<Array.<number, *>>}
+	* for (let [index, value] of series.items()) {
+	*   console.log(index, value);
+	* }
 	*/
 	items() {
 		let index = 0;
@@ -165,6 +186,9 @@ class Series {
 	/**
 	* Applies a callback function to each value of the Series
 	* @param {callback} callback
+	* @example
+	* // Displays each value of the Series
+	* series.forEach(value => console.log(value));
 	*/
 	forEach(callback) {
 		Validator.function('Series.forEach()', 'callback', callback);
@@ -175,6 +199,9 @@ class Series {
 	* Returns a new Series populated with the results of a callback function applied on the Series
 	* @param {callback} callback
 	* @returns {Series}
+	* @example
+	* // Double each value in the Series
+	* series.map(value => value * 2);
 	*/
 	map(callback) {
 		Validator.function('Series.map()', 'callback', callback);
@@ -185,6 +212,8 @@ class Series {
 	* Appends new values to a Series
 	* @param {Object|Object[]} values Value or array of values to append to the Series
 	* @returns {Series}
+	* @example
+	* series.append([42, 101]);
 	*/
 	append(values) {
 		const data = Array.isArray(values) ? values : [values];
@@ -197,6 +226,9 @@ class Series {
 	* @param {*|*[]} values Value or array of values to insert into the Series
 	* @param {number} [index=0] Index to insert the values at
 	* @returns {Series}
+	* @example
+	* // Inserts value 42 at index 2 in the Series
+	* series.insert(42, 2);
 	*/
 	insert(values, index = 0) {
 		Validator.integer('Series.insert()', 'index', index, { range: [0, this.length - 1] });
@@ -212,6 +244,9 @@ class Series {
 	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
+	* @example
+	* // Concatenates series1 and series2
+	* series1.concat(series2, { inPlace: true });
 	*/
 	concat(other, options = {}) {
 		Validator.instanceOf('Series.concat()', 'other', other, 'Series', Series);
@@ -228,6 +263,11 @@ class Series {
 	* @param {*[]} [options.keep=[0, false]] Array of falsy values to keep in the Series
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
+	* @example
+	* // Drop all N/A values from the Series
+	* series.dropNA({ inPlace: true });
+	* // Drop all N/A values but keep empty strings
+	* series.dropNA({ keep: [''], inPlace: true });
 	*/
 	dropNA(options = {}) {
 		Validator.options('Series.dropNA()', options, [
@@ -245,6 +285,8 @@ class Series {
 	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
+	* @example
+	* series.dropDuplicates({ inPlace: true });
 	*/
 	dropDuplicates(options = {}) {
 		Validator.options('Series.dropDuplicates()', options, [
@@ -266,8 +308,14 @@ class Series {
 	* Returns true if any value of the series satisfies the given condition
 	* @param {callback} [condition=!Kiwis.isNA]
 	* @returns {boolean}
+	* @example
+	* // Returns true if any value is not N/A
+	* series.any();
+	*
+	* // Returns true if any value is greater than 42
+	* series.any(value => value > 42);
 	*/
-	any(condition = e => !this._kw.isNA(e)) {
+	any(condition = value => !this._kw.isNA(value)) {
 		Validator.function('Series.any()', 'condition', condition);
 		return this._data.some(condition);
 	}
@@ -276,8 +324,14 @@ class Series {
 	* Returns true if all values of the series satisfy the given condition
 	* @param {callback} [condition=!Kiwis.isNA]
 	* @returns {boolean}
+	* @example
+	* // Returns true if all values are not N/A
+	* series.all();
+	*
+	* // Returns true if all values are greater than 42
+	* series.all(value => value > 42);
 	*/
-	all(condition = e => !this._kw.isNA(e)) {
+	all(condition = value => !this._kw.isNA(value)) {
 		Validator.function('Series.all()', 'condition', condition);
 		return this._data.every(condition);
 	}
@@ -288,6 +342,9 @@ class Series {
 	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
+	* @example
+	* // Only keeps values greater than 42
+	* series.filter(value => value > 42, { inPlace: true });
 	*/
 	filter(filter, options = {}) {
 		Validator.function('Series.filter()', 'filter', filter);
@@ -311,6 +368,9 @@ class Series {
 	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
+	* @example
+	* // Only drops values greater than 42
+	* series.drop(value => value > 42, { inPlace: true });
 	*/
 	drop(filter, options = {}) {
 		Validator.function('Series.drop()', 'filter', filter);
@@ -327,6 +387,9 @@ class Series {
 	* @param {boolean} [options.reverse=false] Sorts the Series in descending order
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
+	* @example
+	* // Sorts the Series in descending order
+	* series.sort({ reverse: true, inPlace: true });
 	*/
 	sort(options = {}) {
 		Validator.options('Series.sort()', options, [
@@ -352,6 +415,8 @@ class Series {
 	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
+	* @example
+	* series.shuffle({ inPlace: true });
 	*/
 	shuffle(options = {}) {
 		Validator.options('Series.shuffle()', options, [
@@ -383,6 +448,9 @@ class Series {
 	* @param {boolean} [options.sort=true] Sorts the counts
 	* @param {boolean} [options.reverse=true] Sorts the counts in descending order
 	* @returns {Object} Counts as an object of value/count pairs
+	* @example
+	* // Returns the number of occurences for each value in the Series, in ascending order
+	* series.counts({ reverse: false });
 	*/
 	counts(options = {}) {
 		Validator.options('Series.counts()', options, [
@@ -420,6 +488,9 @@ class Series {
 	* @param {boolean} [options.sort=true] Sorts the frequencies
 	* @param {boolean} [options.reverse=true] Sorts the frequencies in descending order
 	* @returns {Object} Counts as an object of value/frequencies pairs
+	* @example
+	* // Returns the frequency for each value in the Series, in ascending order
+	* series.frequencies({ reverse: false });
 	*/
 	frequencies(options = {}) {
 		Validator.options('Series.frequencies()', options, [
@@ -436,10 +507,16 @@ class Series {
 
 	/**
 	* Round the values in the Series
-	* @param {number} digits Number of digits for rounding
+	* @param {number} [digits=0] Number of digits for rounding
 	* @param {Object} [options]
 	* @param {boolean} [options.inPlace=false] Changes the current Series instead of returning a new one
 	* @returns {Series}
+	* @example
+	* // Rounds all values in the digits to 2 decimal points
+	* series.round(2, { inPlace: true });
+	*
+	* // Truncates all values in the Series
+	* series.round(0, { inPlace: true });
 	*/
 	round(digits = 0, options = {}) {
 		Validator.integer('Series.round()', 'digits', digits);
@@ -448,7 +525,7 @@ class Series {
 		]);
 
 		if (this.any(value => Number.isNaN(+value)))
-			throw new Error('Cannot round non-number values');
+			throw new Error('Error in Series.round(): cannot round non-number values');
 		const inPlace = options.inPlace || false;
 		if (inPlace) {
 			this._data = this._data.map(value => (+value).toFixed(digits));
@@ -462,6 +539,12 @@ class Series {
 	* @param {callback} callback
 	* @param {*} [initial=Series.first()] Value to use as the first argument to the first call of the callback
 	* @returns {*}
+	* @example
+	* // Returns the sum of all values in the Series
+	* series.reduce((acc, value) => acc + value); // Equivalent to series.sum()
+	*
+	* // Returns the product of all values in the Series
+	* series.reduce((acc, value) => acc * value, 1);
 	*/
 	reduce(callback, initial) {
 		Validator.function('Series.reduce()', 'callback', callback);
@@ -477,7 +560,7 @@ class Series {
 	*/
 	sum() {
 		if (this.any(value => Number.isNaN(+value)))
-			throw new Error('Cannot sum non-number values');
+			throw new Error('Error in Series.sum(): cannot sum non-number values');
 		return d3.sum(this._data, d => +d);
 	}
 
@@ -487,7 +570,7 @@ class Series {
 	*/
 	min() {
 		if (this.any(value => Number.isNaN(+value)))
-			throw new Error('Cannot compute non-number values');
+			throw new Error('Error in Series.min(): cannot compute non-number values');
 		return d3.min(this._data, d => +d);
 	}
 
@@ -497,7 +580,7 @@ class Series {
 	*/
 	max() {
 		if (this.any(value => Number.isNaN(+value)))
-			throw new Error('Cannot compute non-number values');
+			throw new Error('Error in Series.max(): cannot compute non-number values');
 		return d3.max(this._data, d => +d);
 	}
 
@@ -507,7 +590,7 @@ class Series {
 	*/
 	extent() {
 		if (this.any(value => Number.isNaN(+value)))
-			throw new Error('Cannot compute non-number values');
+			throw new Error('Error in Series.extent(): cannot compute non-number values');
 		return d3.extent(this._data, d => +d);
 	}
 
@@ -517,7 +600,7 @@ class Series {
 	*/
 	mean() {
 		if (this.any(value => Number.isNaN(+value)))
-			throw new Error('Cannot average non-number values');
+			throw new Error('Error in Series.mean(): cannot average non-number values');
 		return d3.mean(this._data, d => +d);
 	}
 
@@ -527,7 +610,7 @@ class Series {
 	*/
 	median() {
 		if (this.any(value => Number.isNaN(+value)))
-			throw new Error('Cannot compute non-number values');
+			throw new Error('Error in Series.median(): cannot compute non-number values');
 		return d3.median(this._data, d => +d);
 	}
 
@@ -537,12 +620,12 @@ class Series {
 	*/
 	std() {
 		if (this.any(value => Number.isNaN(+value)))
-			throw new Error('Cannot compute non-number values');
+			throw new Error('Error in Series.std(): cannot compute non-number values');
 		return d3.deviation(this._data, d => +d);
 	}
 
 	/**
-	* Format the Series for display
+	* Formats the Series for display
 	* @returns {string}
 	*/
 	toString() {
@@ -591,6 +674,8 @@ class Series {
 	* @param {Object} [options]
 	* @param {string} [options.name='series'] Column name to use
 	* @returns {string|undefined} A JSON string if `path` is not set
+	* @example
+	* series.toCSV('myAwesomeData.csv', { name: 'awesome' });
 	*/
 	toCSV(path, options = {}) {
 		Validator.options('Series.toCSV()', options, [
@@ -611,6 +696,8 @@ class Series {
 	* @param {string} [options.name='series'] Column name to use
 	* @param {boolean} [options.prettify=true] Prettify JSON output
 	* @returns {string|undefined} A JSON string if `path` is not set
+	* @example
+	* series.toJSON('myAwesomeData.json', { name: 'awesome' });
 	*/
 	toJSON(path, options = {}) {
 		Validator.options('Series.toJSON()', options, [

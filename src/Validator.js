@@ -8,7 +8,7 @@ class Validator {
 		else if (typeof argument !== 'string')
 			throw new Error(`Invalid argument in ${method}: '${name}' must be a string`);
 		else if (options && options.enum && !options.enum.includes(argument))
-			throw new Error(`Invalid value '${argument}' in ${method}: possible values for '${name}' are ${options.enum.slice(0, -1).map(e => `'${e}'`).join(', ')} or '${options.enum[options.enum.length - 1]}'`);
+			throw new Error(`Invalid value '${argument}' in ${method}: accepted values for '${name}' are ${options.enum.slice(0, -1).map(e => `'${e}'`).join(', ')} or '${options.enum[options.enum.length - 1]}'`);
 		else if (options && options.not && options.not.includes(argument))
 			throw new Error(`Invalid value for '${name}' in ${method}: '${argument}' is already used`);
 	}
@@ -39,7 +39,7 @@ class Validator {
 		else if (options.enum) {
 			const invalidValue = argument.find(e => !options.enum.includes(e));
 			if (invalidValue !== undefined)
-				throw new Error(`Invalid value '${invalidValue}' in ${method}: possible values for '${name}' are ${options.enum.slice(0, -1).map(e => `'${e}'`).join(', ')} or '${options.enum[options.enum.length - 1]}'`);
+				throw new Error(`Invalid value '${invalidValue}' in ${method}: accepted values for '${name}' are ${options.enum.slice(0, -1).map(e => `'${e}'`).join(', ')} or '${options.enum[options.enum.length - 1]}'`);
 		}
 	}
 

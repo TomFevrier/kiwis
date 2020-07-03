@@ -18,6 +18,30 @@ class Kiwis {
 	* Returns a new DataFrame from the given data
 	* @param {Object[]} data An array of objects
 	* @returns {DataFrame}
+	* @example
+	* const kw = require('kiwis');
+	*
+	* const df = kw.DataFrame([
+  	*   {
+    *     name: 'Marvin',
+    *     surname: '',
+    *     occupation: 'Paranoid Android'
+  	*   },
+  	*   {
+    *     name: 'Zaphod',
+    *     surname: 'Beeblebrox',
+    *     occupation: 'President of the Galaxy'
+  	*   },
+  	*   {
+    *     name: 'Arthur',
+    *     surname: 'Dent',
+    *     occupation: null
+  	*   }
+	* ]);
+	*
+	* console.log(df.length) // 3
+	* console.log(df.columns) // ['name', 'surname', 'occupation']
+	* console.log(df.empty) // false
 	*/
 	static DataFrame(data) {
 		Validator.array('Kiwis.DataFrame()', 'data', data, { type: 'object' });
@@ -28,6 +52,13 @@ class Kiwis {
 	* Returns a new Series from the given data
 	* @param {*[]} data An array of values
 	* @returns {Series}
+	* @example
+	* const kw = require('kiwis');
+	*
+	* const series = kw.Series([1, 1, 2, 3, 5, 8, 13, 21, 34]);
+	*
+	* console.log(series.length) // 9
+	* console.log(series.empty) // false
 	*/
 	static Series(data) {
 		Validator.array('Kiwis.Series()', 'data', data);
@@ -44,10 +75,10 @@ class Kiwis {
 	* @returns {DataFrame}
 	* @example
 	* // Loads a CSV file
-	* df = Kiwis.loadCSV('myAwesomeData.csv');
+	* const df = Kiwis.loadCSV('myAwesomeData.csv');
 	*
 	* // Loads a TSV file and prettify the columns in camelCase
-	* df = Kiwis.loadCSV('myAwesomeData.tsv', { delimiter: '\t', prettify; 'camelCase' }); // to TSV
+	* const df = Kiwis.loadCSV('myAwesomeData.tsv', { delimiter: '\t', prettify; 'camelCase' }); // to TSV
 	*/
 	static loadCSV(path, options = {}) {
 		Validator.string('Kiwis.loadCSV()', 'path', path);

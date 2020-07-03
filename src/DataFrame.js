@@ -114,6 +114,9 @@ class DataFrame {
 	* Returns any row of the DataFrame
 	* @param {number} index
 	* @returns {Object}
+	* @example
+	* // Returns the row at index 4
+	* df.get(4);
 	*/
 	get(index) {
 		Validator.integer('DataFrame.get()', 'index', index, { range: [0, this.length - 1] });
@@ -140,6 +143,9 @@ class DataFrame {
 	* Returns a new DataFrame containing the first N rows of the DataFrame
 	* @param {number} [n=5] Number of rows to select
 	* @returns {DataFrame}
+	* @example
+	* // Returns a new DataFrame with the first 10 rows
+	* df.head(10);
 	*/
 	head(n = 5) {
 		Validator.integer('DataFrame.head()', 'n', n);
@@ -150,6 +156,9 @@ class DataFrame {
 	* Returns a new DataFrame containing the last N rows of the DataFrame
 	* @param {number} [n=5] Number of rows to select
 	* @returns {DataFrame}
+	* @example
+	* // Returns a new DataFrame with the last 5 rows
+	* df.tail();
 	*/
 	tail(n = 5) {
 		Validator.integer('DataFrame.tail()', 'n', n);
@@ -224,6 +233,9 @@ class DataFrame {
 	/**
 	* Applies a callback function to each row of the DataFrame
 	* @param {callback} callback
+	* @example
+	* // Displays each element in the 'name' column of the DataFrame
+	* df.forEach(row => console.log(row.name));
 	*/
 	forEach(callback) {
 		Validator.function('DataFrame.forEach()', 'callback', callback);
@@ -234,6 +246,9 @@ class DataFrame {
 	* Returns a new Series populated with the results of a callback function applied on each row the DataFrame
 	* @param {callback} callback
 	* @returns {Series}
+	* @example
+	* // Returns a Series of full names by joining the name and surname for each row of the DataFrame
+	* df.map(row => [row.name, row.surname].join(' '));
 	*/
 	map(callback) {
 		Validator.function('DataFrame.map()', 'callback', callback);
@@ -250,7 +265,7 @@ class DataFrame {
 	* @returns {DataFrame}
 	* @example
 	* // Replaces all occurrences of 'panda' with 'kiwi' in the column 'animal'
-	* df.replace('panda', 'kiwi', { inPlace: true, columns: 'name' });
+	* df.replace('panda', 'kiwi', { inPlace: true, columns: 'animal' });
 	*/
 	replace(oldValue, newValue, options = {}) {
 		Validator.options('DataFrame.replace()', options, [
@@ -279,7 +294,7 @@ class DataFrame {
 	* Appends new rows to a DataFrame
 	* @param {Object|Object[]} rows Row or array of rows to append to the DataFrame
 	* @param {Object} [options]
-	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not already exist
+	* @param {boolean} [options.extend=false] Adds new columns to the DataFrame if they do not already exist
 	* @returns {DataFrame}
 	* @example
 	* const rows = [
@@ -327,7 +342,7 @@ class DataFrame {
 	* @param {Object|Object[]} rows Row or array of rows to insert into the DataFrame
 	* @param {number} [index=0] Index to insert the rows at
 	* @param {Object} [options]
-	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not already exist
+	* @param {boolean} [options.extend=false] Adds new columns to the DataFrame if they do not already exist
 	* @returns {DataFrame}
 	* @example
 	* // Inserts a new row at index 2 in the DataFrame
@@ -367,7 +382,7 @@ class DataFrame {
 	* Concatenates another DataFrame to the DataFrame
 	* @param {DataFrame} other
 	* @param {Object} [options]
-	* @param {boolean} [options.extend=false] Add new columns to the DataFrame if they do not already exist
+	* @param {boolean} [options.extend=false] Adds new columns to the DataFrame if they do not already exist
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	* @example
@@ -399,7 +414,7 @@ class DataFrame {
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	* @example
-	* // Join DataFrames df1 and df2 along their column 'id', keeping only the rows from df1
+	* // Joins DataFrames df1 and df2 along their column 'id', keeping only the rows from df1
 	* df1.join(df2, 'id', { inPlace: true, how: 'left' });
 	*/
 	join(other, column, options = {}) {
@@ -581,7 +596,7 @@ class DataFrame {
 	* @example
 	* // Drops all rows containg N/A values
 	* df.dropNA({ inPlace: true });
-	* // Drops all columns containing N/A values (but keep empty strings as well as 0 and false)
+	* // Drops all columns containing N/A values (but keeps empty strings as well as 0 and false)
 	* df.dropNA({ axis: 'columns', keep: [0, false, ''], inPlace: true });
 	*/
 	dropNA(options = {}) {
@@ -615,7 +630,7 @@ class DataFrame {
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	* @example
-	* // Drop duplicate rows with similar values for 'name'
+	* // Drops duplicate rows with similar values for 'name'
 	* df.dropDuplicates({ columns: 'name', inPlace: true });
 	*/
 	dropDuplicates(options = {}) {
@@ -669,11 +684,11 @@ class DataFrame {
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	* @example
-	* // Only keep the 'date' and 'url' columns
+	* // Only keeps the 'date' and 'url' columns
 	* df.filter(['date', 'url'], { inPlace: true });
-	* // Only keep rows whose date is 4/20/20
+	* // Only keeps rows whose date is 4/20/20
 	* df.filter(row => row.date === '2020-04-20', { inPlace: true });
-	* // Only keep columns whose name contains 'data'
+	* // Only keeps columns whose name contains 'data'
 	* df.filter(column => column.includes('data'), { axis: 'columns', inPlace: true });
 	*/
 	filter(filter, options = {}) {
@@ -686,9 +701,9 @@ class DataFrame {
 		const inPlace = options.inPlace || false;
 
 		if (typeof filter !== 'function') {
-			filter.forEach(column => {
-				if (!this._columns.includes(column))
-					throw new Error(`No column named '${column}'`);
+			Validator.array('DataFrame.filter()', 'filter', filter, {
+				type: 'string',
+				enum: this._columns
 			});
 		}
 
@@ -724,11 +739,11 @@ class DataFrame {
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	* @example
-	* // Remove the 'date' and 'url' columns
+	* // Removes the 'date' and 'url' columns
 	* df.drop(['date', 'url'], { inPlace: true });
-	* // Remove all rows whose date is 4/20/20
+	* // Removes all rows whose date is 4/20/20
 	* df.drop(row => row.date === '2020-04-20', { inPlace: true });
-	* // Remove columns whose name contains 'data'
+	* // Removes columns whose name contains 'data'
 	* df.drop(column => column.includes('data'), { axis: 'columns', inPlace: true });
 	*/
 	drop(filter, options = {}) {
@@ -750,9 +765,9 @@ class DataFrame {
 	* @param {boolean} [options.inPlace=false] Changes the current DataFrame instead of returning a new one
 	* @returns {DataFrame}
 	* @example
-	* // Sort the DataFrame alphabetically by 'name'
+	* // Sorts the DataFrame alphabetically by 'name'
 	* df.sort('name', { inPlace: true });
-	* // Sort the DataFrame in descending ordr by 'age'
+	* // Sorts the DataFrame in descending ordr by 'age'
 	* df.sort('age', { reverse: true, inPlace: true });
 	*/
 	sort(by, options = {}) {
@@ -838,7 +853,7 @@ class DataFrame {
 	}
 
 	/**
-	* Format the DataFrame for display
+	* Formats the DataFrame for display
 	* @returns {string}
 	*/
 	toString() {

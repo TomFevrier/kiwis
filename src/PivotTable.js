@@ -9,6 +9,7 @@ const Series = require('./Series.js');
 
 const Validator = require('./Validator.js');
 
+
 /**
 * @class
 * @property {number} length The number of rows in the PivotTable
@@ -78,6 +79,12 @@ class PivotTable {
 	* @param {Object} [options]
 	* @param {string} [options.name='data'] Name to use for the column in the output DataFrame
 	* @returns {DataFrame}
+	* @example
+	* // For each leaf, computes the number of rows where 'score' is greater than 3
+	* df.pivot(['sector', 'date']).rollup(
+	*   leaf => leaf.filter(row => row.score > 3).length,
+	*   { name: 'nbHighScores' }
+	* );
 	*/
 	rollup(callback, options = {}) {
 		Validator.function('PivotTable.rollup()', 'callback', callback);
@@ -118,6 +125,8 @@ class PivotTable {
 	/**
 	* Counts the number of leaves for each branch of the PivotTable
 	* @returns {DataFrame}
+	* @example
+	* df.pivot(['sector', 'date']).count();
 	*/
 	count() {
 		return this.rollup(l => l.length, { name: 'count' });
@@ -126,6 +135,9 @@ class PivotTable {
 	/**
 	* Computes the sum of a given column of the PivotTable
 	* @returns {DataFrame}
+	* @example
+	* // For each leaf, computes the sum of the column 'score'
+	* df.pivot(['sector', 'date']).sum('score');
 	*/
 	sum(column) {
 		Validator.string('PivotTable.sum()', 'column', column, { enum: this._columns });
@@ -137,6 +149,9 @@ class PivotTable {
 	/**
 	* Computes the minimum value of a given column of the PivotTable
 	* @returns {DataFrame}
+	* @example
+	* // For each leaf, computes the minimum of the column 'score'
+	* df.pivot(['sector', 'date']).min('score');
 	*/
 	min(column) {
 		Validator.string('PivotTable.min()', 'column', column, { enum: this._columns });
@@ -148,6 +163,9 @@ class PivotTable {
 	/**
 	* Computes the maximum value of a given column of the PivotTable
 	* @returns {DataFrame}
+	* @example
+	* // For each leaf, computes the maximum of the column 'score'
+	* df.pivot(['sector', 'date']).max('score');
 	*/
 	max(column) {
 		Validator.string('PivotTable.max()', 'column', column, { enum: this._columns });
@@ -159,6 +177,9 @@ class PivotTable {
 	/**
 	* Computes the mean of a given column of the PivotTable
 	* @returns {DataFrame}
+	* @example
+	* // For each leaf, computes the mean of the column 'score'
+	* df.pivot(['sector', 'date']).mean('score');
 	*/
 	mean(column) {
 		Validator.string('PivotTable.mean()', 'column', column, { enum: this._columns });
@@ -168,8 +189,11 @@ class PivotTable {
 	}
 
 	/**
-	* Computes the mean of a given column of the PivotTable
+	* Computes the median of a given column of the PivotTable
 	* @returns {DataFrame}
+	* @example
+	* // For each leaf, computes the median of the column 'score'
+	* df.pivot(['sector', 'date']).median('score');
 	*/
 	median(column) {
 		Validator.string('PivotTable.median()', 'column', column, { enum: this._columns });
@@ -181,6 +205,9 @@ class PivotTable {
 	/**
 	* Computes the standard deviation of a given column of the PivotTable
 	* @returns {DataFrame}
+	* @example
+	* // For each leaf, computes the standard deviation of the column 'score'
+	* df.pivot(['sector', 'date']).std('score');
 	*/
 	std(column) {
 		Validator.string('PivotTable.std()', 'column', column, { enum: this._columns });
@@ -190,7 +217,7 @@ class PivotTable {
 	}
 
 	/**
-	* Format the PivotTable for display
+	* Formats the PivotTable for display
 	* @returns {string}
 	*/
 	toString() {
@@ -293,6 +320,8 @@ class PivotTable {
 	* @param {Object} [options]
 	* @param {boolean} [options.prettify=true] Prettify JSON output
 	* @returns {string}
+	* @example
+	* pivotTable.toJSON('myPivotTable.json');
 	*/
 	toJSON(path, options = {}) {
 		Validator.options('PivotTable.toJSON()', options, [
