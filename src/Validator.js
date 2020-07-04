@@ -2,7 +2,7 @@
 
 class Validator {
 
-	static string(method, name, argument, options) {
+	static string(method, name, argument, options = {}) {
 		if (argument === undefined)
 			throw new Error(`Missing argument in ${method}: '${name}' is required`);
 		else if (typeof argument !== 'string')
@@ -13,7 +13,7 @@ class Validator {
 			throw new Error(`Invalid value for '${name}' in ${method}: '${argument}' is already used`);
 	}
 
-	static integer(method, name, argument, options) {
+	static integer(method, name, argument, options = {}) {
 		if (argument === undefined)
 			throw new Error(`Missing argument in ${method}: '${name}' is required`);
 		else if (typeof argument !== 'number' || argument % 1 !== 0)
@@ -22,14 +22,14 @@ class Validator {
 			throw new Error(`Value [${argument}] out of range for '${name}' in ${method}: must be between ${options.range[0]} and ${options.range[1]}`);
 	}
 
-	static function(method, name, argument, options) {
+	static function(method, name, argument, options = {}) {
 		if (argument === undefined)
 			throw new Error(`Missing argument in ${method}: '${name}' is required`);
 		else if (typeof argument !== 'function')
 			throw new Error(`Invalid argument in ${method}: '${name}' must be a function`);
 	}
 
-	static array(method, name, argument, options) {
+	static array(method, name, argument, options = {}) {
 		if (argument === undefined)
 			throw new Error(`Missing argument in ${method}: '${name}' is required`);
 		else if (!Array.isArray(argument))
@@ -43,7 +43,7 @@ class Validator {
 		}
 	}
 
-	static object(method, name, argument, options) {
+	static object(method, name, argument, options = {}) {
 		if (argument === undefined)
 			throw new Error(`Missing argument in ${method}: '${name}' is required`);
 		else if (typeof argument !== 'object' || !argument)
