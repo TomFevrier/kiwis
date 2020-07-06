@@ -34,6 +34,12 @@ class DataFrame {
 		}
 		else {
 			this._data = Array.from(JSON.parse(JSON.stringify(data)));
+			this._data.forEach(row => {
+				Object.entries(row).forEach(([key, value]) => {
+					if (!Number.isNaN(+value))
+						row[key] = +value;
+				});
+			});
 			this._columns = Array.from(
 				new Set(this._data.reduce((acc, row) => {
 					return [...acc, ...Object.keys(row)];
@@ -41,7 +47,6 @@ class DataFrame {
 			);
 		}
 		this._defineColumnProperties();
-
 		this._kw = require('./Kiwis.js');
 	}
 
@@ -137,6 +142,22 @@ class DataFrame {
 	*/
 	last() {
 		return this._data[this._data.length - 1];
+	}
+
+	/**
+	* Sets the content of a cell in the DataFrame
+	* @param {number} index
+	* @param {string} column
+	* @param {*} value
+	* @example
+	* // Sets the value for 'name' on the 42nd row to 'Slartibartfast'
+	* df.set(42, 'name', 'Slartibartfast');
+	*/
+	set(index, column, value) {
+		Validator.integer('DataFrame.set()', 'index', index, { range: [0, this.length - 1] });
+		Validator.string('DataFrame.set()', 'column', column, { enum: this._columns });
+		this._data[index][column] = value;
+		this[column].set(index, value);
 	}
 
 	/**
@@ -240,6 +261,7 @@ class DataFrame {
 	forEach(callback) {
 		Validator.function('DataFrame.forEach()', 'callback', callback);
 		this._data.forEach(callback);
+		this.columns = this._columns;
 	}
 
 	/**
@@ -287,6 +309,7 @@ class DataFrame {
 				[column]: cell
 			};
 		}, {}));
+		df._defineColumnProperties();
 		return df;
 	}
 
@@ -331,7 +354,6 @@ class DataFrame {
 				...acc,
 				[column]: !this._kw.isNA(row[column], { keep: [0, false, ''] }) ? row[column] : null
 			}), {}));
-			// this._defineRowProperty(this._data.length - 1);
 		});
 		this.columns = newColumns;
 		return this;
@@ -371,7 +393,6 @@ class DataFrame {
 				...acc,
 				[column]: !this._kw.isNA(row[column], { keep: [0, false, ''] }) ? row[column] : null
 			}), {}));
-			// this._defineRowProperty(this._data.length - 1);
 			index++;
 		});
 		this.columns = newColumns;
@@ -467,8 +488,7 @@ class DataFrame {
 			return new DataFrame(newData).dropDuplicates();
 
 		this._data = newData;
-		this._columns = Array.from(new Set([...this._columns, ...other._columns]));
-		this._defineColumnProperties();
+		this.columns = Array.from(new Set([...this._columns, ...other._columns]));
 		return this.dropDuplicates();
 	}
 
@@ -504,7 +524,7 @@ class DataFrame {
 		const extend = options.extend || false;
 		const inPlace = options.inPlace || false;
 
-		let newData = this._data.map((row, index) => {
+		const newData = this._data.map((row, index) => {
 			return {
 				...row,
 				[name]: index < data.length ? data[index].toString() : null
@@ -519,8 +539,8 @@ class DataFrame {
 			});
 		}
 		if (inPlace) {
-			this.columns = [...this._columns, name];
 			this._data = newData;
+			this.columns = [...this._columns, name];
 			return this;
 		}
 		return new DataFrame(newData);

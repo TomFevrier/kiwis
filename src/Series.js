@@ -28,6 +28,10 @@ class Series {
 		}
 		else {
 			this._data = Array.from(JSON.parse(JSON.stringify(data)));
+			this._data.forEach((value, index) => {
+				if (!Number.isNaN(+value))
+					this._data[index] = +value;
+			});
 		}
 		this._data.forEach((value, index) => {
 			Object.defineProperty(this, index, {
@@ -35,7 +39,6 @@ class Series {
 				configurable: true
 			});
 		});
-
 		this._kw = require('./Kiwis.js');
 	}
 
@@ -90,6 +93,19 @@ class Series {
 	*/
 	last() {
 		return this._data[this._data.length - 1];
+	}
+
+	/**
+	* Sets a value in the Series
+	* @param {number} index
+	* @param {*} value
+	* @example
+	* // Sets the 42nd value of the Series to 'Slartibartfast'
+	* df.set(42, 'name', 'Slartibartfast');
+	*/
+	set(index, value) {
+		Validator.integer('Series.set()', 'index', index, { range: [0, this.length - 1] });
+		this._data[index] = value;
 	}
 
 	/**
