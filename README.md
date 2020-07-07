@@ -6,10 +6,7 @@
 
 `npm install kiwis`
 
-<img
-	src='assets/logo-kiwis.png'
-	style="width: 100px;"
-/>
+![](assets/logo-kiwis-small.png)
 
 ### Getting started
 
