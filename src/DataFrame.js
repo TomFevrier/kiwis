@@ -35,7 +35,7 @@ class DataFrame {
 			this._data = Array.from(JSON.parse(JSON.stringify(data)));
 			this._data.forEach(row => {
 				Object.entries(row).forEach(([key, value]) => {
-					if (!Number.isNaN(+value))
+					if (value && typeof value !== 'boolean' && !Number.isNaN(+value))
 						row[key] = +value;
 				});
 			});

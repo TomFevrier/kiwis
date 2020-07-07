@@ -28,7 +28,7 @@ class Series {
 		else {
 			this._data = Array.from(JSON.parse(JSON.stringify(data)));
 			this._data.forEach((value, index) => {
-				if (!Number.isNaN(+value))
+				if (value && typeof value !== 'boolean' && !Number.isNaN(+value))
 					this._data[index] = +value;
 			});
 		}
