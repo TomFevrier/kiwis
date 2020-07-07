@@ -1,6 +1,6 @@
 {
 	"name": "kiwis",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "A Pandas-inspired data wrangling toolkit in JavaScript",
 	"scripts": {
 		"doc-update": "documentation readme src/*.js -s 'Documentation' --config documentation.yaml"
