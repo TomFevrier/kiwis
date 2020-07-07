@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const d3 = require('d3-dsv');
 
 const DataFrame = require('./DataFrame.js');
@@ -93,7 +92,7 @@ class Kiwis {
 		const prettify = options.prettify || 'none';
 		const parser = d3.dsvFormat(delimiter);
 
-		const rawData = fs.readFileSync(path, { encoding });
+		const rawData = eval('require')('fs').readFileSync(path, { encoding });
 		const data = parser.parse(rawData);
 
 		const df = new DataFrame(data);

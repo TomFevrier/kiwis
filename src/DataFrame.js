@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const d3 = require('d3-array');
 
 const Series = require('./Series.js');
@@ -527,7 +526,7 @@ class DataFrame {
 		const newData = this._data.map((row, index) => {
 			return {
 				...row,
-				[name]: index < data.length ? data[index].toString() : null
+				[name]: index < data.length ? data[index] : null
 			};
 		});
 		if (extend) {
@@ -538,6 +537,7 @@ class DataFrame {
 				});
 			});
 		}
+		console.log(column.toArray(), newData)
 		if (inPlace) {
 			this._data = newData;
 			this.columns = [...this._columns, name];
@@ -971,7 +971,7 @@ class DataFrame {
 			content += '\n';
 		});
 		if (!path) return content;
-		fs.writeFileSync(path, content);
+		eval('require')('fs').writeFileSync(path, content);
 	}
 
 	/**
@@ -992,7 +992,7 @@ class DataFrame {
 
 		const content = JSON.stringify(this._data, null, prettify ? '\t' : null);
 		if (!path) return content;
-		fs.writeFileSync(path, content);
+		eval('require')('fs').writeFileSync(path, content);
 	}
 
 }

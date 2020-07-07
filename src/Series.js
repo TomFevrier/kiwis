@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const d3 = require('d3-array');
 
 const Validator = require('./Validator.js');
@@ -101,7 +100,7 @@ class Series {
 	* @param {*} value
 	* @example
 	* // Sets the 42nd value of the Series to 'Slartibartfast'
-	* df.set(42, 'name', 'Slartibartfast');
+	* df.set(42, 'Slartibartfast');
 	*/
 	set(index, value) {
 		Validator.integer('Series.set()', 'index', index, { range: [0, this.length - 1] });
@@ -702,7 +701,7 @@ class Series {
 
 		let content = [name, ...this._data].join('\n');
 		if (!path) return content;
-		fs.writeFileSync(path, content);
+		eval('require')('fs').writeFileSync(path, content);
 	}
 
 	/**
@@ -726,7 +725,7 @@ class Series {
 
 		const content = JSON.stringify({ [name]: this._data }, null, prettify ? '\t' : null);
 		if (!path) return content;
-		fs.writeFileSync(path, content);
+		eval('require')('fs').writeFileSync(path, content);
 	}
 
 }

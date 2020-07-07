@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const d3 = require('d3-array');
 const nest = require('d3-collection').nest;
 const flatten = require('flat');
@@ -348,7 +347,7 @@ class PivotTable {
 			null,
 			prettify ? '\t' : null
 		);
-		if (path) fs.writeFileSync(path, content);
+		if (path) eval('require')('fs').writeFileSync(path, content);
 		return content;
 	}
 

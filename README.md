@@ -1005,7 +1005,7 @@ Sets a value in the Series
 
 ```javascript
 // Sets the 42nd value of the Series to 'Slartibartfast'
-df.set(42, 'name', 'Slartibartfast');
+df.set(42, 'Slartibartfast');
 ```
 
 #### head
