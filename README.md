@@ -1,10 +1,15 @@
 # Kiwis 🥝
 
-## A Pandas-inspired data wrangling toolkit in JavaScript
+## A Pandas-inspired data wrangling toolkit in JavaScript</h2>
 
 ### Installation
 
 `npm install kiwis`
+
+<img
+	src='assets/logo-kiwis.png'
+	style="width: 100px;"
+/>
 
 ### Getting started
 
@@ -326,7 +331,7 @@ console.log(df.columns) // ['name', 'surname', 'occupation']
 console.log(df.empty) // false
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### Series
 
@@ -347,7 +352,7 @@ console.log(series.length) // 9
 console.log(series.empty) // false
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### loadCSV
 
@@ -371,7 +376,7 @@ const df = Kiwis.loadCSV('myAwesomeData.csv');
 const df = Kiwis.loadCSV('myAwesomeData.tsv', { delimiter: '\t', prettify; 'camelCase' }); // to TSV
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### isNA
 
@@ -379,7 +384,7 @@ Determines whether a value is N/A or not
 
 ##### Parameters
 
--   `value` **any** 
+-   `value` **any**
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?** Options (optional, default `{}`)
     -   `options.keep` **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** Array of falsy values not considered N/A (optional, default `[0,false]`)
 
@@ -391,7 +396,7 @@ Kiwis.isNA(''); // true
 Kiwis.isNA('', { keep: [0, false, ''] }); // false
 ```
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**
 
 ### DataFrame
 
@@ -405,13 +410,13 @@ Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Returns the DataFrame as an array
 
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** 
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>**
 
 #### clone
 
 Clones the DataFrame
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### get
 
@@ -419,7 +424,7 @@ Returns any row of the DataFrame
 
 ##### Parameters
 
--   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
 
 ##### Examples
 
@@ -428,19 +433,19 @@ Returns any row of the DataFrame
 df.get(4);
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**
 
 #### first
 
 Returns the first row of the DataFrame
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**
 
 #### last
 
 Returns the last row of the DataFrame
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**
 
 #### set
 
@@ -448,9 +453,9 @@ Sets the content of a cell in the DataFrame
 
 ##### Parameters
 
--   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
--   `column` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
--   `value` **any** 
+-   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
+-   `column` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
+-   `value` **any**
 
 ##### Examples
 
@@ -474,7 +479,7 @@ Returns a new DataFrame containing the first N rows of the DataFrame
 df.head(10);
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### tail
 
@@ -491,7 +496,7 @@ Returns a new DataFrame containing the last N rows of the DataFrame
 df.tail();
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### slice
 
@@ -511,7 +516,7 @@ df.slice(10);
 df.slice(24, 42);
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### rows
 
@@ -525,7 +530,7 @@ for (let row of df.rows()) {
 }
 ```
 
-Returns **Iterable&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>** 
+Returns **Iterable&lt;[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>**
 
 #### items
 
@@ -539,7 +544,7 @@ for (let [index, row] of df.items()) {
 }
 ```
 
-Returns **Iterable&lt;[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number), [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>>** 
+Returns **Iterable&lt;[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number), [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)>>**
 
 #### forEach
 
@@ -547,7 +552,7 @@ Applies a callback function to each row of the DataFrame
 
 ##### Parameters
 
--   `callback` **callback** 
+-   `callback` **callback**
 
 ##### Examples
 
@@ -562,7 +567,7 @@ Returns a new Series populated with the results of a callback function applied o
 
 ##### Parameters
 
--   `callback` **callback** 
+-   `callback` **callback**
 
 ##### Examples
 
@@ -571,7 +576,7 @@ Returns a new Series populated with the results of a callback function applied o
 df.map(row => [row.name, row.surname].join(' '));
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### replace
 
@@ -579,8 +584,8 @@ Replaces all occurences of the given value in the DataFrame by another value
 
 ##### Parameters
 
--   `oldValue` **any** 
--   `newValue` **any** 
+-   `oldValue` **any**
+-   `newValue` **any**
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
     -   `options.columns` **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)>)** Columns to replace into (optional, default `DataFrame.columns`)
@@ -592,7 +597,7 @@ Replaces all occurences of the given value in the DataFrame by another value
 df.replace('panda', 'kiwi', { inPlace: true, columns: 'animal' });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### append
 
@@ -620,7 +625,7 @@ const rows = [
 df.append(rows, { extend: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### insert
 
@@ -640,7 +645,7 @@ Inserts new rows into a DataFrame
 df.insert({ name: 'Trillian', species: 'human' }, 2, { extend: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### concat
 
@@ -648,7 +653,7 @@ Concatenates another DataFrame to the DataFrame
 
 ##### Parameters
 
--   `other` **[DataFrame](#dataframe)** 
+-   `other` **[DataFrame](#dataframe)**
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.extend` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Adds new columns to the DataFrame if they do not already exist (optional, default `false`)
     -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current DataFrame instead of returning a new one (optional, default `false`)
@@ -660,7 +665,7 @@ Concatenates another DataFrame to the DataFrame
 df1.concat(df2, { inPlace: true, extend: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### join
 
@@ -668,7 +673,7 @@ Performs a join of two DataFrames on a given column
 
 ##### Parameters
 
--   `other` **[DataFrame](#dataframe)** 
+-   `other` **[DataFrame](#dataframe)**
 -   `column` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Column to join the DataFrames on
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.how` **(`"inner"` \| `"outer"` \| `"left"` \| `"right"`)** How the DataFrames should be joined: `'inner'` only keeps the intersection of the rows, `'outer'` keeps the union of the rows, `'left'` only keeps rows from the current DataFrame, and `'right'` only keeps rows from the `other` DataFrame (optional, default `'inner'`)
@@ -681,7 +686,7 @@ Performs a join of two DataFrames on a given column
 df1.join(df2, 'id', { inPlace: true, how: 'left' });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### addColumn
 
@@ -709,7 +714,7 @@ df.addColumn(
 df.addColumn('species', 'human', { inPlace: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### rename
 
@@ -728,7 +733,7 @@ Rename columns of the DataFrame
 df.rename({ occupation: 'job' }, { inPlace: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### reorder
 
@@ -748,7 +753,7 @@ df.reorder(['name', 'occupation', 'species'], { inPlace: true });
 console.log(df.columns) // ['name', 'occupation', 'species']
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### dropNA
 
@@ -770,7 +775,7 @@ df.dropNA({ inPlace: true });
 df.dropNA({ axis: 'columns', keep: [0, false, ''], inPlace: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### dropDuplicates
 
@@ -789,7 +794,7 @@ Drops duplicate rows from the DataFrame
 df.dropDuplicates({ columns: 'name', inPlace: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### filter
 
@@ -813,7 +818,7 @@ df.filter(row => row.date === '2020-04-20', { inPlace: true });
 df.filter(column => column.includes('data'), { axis: 'columns', inPlace: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### drop
 
@@ -837,7 +842,7 @@ df.drop(row => row.date === '2020-04-20', { inPlace: true });
 df.drop(column => column.includes('data'), { axis: 'columns', inPlace: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### sort
 
@@ -859,7 +864,7 @@ df.sort('name', { inPlace: true });
 df.sort('age', { reverse: true, inPlace: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### shuffle
 
@@ -878,7 +883,7 @@ Shuffles the rows or columns of a DataFrame
 df.shuffle({ axis: 'columns', inPlace: true });
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### pivot
 
@@ -895,13 +900,13 @@ Returns a PivotTable along the given columns
 df.pivot(['sector', 'date']);
 ```
 
-Returns **[PivotTable](#pivottable)** 
+Returns **[PivotTable](#pivottable)**
 
 #### toString
 
 Formats the DataFrame for display
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
 #### show
 
@@ -955,13 +960,13 @@ Returns **([string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 Returns the Series as an array
 
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>**
 
 #### clone
 
 Clones the Series
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### get
 
@@ -969,7 +974,7 @@ Returns any row of the Series
 
 ##### Parameters
 
--   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
 
 ##### Examples
 
@@ -978,19 +983,19 @@ Returns any row of the Series
 series.get(4);
 ```
 
-Returns **any** 
+Returns **any**
 
 #### first
 
 Returns the first value of the Series
 
-Returns **any** 
+Returns **any**
 
 #### last
 
 Returns the last value of the Series
 
-Returns **any** 
+Returns **any**
 
 #### set
 
@@ -998,8 +1003,8 @@ Sets a value in the Series
 
 ##### Parameters
 
--   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
--   `value` **any** 
+-   `index` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
+-   `value` **any**
 
 ##### Examples
 
@@ -1023,7 +1028,7 @@ Returns a new Series containing the first N values of the Series
 series.head(10);
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### tail
 
@@ -1040,7 +1045,7 @@ Returns a new Series containing the last N values of the Series
 series.tail();
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### slice
 
@@ -1060,7 +1065,7 @@ series.slice(10);
 series.slice(24, 42);
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### values
 
@@ -1074,7 +1079,7 @@ for (let value of series.values()) {
 }
 ```
 
-Returns **Iterable&lt;any>** 
+Returns **Iterable&lt;any>**
 
 #### items
 
@@ -1090,7 +1095,7 @@ Applies a callback function to each value of the Series
 
 ##### Parameters
 
--   `callback` **callback** 
+-   `callback` **callback**
 
 ##### Examples
 
@@ -1105,7 +1110,7 @@ Returns a new Series populated with the results of a callback function applied o
 
 ##### Parameters
 
--   `callback` **callback** 
+-   `callback` **callback**
 
 ##### Examples
 
@@ -1114,7 +1119,7 @@ Returns a new Series populated with the results of a callback function applied o
 series.map(value => value * 2);
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### append
 
@@ -1130,7 +1135,7 @@ Appends new values to a Series
 series.append([42, 101]);
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### insert
 
@@ -1148,7 +1153,7 @@ Inserts new values into a Series
 series.insert(42, 2);
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### concat
 
@@ -1156,7 +1161,7 @@ Concats another Series to the Series
 
 ##### Parameters
 
--   `other` **[Series](#series)** 
+-   `other` **[Series](#series)**
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.inPlace` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** Changes the current Series instead of returning a new one (optional, default `false`)
 
@@ -1167,7 +1172,7 @@ Concats another Series to the Series
 series1.concat(series2, { inPlace: true });
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### dropNA
 
@@ -1188,7 +1193,7 @@ series.dropNA({ inPlace: true });
 series.dropNA({ keep: [''], inPlace: true });
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### dropDuplicates
 
@@ -1205,7 +1210,7 @@ Drops duplicate values from the Series
 series.dropDuplicates({ inPlace: true });
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### any
 
@@ -1225,7 +1230,7 @@ series.any();
 series.any(value => value > 42);
 ```
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**
 
 #### all
 
@@ -1245,7 +1250,7 @@ series.all();
 series.all(value => value > 42);
 ```
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)**
 
 #### filter
 
@@ -1264,7 +1269,7 @@ Filters values of the Series
 series.filter(value => value > 42, { inPlace: true });
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### drop
 
@@ -1283,7 +1288,7 @@ Drops values from the Series
 series.drop(value => value > 42, { inPlace: true });
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### sort
 
@@ -1302,7 +1307,7 @@ Sorts the Series
 series.sort({ reverse: true, inPlace: true });
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### shuffle
 
@@ -1319,13 +1324,13 @@ Shuffles the values of a Series
 series.shuffle({ inPlace: true });
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### unique
 
 Returns the unique values in the Series as an array
 
-Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>** 
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>**
 
 #### counts
 
@@ -1385,7 +1390,7 @@ series.round(2, { inPlace: true });
 series.round(0, { inPlace: true });
 ```
 
-Returns **[Series](#series)** 
+Returns **[Series](#series)**
 
 #### reduce
 
@@ -1393,7 +1398,7 @@ Returns a single reduced value after applying the given callback to the values o
 
 ##### Parameters
 
--   `callback` **callback** 
+-   `callback` **callback**
 -   `initial` **any** Value to use as the first argument to the first call of the callback (optional, default `Series.first()`)
 
 ##### Examples
@@ -1406,55 +1411,55 @@ series.reduce((acc, value) => acc + value); // Equivalent to series.sum()
 series.reduce((acc, value) => acc * value, 1);
 ```
 
-Returns **any** 
+Returns **any**
 
 #### sum
 
 Returns the sum of the values in the Series
 
-Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
 
 #### min
 
 Returns the minimum value in the Series
 
-Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
 
 #### max
 
 Returns the maximum value in the Series
 
-Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
 
 #### extent
 
 Returns the extent of the Series
 
-Returns **\[[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number), [number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)]** 
+Returns **\[[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number), [number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)]**
 
 #### mean
 
 Returns the mean of the values in the Series
 
-Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
 
 #### median
 
 Returns the median of the values in the Series
 
-Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
 
 #### std
 
 Returns the standard deviation of the values in the Series
 
-Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)**
 
 #### toString
 
 Formats the Series for display
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
 #### show
 
@@ -1511,7 +1516,7 @@ Applies the given callback function on the leaves of the PivotTable, returning a
 
 ##### Parameters
 
--   `callback` **callback** 
+-   `callback` **callback**
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)?**  (optional, default `{}`)
     -   `options.name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** Name to use for the column in the output DataFrame (optional, default `'data'`)
 
@@ -1525,7 +1530,7 @@ df.pivot(['sector', 'date']).rollup(
 );
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### count
 
@@ -1537,7 +1542,7 @@ Counts the number of leaves for each branch of the PivotTable
 df.pivot(['sector', 'date']).count();
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### sum
 
@@ -1554,7 +1559,7 @@ Computes the sum of a given column of the PivotTable
 df.pivot(['sector', 'date']).sum('score');
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### min
 
@@ -1571,7 +1576,7 @@ Computes the minimum value of a given column of the PivotTable
 df.pivot(['sector', 'date']).min('score');
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### max
 
@@ -1588,7 +1593,7 @@ Computes the maximum value of a given column of the PivotTable
 df.pivot(['sector', 'date']).max('score');
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### mean
 
@@ -1605,7 +1610,7 @@ Computes the mean of a given column of the PivotTable
 df.pivot(['sector', 'date']).mean('score');
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### median
 
@@ -1622,7 +1627,7 @@ Computes the median of a given column of the PivotTable
 df.pivot(['sector', 'date']).median('score');
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### std
 
@@ -1639,13 +1644,13 @@ Computes the standard deviation of a given column of the PivotTable
 df.pivot(['sector', 'date']).std('score');
 ```
 
-Returns **[DataFrame](#dataframe)** 
+Returns **[DataFrame](#dataframe)**
 
 #### toString
 
 Formats the PivotTable for display
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
 #### show
 
@@ -1667,4 +1672,4 @@ Exports the PivotTable as JSON
 pivotTable.toJSON('myPivotTable.json');
 ```
 
-Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
