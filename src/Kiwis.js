@@ -73,27 +73,57 @@ class Kiwis {
 	* @param {('none'|'camelCase'|'snake_case')} [options.prettify='none'] Prettify column names
 	* @returns {DataFrame}
 	* @example
+	* const kw = require('kiwis');
+	*
 	* // Loads a CSV file
-	* const df = Kiwis.loadCSV('myAwesomeData.csv');
+	* const df = kw.loadCSV('myAwesomeData.csv');
 	*
 	* // Loads a TSV file and prettify the columns in camelCase
-	* const df = Kiwis.loadCSV('myAwesomeData.tsv', { delimiter: '\t', prettify; 'camelCase' }); // to TSV
+	* const df = kw.loadCSV('myAwesomeData.tsv', { delimiter: '\t', prettify; 'camelCase' });
 	*/
 	static loadCSV(path, options = {}) {
 		Validator.string('Kiwis.loadCSV()', 'path', path);
 		Validator.options('Kiwis.loadCSV()', options, [
-			{ key: 'delimiter', type: 'string' },
 			{ key: 'encoding', type: 'string' },
+		]);
+
+		const encoding = options.encoding || 'utf8';
+
+		const rawData = eval('require')('fs').readFileSync(path, { encoding });
+
+		return this.parseCSV(rawData, options);
+	}
+
+	/**
+	* Parses a CSV string into a DataFrame
+	* @param {string} csv CSV string to parse
+	* @param {Object} [options] Options
+	* @param {string} [options.delimiter=','] Delimiter of the file
+	* @param {('none'|'camelCase'|'snake_case')} [options.prettify='none'] Prettify column names
+	* @returns {DataFrame}
+	* @example
+	* const kw = require('kiwis');
+	*
+	* // Parses a CSV string
+	* const df = kw.parseCSV(`
+	*   name,surname,occupation\n
+    *   Marvin,,Paranoid Android\n
+	*   Zaphod,Beeblebrox,President of the Galaxy\n
+  	*   Arthur,Dent,\n
+	* `);
+	*/
+	static parseCSV(csv, options = {}) {
+		Validator.string('Kiwis.parseCSV()', 'csv', csv);
+		Validator.options('Kiwis.parseCSV()', options, [
+			{ key: 'delimiter', type: 'string' },
 			{ key: 'prettify', type: 'string', enum: ['none', 'camelCase', 'snake_case'] }
 		]);
 
 		const delimiter = options.delimiter || ',';
-		const encoding = options.encoding || 'utf8';
 		const prettify = options.prettify || 'none';
-		const parser = d3.dsvFormat(delimiter);
 
-		const rawData = eval('require')('fs').readFileSync(path, { encoding });
-		const data = parser.parse(rawData);
+		const parser = d3.dsvFormat(delimiter);
+		const data = parser.parse(csv);
 
 		const df = new DataFrame(data);
 		switch (prettify) {
