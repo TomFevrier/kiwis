@@ -192,6 +192,7 @@ class Series {
 	/**
 	* Returns an array of index/value pairs as an iterable
 	* @returns {Iterable.<Array.<number, *>>}
+	* @example
 	* for (let [index, value] of series.items()) {
 	*   console.log(index, value);
 	* }
@@ -473,13 +474,13 @@ class Series {
 	}
 
 	/**
-	* Returns the number of occurences for each value in the Series
+	* Returns the number of occurrences for each value in the Series
 	* @param {Object} [options]
 	* @param {boolean} [options.sort=true] Sorts the counts
 	* @param {boolean} [options.reverse=true] Sorts the counts in descending order
-	* @returns {<Array.<*, number>>} Counts as an array of of value/count pairs
+	* @returns {[*, number][]} Counts as an array of of value/count pairs
 	* @example
-	* // Returns the number of occurences for each value in the Series, in ascending order
+	* // Returns the number of occurrences for each value in the Series, in ascending order
 	* series.counts({ reverse: false });
 	*/
 	counts(options = {}) {
@@ -513,7 +514,7 @@ class Series {
 	* @param {Object} [options]
 	* @param {boolean} [options.sort=true] Sorts the frequencies
 	* @param {boolean} [options.reverse=true] Sorts the frequencies in descending order
-	* @returns {<Array.<*, number>>} Counts as an array of value/frequency pairs
+	* @returns {[*, number][]} Counts as an array of value/frequency pairs
 	* @example
 	* // Returns the frequency for each value in the Series, in ascending order
 	* series.frequencies({ reverse: false });

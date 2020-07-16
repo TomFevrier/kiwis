@@ -201,58 +201,59 @@ Length: 3
     -   [values](#values)
         -   [Examples](#examples-38)
     -   [items](#items-1)
+        -   [Examples](#examples-39)
     -   [forEach](#foreach-1)
         -   [Parameters](#parameters-36)
-        -   [Examples](#examples-39)
+        -   [Examples](#examples-40)
     -   [map](#map-1)
         -   [Parameters](#parameters-37)
-        -   [Examples](#examples-40)
+        -   [Examples](#examples-41)
     -   [append](#append-1)
         -   [Parameters](#parameters-38)
-        -   [Examples](#examples-41)
+        -   [Examples](#examples-42)
     -   [insert](#insert-1)
         -   [Parameters](#parameters-39)
-        -   [Examples](#examples-42)
+        -   [Examples](#examples-43)
     -   [concat](#concat-1)
         -   [Parameters](#parameters-40)
-        -   [Examples](#examples-43)
+        -   [Examples](#examples-44)
     -   [dropNA](#dropna-1)
         -   [Parameters](#parameters-41)
-        -   [Examples](#examples-44)
+        -   [Examples](#examples-45)
     -   [dropDuplicates](#dropduplicates-1)
         -   [Parameters](#parameters-42)
-        -   [Examples](#examples-45)
+        -   [Examples](#examples-46)
     -   [any](#any)
         -   [Parameters](#parameters-43)
-        -   [Examples](#examples-46)
+        -   [Examples](#examples-47)
     -   [all](#all)
         -   [Parameters](#parameters-44)
-        -   [Examples](#examples-47)
+        -   [Examples](#examples-48)
     -   [filter](#filter-1)
         -   [Parameters](#parameters-45)
-        -   [Examples](#examples-48)
+        -   [Examples](#examples-49)
     -   [drop](#drop-1)
         -   [Parameters](#parameters-46)
-        -   [Examples](#examples-49)
+        -   [Examples](#examples-50)
     -   [sort](#sort-1)
         -   [Parameters](#parameters-47)
-        -   [Examples](#examples-50)
+        -   [Examples](#examples-51)
     -   [shuffle](#shuffle-1)
         -   [Parameters](#parameters-48)
-        -   [Examples](#examples-51)
+        -   [Examples](#examples-52)
     -   [unique](#unique)
     -   [counts](#counts)
         -   [Parameters](#parameters-49)
-        -   [Examples](#examples-52)
+        -   [Examples](#examples-53)
     -   [frequencies](#frequencies)
         -   [Parameters](#parameters-50)
-        -   [Examples](#examples-53)
+        -   [Examples](#examples-54)
     -   [round](#round)
         -   [Parameters](#parameters-51)
-        -   [Examples](#examples-54)
+        -   [Examples](#examples-55)
     -   [reduce](#reduce)
         -   [Parameters](#parameters-52)
-        -   [Examples](#examples-55)
+        -   [Examples](#examples-56)
     -   [sum](#sum)
     -   [min](#min)
     -   [max](#max)
@@ -264,40 +265,40 @@ Length: 3
     -   [show](#show-1)
     -   [toCSV](#tocsv-1)
         -   [Parameters](#parameters-53)
-        -   [Examples](#examples-56)
+        -   [Examples](#examples-57)
     -   [toJSON](#tojson-1)
         -   [Parameters](#parameters-54)
-        -   [Examples](#examples-57)
+        -   [Examples](#examples-58)
 -   [PivotTable](#pivottable)
     -   [Properties](#properties-2)
     -   [rollup](#rollup)
         -   [Parameters](#parameters-55)
-        -   [Examples](#examples-58)
-    -   [count](#count)
         -   [Examples](#examples-59)
+    -   [count](#count)
+        -   [Examples](#examples-60)
     -   [sum](#sum-1)
         -   [Parameters](#parameters-56)
-        -   [Examples](#examples-60)
+        -   [Examples](#examples-61)
     -   [min](#min-1)
         -   [Parameters](#parameters-57)
-        -   [Examples](#examples-61)
+        -   [Examples](#examples-62)
     -   [max](#max-1)
         -   [Parameters](#parameters-58)
-        -   [Examples](#examples-62)
+        -   [Examples](#examples-63)
     -   [mean](#mean-1)
         -   [Parameters](#parameters-59)
-        -   [Examples](#examples-63)
+        -   [Examples](#examples-64)
     -   [median](#median-1)
         -   [Parameters](#parameters-60)
-        -   [Examples](#examples-64)
+        -   [Examples](#examples-65)
     -   [std](#std-1)
         -   [Parameters](#parameters-61)
-        -   [Examples](#examples-65)
+        -   [Examples](#examples-66)
     -   [toString](#tostring-2)
     -   [show](#show-2)
     -   [toJSON](#tojson-2)
         -   [Parameters](#parameters-62)
-        -   [Examples](#examples-66)
+        -   [Examples](#examples-67)
 
 ### Kiwis
 
@@ -1154,9 +1155,15 @@ Returns **Iterable&lt;any>**
 
 Returns an array of index/value pairs as an iterable
 
-Returns **Iterable&lt;[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number), any>>** for (let [index, value] of series.items()) {
+##### Examples
+
+```javascript
+for (let [index, value] of series.items()) {
   console.log(index, value);
 }
+```
+
+Returns **Iterable&lt;[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number), any>>** 
 
 #### forEach
 
@@ -1403,7 +1410,7 @@ Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Gl
 
 #### counts
 
-Returns the number of occurences for each value in the Series
+Returns the number of occurrences for each value in the Series
 
 ##### Parameters
 
@@ -1414,9 +1421,11 @@ Returns the number of occurences for each value in the Series
 ##### Examples
 
 ```javascript
-// Returns the number of occurences for each value in the Series, in ascending order
+// Returns the number of occurrences for each value in the Series, in ascending order
 series.counts({ reverse: false });
 ```
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;\[any, [number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)]>** Counts as an array of of value/count pairs
 
 #### frequencies
 
@@ -1434,6 +1443,8 @@ Returns the frequency for each value in the Series
 // Returns the frequency for each value in the Series, in ascending order
 series.frequencies({ reverse: false });
 ```
+
+Returns **[Array](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;\[any, [number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)]>** Counts as an array of value/frequency pairs
 
 #### round
 
