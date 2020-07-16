@@ -95,6 +95,21 @@ class Series {
 	}
 
 	/**
+	* Returns a specific value in the Series
+	* @param {callback} condition The returned value is the first one that matches this condition
+	* @returns {*}
+	* @example
+	* // Returns the value that contains 'fast'
+	* series.find(value => value.includes('fast'));
+	*/
+	find(condition) {
+		Validator.function('Series.find()', 'condition', condition);
+
+		const df = this.filter(condition);
+		return !df.empty ? df.get(0) : undefined;
+	}
+
+	/**
 	* Sets a value in the Series
 	* @param {number} index
 	* @param {*} value
@@ -462,7 +477,7 @@ class Series {
 	* @param {Object} [options]
 	* @param {boolean} [options.sort=true] Sorts the counts
 	* @param {boolean} [options.reverse=true] Sorts the counts in descending order
-	* @returns {Object} Counts as an object of value/count pairs
+	* @returns {<Array.<*, number>>} Counts as an array of of value/count pairs
 	* @example
 	* // Returns the number of occurences for each value in the Series, in ascending order
 	* series.counts({ reverse: false });
@@ -488,13 +503,9 @@ class Series {
 		}, {});
 		if (sort) {
 			return Object.entries(counts)
-				.sort((a, b) => reverse ? b[1] - a[1] : a[1] - b[1])
-				.reduce((acc, [value, count]) => ({
-					...acc,
-					[value]: count
-				}), {});
+				.sort((a, b) => reverse ? b[1] - a[1] : a[1] - b[1]);
 		}
-		return counts;
+		return Object.entries(counts);
 	}
 
 	/**
@@ -502,7 +513,7 @@ class Series {
 	* @param {Object} [options]
 	* @param {boolean} [options.sort=true] Sorts the frequencies
 	* @param {boolean} [options.reverse=true] Sorts the frequencies in descending order
-	* @returns {Object} Counts as an object of value/frequencies pairs
+	* @returns {<Array.<*, number>>} Counts as an array of value/frequency pairs
 	* @example
 	* // Returns the frequency for each value in the Series, in ascending order
 	* series.frequencies({ reverse: false });
@@ -512,12 +523,7 @@ class Series {
 			{ key: 'sort', type: 'boolean' },
 			{ key: 'reverse', type: 'boolean' }
 		]);
-
-		const counts = this.counts(options);
-		return Object.entries(counts).reduce((acc, [value, count]) => ({
-			...acc,
-			[value]: count / this.length
-		}), {});
+		return this.counts(options).map(([value, count]) => [value, count / this.length]);
 	}
 
 	/**

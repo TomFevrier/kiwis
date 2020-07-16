@@ -278,7 +278,7 @@ class PivotTable {
 				...this._pivots.map((column, index) => {
 					if (!previousRow || previousRow[column] !== row[column]
 						|| this._pivots.slice(0, index).filter(column => row[column] !== previousRow[column]).length > 0)
-						return row[column].padStart(widths[index]);
+						return row[column].toString().padStart(widths[index]);
 					return '.'.padStart(widths[index]);
 				})
 			];

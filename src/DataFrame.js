@@ -144,6 +144,21 @@ class DataFrame {
 	}
 
 	/**
+	* Returns a specific row in the DataFrame
+	* @param {callback} condition The returned row is the first one that matches this condition
+	* @returns {Object}
+	* @example
+	* // Returns the row where the 'name' is 'Marvin'
+	* df.find(row => row.name === 'Marvin');
+	*/
+	find(condition) {
+		Validator.function('DataFrame.find()', 'condition', condition);
+
+		const df = this.filter(condition);
+		return !df.empty ? df.get(0) : undefined;
+	}
+
+	/**
 	* Sets the content of a cell in the DataFrame
 	* @param {number} index
 	* @param {string} column

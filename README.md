@@ -96,157 +96,163 @@ Length: 3
         -   [Examples](#examples-5)
     -   [first](#first)
     -   [last](#last)
-    -   [set](#set)
+    -   [find](#find)
         -   [Parameters](#parameters-6)
         -   [Examples](#examples-6)
-    -   [head](#head)
+    -   [set](#set)
         -   [Parameters](#parameters-7)
         -   [Examples](#examples-7)
-    -   [tail](#tail)
+    -   [head](#head)
         -   [Parameters](#parameters-8)
         -   [Examples](#examples-8)
-    -   [slice](#slice)
+    -   [tail](#tail)
         -   [Parameters](#parameters-9)
         -   [Examples](#examples-9)
-    -   [rows](#rows)
-        -   [Examples](#examples-10)
-    -   [items](#items)
-        -   [Examples](#examples-11)
-    -   [forEach](#foreach)
+    -   [slice](#slice)
         -   [Parameters](#parameters-10)
+        -   [Examples](#examples-10)
+    -   [rows](#rows)
+        -   [Examples](#examples-11)
+    -   [items](#items)
         -   [Examples](#examples-12)
-    -   [map](#map)
+    -   [forEach](#foreach)
         -   [Parameters](#parameters-11)
         -   [Examples](#examples-13)
-    -   [replace](#replace)
+    -   [map](#map)
         -   [Parameters](#parameters-12)
         -   [Examples](#examples-14)
-    -   [append](#append)
+    -   [replace](#replace)
         -   [Parameters](#parameters-13)
         -   [Examples](#examples-15)
-    -   [insert](#insert)
+    -   [append](#append)
         -   [Parameters](#parameters-14)
         -   [Examples](#examples-16)
-    -   [concat](#concat)
+    -   [insert](#insert)
         -   [Parameters](#parameters-15)
         -   [Examples](#examples-17)
-    -   [join](#join)
+    -   [concat](#concat)
         -   [Parameters](#parameters-16)
         -   [Examples](#examples-18)
-    -   [addColumn](#addcolumn)
+    -   [join](#join)
         -   [Parameters](#parameters-17)
         -   [Examples](#examples-19)
-    -   [rename](#rename)
+    -   [addColumn](#addcolumn)
         -   [Parameters](#parameters-18)
         -   [Examples](#examples-20)
-    -   [reorder](#reorder)
+    -   [rename](#rename)
         -   [Parameters](#parameters-19)
         -   [Examples](#examples-21)
-    -   [dropNA](#dropna)
+    -   [reorder](#reorder)
         -   [Parameters](#parameters-20)
         -   [Examples](#examples-22)
-    -   [dropDuplicates](#dropduplicates)
+    -   [dropNA](#dropna)
         -   [Parameters](#parameters-21)
         -   [Examples](#examples-23)
-    -   [filter](#filter)
+    -   [dropDuplicates](#dropduplicates)
         -   [Parameters](#parameters-22)
         -   [Examples](#examples-24)
-    -   [drop](#drop)
+    -   [filter](#filter)
         -   [Parameters](#parameters-23)
         -   [Examples](#examples-25)
-    -   [sort](#sort)
+    -   [drop](#drop)
         -   [Parameters](#parameters-24)
         -   [Examples](#examples-26)
-    -   [shuffle](#shuffle)
+    -   [sort](#sort)
         -   [Parameters](#parameters-25)
         -   [Examples](#examples-27)
-    -   [pivot](#pivot)
+    -   [shuffle](#shuffle)
         -   [Parameters](#parameters-26)
         -   [Examples](#examples-28)
+    -   [pivot](#pivot)
+        -   [Parameters](#parameters-27)
+        -   [Examples](#examples-29)
     -   [toString](#tostring)
     -   [show](#show)
     -   [toCSV](#tocsv)
-        -   [Parameters](#parameters-27)
-        -   [Examples](#examples-29)
-    -   [toJSON](#tojson)
         -   [Parameters](#parameters-28)
         -   [Examples](#examples-30)
+    -   [toJSON](#tojson)
+        -   [Parameters](#parameters-29)
+        -   [Examples](#examples-31)
 -   [Series](#series-1)
     -   [Properties](#properties-1)
     -   [toArray](#toarray-1)
     -   [clone](#clone-1)
     -   [get](#get-1)
-        -   [Parameters](#parameters-29)
-        -   [Examples](#examples-31)
-    -   [first](#first-1)
-    -   [last](#last-1)
-    -   [set](#set-1)
         -   [Parameters](#parameters-30)
         -   [Examples](#examples-32)
-    -   [head](#head-1)
+    -   [first](#first-1)
+    -   [last](#last-1)
+    -   [find](#find-1)
         -   [Parameters](#parameters-31)
         -   [Examples](#examples-33)
-    -   [tail](#tail-1)
+    -   [set](#set-1)
         -   [Parameters](#parameters-32)
         -   [Examples](#examples-34)
-    -   [slice](#slice-1)
+    -   [head](#head-1)
         -   [Parameters](#parameters-33)
         -   [Examples](#examples-35)
-    -   [values](#values)
+    -   [tail](#tail-1)
+        -   [Parameters](#parameters-34)
         -   [Examples](#examples-36)
+    -   [slice](#slice-1)
+        -   [Parameters](#parameters-35)
+        -   [Examples](#examples-37)
+    -   [values](#values)
+        -   [Examples](#examples-38)
     -   [items](#items-1)
     -   [forEach](#foreach-1)
-        -   [Parameters](#parameters-34)
-        -   [Examples](#examples-37)
-    -   [map](#map-1)
-        -   [Parameters](#parameters-35)
-        -   [Examples](#examples-38)
-    -   [append](#append-1)
         -   [Parameters](#parameters-36)
         -   [Examples](#examples-39)
-    -   [insert](#insert-1)
+    -   [map](#map-1)
         -   [Parameters](#parameters-37)
         -   [Examples](#examples-40)
-    -   [concat](#concat-1)
+    -   [append](#append-1)
         -   [Parameters](#parameters-38)
         -   [Examples](#examples-41)
-    -   [dropNA](#dropna-1)
+    -   [insert](#insert-1)
         -   [Parameters](#parameters-39)
         -   [Examples](#examples-42)
-    -   [dropDuplicates](#dropduplicates-1)
+    -   [concat](#concat-1)
         -   [Parameters](#parameters-40)
         -   [Examples](#examples-43)
-    -   [any](#any)
+    -   [dropNA](#dropna-1)
         -   [Parameters](#parameters-41)
         -   [Examples](#examples-44)
-    -   [all](#all)
+    -   [dropDuplicates](#dropduplicates-1)
         -   [Parameters](#parameters-42)
         -   [Examples](#examples-45)
-    -   [filter](#filter-1)
+    -   [any](#any)
         -   [Parameters](#parameters-43)
         -   [Examples](#examples-46)
-    -   [drop](#drop-1)
+    -   [all](#all)
         -   [Parameters](#parameters-44)
         -   [Examples](#examples-47)
-    -   [sort](#sort-1)
+    -   [filter](#filter-1)
         -   [Parameters](#parameters-45)
         -   [Examples](#examples-48)
-    -   [shuffle](#shuffle-1)
+    -   [drop](#drop-1)
         -   [Parameters](#parameters-46)
         -   [Examples](#examples-49)
-    -   [unique](#unique)
-    -   [counts](#counts)
+    -   [sort](#sort-1)
         -   [Parameters](#parameters-47)
         -   [Examples](#examples-50)
-    -   [frequencies](#frequencies)
+    -   [shuffle](#shuffle-1)
         -   [Parameters](#parameters-48)
         -   [Examples](#examples-51)
-    -   [round](#round)
+    -   [unique](#unique)
+    -   [counts](#counts)
         -   [Parameters](#parameters-49)
         -   [Examples](#examples-52)
-    -   [reduce](#reduce)
+    -   [frequencies](#frequencies)
         -   [Parameters](#parameters-50)
         -   [Examples](#examples-53)
+    -   [round](#round)
+        -   [Parameters](#parameters-51)
+        -   [Examples](#examples-54)
+    -   [reduce](#reduce)
+        -   [Parameters](#parameters-52)
+        -   [Examples](#examples-55)
     -   [sum](#sum)
     -   [min](#min)
     -   [max](#max)
@@ -257,41 +263,41 @@ Length: 3
     -   [toString](#tostring-1)
     -   [show](#show-1)
     -   [toCSV](#tocsv-1)
-        -   [Parameters](#parameters-51)
-        -   [Examples](#examples-54)
+        -   [Parameters](#parameters-53)
+        -   [Examples](#examples-56)
     -   [toJSON](#tojson-1)
-        -   [Parameters](#parameters-52)
-        -   [Examples](#examples-55)
+        -   [Parameters](#parameters-54)
+        -   [Examples](#examples-57)
 -   [PivotTable](#pivottable)
     -   [Properties](#properties-2)
     -   [rollup](#rollup)
-        -   [Parameters](#parameters-53)
-        -   [Examples](#examples-56)
-    -   [count](#count)
-        -   [Examples](#examples-57)
-    -   [sum](#sum-1)
-        -   [Parameters](#parameters-54)
-        -   [Examples](#examples-58)
-    -   [min](#min-1)
         -   [Parameters](#parameters-55)
+        -   [Examples](#examples-58)
+    -   [count](#count)
         -   [Examples](#examples-59)
-    -   [max](#max-1)
+    -   [sum](#sum-1)
         -   [Parameters](#parameters-56)
         -   [Examples](#examples-60)
-    -   [mean](#mean-1)
+    -   [min](#min-1)
         -   [Parameters](#parameters-57)
         -   [Examples](#examples-61)
-    -   [median](#median-1)
+    -   [max](#max-1)
         -   [Parameters](#parameters-58)
         -   [Examples](#examples-62)
-    -   [std](#std-1)
+    -   [mean](#mean-1)
         -   [Parameters](#parameters-59)
         -   [Examples](#examples-63)
+    -   [median](#median-1)
+        -   [Parameters](#parameters-60)
+        -   [Examples](#examples-64)
+    -   [std](#std-1)
+        -   [Parameters](#parameters-61)
+        -   [Examples](#examples-65)
     -   [toString](#tostring-2)
     -   [show](#show-2)
     -   [toJSON](#tojson-2)
-        -   [Parameters](#parameters-60)
-        -   [Examples](#examples-64)
+        -   [Parameters](#parameters-62)
+        -   [Examples](#examples-66)
 
 ### Kiwis
 
@@ -473,6 +479,23 @@ Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 #### last
 
 Returns the last row of the DataFrame
+
+Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+#### find
+
+Returns a specific row in the DataFrame
+
+##### Parameters
+
+-   `condition` **callback** The returned row is the first one that matches this condition
+
+##### Examples
+
+```javascript
+// Returns the row where the 'name' is 'Marvin'
+df.find(row => row.name === 'Marvin');
+```
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 
@@ -1026,6 +1049,23 @@ Returns the last value of the Series
 
 Returns **any** 
 
+#### find
+
+Returns a specific value in the Series
+
+##### Parameters
+
+-   `condition` **callback** The returned value is the first one that matches this condition
+
+##### Examples
+
+```javascript
+// Returns the value that contains 'fast'
+series.find(value => value.includes('fast'));
+```
+
+Returns **any** 
+
 #### set
 
 Sets a value in the Series
@@ -1378,8 +1418,6 @@ Returns the number of occurences for each value in the Series
 series.counts({ reverse: false });
 ```
 
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Counts as an object of value/count pairs
-
 #### frequencies
 
 Returns the frequency for each value in the Series
@@ -1396,8 +1434,6 @@ Returns the frequency for each value in the Series
 // Returns the frequency for each value in the Series, in ascending order
 series.frequencies({ reverse: false });
 ```
-
-Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** Counts as an object of value/frequencies pairs
 
 #### round
 
