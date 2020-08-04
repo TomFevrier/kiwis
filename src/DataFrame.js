@@ -552,7 +552,6 @@ class DataFrame {
 				});
 			});
 		}
-		console.log(column.toArray(), newData)
 		if (inPlace) {
 			this._data = newData;
 			this.columns = [...this._columns, name];
