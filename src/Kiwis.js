@@ -84,7 +84,9 @@ class Kiwis {
 	static loadCSV(path, options = {}) {
 		Validator.string('Kiwis.loadCSV()', 'path', path);
 		Validator.options('Kiwis.loadCSV()', options, [
+			{ key: 'delimiter', type: 'string' },
 			{ key: 'encoding', type: 'string' },
+			{ key: 'prettify', type: 'string', enum: ['none', 'camelCase', 'snake_case'] }
 		]);
 
 		const encoding = options.encoding || 'utf8';
